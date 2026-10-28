@@ -20,16 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 1. STATO GLOBALE DEI PROGRESSI (6 MINI-TEST + 3 CASI REALI = 9 VERIFICHE)
+  // 1. STATO GLOBALE DEI PROGRESSI (9 MINI-TEST + 3 CASI REALI = 12 VERIFICHE)
   // --------------------------------------------------------------------------
   const learningState = {
     miniTests: {
       mt1: false,
       mt2: false,
+      mt1j: false,
       mt3: false,
       mt4: false,
+      mt2j: false,
       mt5: false,
-      mt6: false
+      mt6: false,
+      mt3j: false
     },
     cases: {
       c1: false,
@@ -42,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mtPassed = Object.values(learningState.miniTests).filter(Boolean).length;
     const casesPassed = Object.values(learningState.cases).filter(Boolean).length;
     const totalPassed = mtPassed + casesPassed;
-    const percentage = Math.round((totalPassed / 9) * 100);
+    const percentage = Math.round((totalPassed / 12) * 100);
 
     const progressBar = document.getElementById('globalProgressBar');
     const summaryLabel = document.getElementById('progressSummaryLabel');
@@ -52,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (progressBar) progressBar.style.width = `${percentage}%`;
     if (summaryLabel) summaryLabel.innerHTML = `Avanzamento Totale: <strong>${percentage}%</strong>`;
-    if (mtBadge) mtBadge.textContent = `Mini-Test: ${mtPassed} / 6 Superati`;
+    if (mtBadge) mtBadge.textContent = `Mini-Test: ${mtPassed} / 9 Superati`;
     if (casesBadge) casesBadge.textContent = `Casi Reali: ${casesPassed} / 3 Superati`;
     if (finalBadge) {
       finalBadge.textContent = `Progresso Casi: ${casesPassed} / 3 Superati`;
@@ -168,6 +171,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Mini-Test 1.3: Uso in Java (Gson / Jackson)
+  const btnCheckMt1Java = document.getElementById('btnCheckMiniTest1Java');
+  const feedbackMt1Java = document.getElementById('feedbackMiniTest1Java');
+  if (btnCheckMt1Java && feedbackMt1Java) {
+    btnCheckMt1Java.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="mt1j"]:checked');
+      feedbackMt1Java.style.display = 'block';
+      if (!selected) {
+        feedbackMt1Java.className = 'mini-test-feedback status-warn';
+        feedbackMt1Java.textContent = '⚠️ Seleziona un\'opzione prima di verificare.';
+        return;
+      }
+      if (selected.value === 'optA') {
+        learningState.miniTests.mt1j = true;
+        feedbackMt1Java.className = 'mini-test-feedback status-ok';
+        feedbackMt1Java.innerHTML = '🎉 <strong>Corretto!</strong> Il metodo <code>gson.fromJson(jsonPayload, Sensore.class)</code> (o <code>objectMapper.readValue()</code> in Jackson) analizza la stringa JSON e crea una nuova istanza tipizzata di <code>Sensore</code> popolandone i campi.';
+      } else {
+        feedbackMt1Java.className = 'mini-test-feedback status-error';
+        feedbackMt1Java.textContent = '❌ Risposta errata. Ricorda che non si può fare un casting diretto da String a oggetto personalizzato: serve il metodo fromJson con la classe target.';
+      }
+      updateGlobalProgress();
+    });
+  }
+
   // --------------------------------------------------------------------------
   // 5. BANCO DI PROVA PARTE 1 (VALIDATORE JSON -> GENERATORE CLASSE JAVA)
   // --------------------------------------------------------------------------
@@ -270,6 +297,30 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         feedbackMt4.className = 'mini-test-feedback status-error';
         feedbackMt4.textContent = '❌ Risposta errata. L\'errore comune è invertire le parentesi: la formula corretta è [Testo](URL).';
+      }
+      updateGlobalProgress();
+    });
+  }
+
+  // Mini-Test 2.3: Uso in Java (Javadoc JEP 467)
+  const btnCheckMt2Java = document.getElementById('btnCheckMiniTest2Java');
+  const feedbackMt2Java = document.getElementById('feedbackMiniTest2Java');
+  if (btnCheckMt2Java && feedbackMt2Java) {
+    btnCheckMt2Java.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="mt2j"]:checked');
+      feedbackMt2Java.style.display = 'block';
+      if (!selected) {
+        feedbackMt2Java.className = 'mini-test-feedback status-warn';
+        feedbackMt2Java.textContent = '⚠️ Seleziona un\'opzione prima di verificare.';
+        return;
+      }
+      if (selected.value === 'optA') {
+        learningState.miniTests.mt2j = true;
+        feedbackMt2Java.className = 'mini-test-feedback status-ok';
+        feedbackMt2Java.innerHTML = '🎉 <strong>Esatto!</strong> Con la JEP 467 introdotta in Java 23, anteponendo <code>///</code> a ogni riga del commento il testo viene interpretato come Markdown standard, consentendo titoli, tabelle e blocchi codice puliti senza tag HTML.';
+      } else {
+        feedbackMt2Java.className = 'mini-test-feedback status-error';
+        feedbackMt2Java.textContent = '❌ Risposta errata. La novità ufficiale di Java 23 è il commento con tripla barra (///).';
       }
       updateGlobalProgress();
     });
@@ -436,6 +487,30 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         feedbackMt6.className = 'mini-test-feedback status-error';
         feedbackMt6.textContent = '❌ Risposta errata. XML non è adatto per messaggi istantanei leggeri né per guide umane, ma per configurazioni formali complesse.';
+      }
+      updateGlobalProgress();
+    });
+  }
+
+  // Mini-Test 3.3: Uso in Java (DOM vs SAX/StAX)
+  const btnCheckMt3Java = document.getElementById('btnCheckMiniTest3Java');
+  const feedbackMt3Java = document.getElementById('feedbackMiniTest3Java');
+  if (btnCheckMt3Java && feedbackMt3Java) {
+    btnCheckMt3Java.addEventListener('click', () => {
+      const selected = document.querySelector('input[name="mt3j"]:checked');
+      feedbackMt3Java.style.display = 'block';
+      if (!selected) {
+        feedbackMt3Java.className = 'mini-test-feedback status-warn';
+        feedbackMt3Java.textContent = '⚠️ Seleziona un\'opzione prima di verificare.';
+        return;
+      }
+      if (selected.value === 'optA') {
+        learningState.miniTests.mt3j = true;
+        feedbackMt3Java.className = 'mini-test-feedback status-ok';
+        feedbackMt3Java.innerHTML = '🎉 <strong>Corretto!</strong> Il parser DOM carica l\'intera struttura ad albero nella memoria RAM (occupando spesso da 5 a 10 volte la dimensione del file), mentre SAX e StAX elaborano il file in streaming sequenziale a eventi, risultando ideali per file di grandi dimensioni.';
+      } else {
+        feedbackMt3Java.className = 'mini-test-feedback status-error';
+        feedbackMt3Java.textContent = '❌ Risposta errata. La differenza fondamentale tra DOM e SAX risiede nell\'allocazione di memoria RAM.';
       }
       updateGlobalProgress();
     });
@@ -625,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
       email: email,
       studentNames: names,
       miniTestsPassed: mtPassed,
-      miniTestsTotal: 6,
+      miniTestsTotal: 9,
       case1Passed: learningState.cases.c1,
       case2Passed: learningState.cases.c2,
       case3Passed: learningState.cases.c3,
@@ -649,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bannerSubmit.innerHTML =
           `ℹ️ <strong>Modalità Locale</strong>: Nessun URL webhook inserito. ` +
           `Report registrato per <strong>${payload.studentNames}</strong> (${payload.email}): ` +
-          `<strong>${payload.miniTestsPassed}/6 Mini-Test</strong> e <strong>${payload.casesCompletedCount}/3 Casi Reali Superati</strong>. ` +
+          `<strong>${payload.miniTestsPassed}/9 Mini-Test</strong> e <strong>${payload.casesCompletedCount}/3 Casi Reali Superati</strong>. ` +
           `Clicca su "Scarica Report (.json)" per consegnare il file su Classroom!`;
         return;
       }

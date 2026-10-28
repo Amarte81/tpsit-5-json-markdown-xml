@@ -89,13 +89,16 @@ Puoi passare l'URL appena copiato agli studenti in tre modi (dal più comodo al 
 
 ## 5. Soluzioni Complete per il Docente (Mini-Test e 3 Casi Reali)
 
-### Soluzioni dei 6 Mini-Test lungo lo scorrimento
+### Soluzioni dei 9 Mini-Test lungo lo scorrimento
 * **Mini-Test 1.1 (Notifica Push JSON)**: Risposta corretta **C** (Chiave `mittente` senza doppi apici, booleano `TRUE` maiuscolo, virgola finale prima di `}`).
 * **Mini-Test 1.2 (Array e Tipi Java)**: Risposta corretta **B** (Si scatena una `NumberFormatException` o errore di deserializzazione perché `"42_livello"` non è un `int`).
+* **Mini-Test 1.3 (Uso JSON in Java con Gson)**: Risposta corretta **A** (`gson.fromJson(jsonPayload, Sensore.class)`).
 * **Mini-Test 2.1 (Titoli Markdown)**: Risposta corretta **A** (È obbligatorio inserire uno spazio dopo il cancelletto: `# ProgettoJava`).
 * **Mini-Test 2.2 (Link nel README)**: Risposta corretta **A** (`[Link Repository](https://github.com/classe5/repo)` — prima le quadre col testo, poi le tonde con l'URL).
+* **Mini-Test 2.3 (Uso Markdown in Java 23+ JEP 467)**: Risposta corretta **A** (I commenti Javadoc con tripla barra `///` consentono di scrivere documentazione direttamente in Markdown).
 * **Mini-Test 3.1 (Banda IoT JSON vs XML)**: Risposta corretta **A** (JSON elimina i tag di chiusura ridondanti, risparmiando il 40-50% di byte e velocizzando il parsing).
 * **Mini-Test 3.2 (Quando usare XML)**: Risposta corretta **B** (Nel file `pom.xml` di Maven o quando è richiesta validazione formale rigorosa tramite schema XSD).
+* **Mini-Test 3.3 (Uso XML in Java DOM vs SAX)**: Risposta corretta **A** (Il parser DOM carica l'intero albero in RAM rischiando `OutOfMemoryError`, mentre SAX/StAX elabora il file in streaming sequenziale a eventi).
 
 ---
 

@@ -45,6 +45,18 @@ JSON rappresenta qualsiasi struttura dati combinando solo **due elementi**:
 3. **Tipo incompatibile con Java**: `"temperatura": "24.5°C"` (stringa) quando il server Java attende un `double` numerico (`24.5`).
 4. **Booleano maiuscolo**: `TRUE` o `FALSE` non sono ammessi dallo standard JSON.
 
+### ☕ Uso in Java: Serializzazione e Deserializzazione con Gson / Jackson
+In Java si usano librerie come **Gson** (`com.google.gson.Gson`) o **Jackson** (`ObjectMapper`):
+```java
+// SERIALIZZAZIONE: da Oggetto Java a Stringa JSON
+Sensore s1 = new Sensore("ESP32_01", 24.5, true);
+String jsonPayload = new Gson().toJson(s1);
+
+// DESERIALIZZAZIONE: da Stringa JSON a Oggetto Java tipizzato
+Sensore s2 = new Gson().fromJson(jsonPayload, Sensore.class);
+```
+* **Regola Java**: la classe deve possedere un **costruttore vuoto senza argomenti** e i nomi degli attributi privati devono coincidere con le chiavi JSON (oppure usare annotazioni come `@SerializedName("chiave")`).
+
 ---
 
 ## 2️⃣ PARTE 2: IL LINGUAGGIO PER UMANI, SVILUPPATORI E IA — MARKDOWN (45 min)
@@ -67,6 +79,23 @@ JSON rappresenta qualsiasi struttura dati combinando solo **due elementi**:
 | **Tabella Tecnica** | `| Col1 | Col2 |` <br> `| --- | --- |` | La **seconda riga con i trattini** è obbligatoria per generare le colonne! |
 | **Link Cliccabile** | `[Testo Visibile](https://...)` | Prima le **[quadre col testo]**, poi le **(tonde con l'URL)**. Non invertirle! |
 
+### ☕ Uso in Java: Javadoc Markdown (Java 23+ JEP 467) e Bot Discord
+Dalla versione **Java 23 (JEP 467)** la documentazione ufficiale **Javadoc** non richiede più i tag HTML verbosi ma si scrive direttamente in Markdown anteponendo tre barre `///`:
+```java
+/// # GestoreServer
+/// Servizio per la gestione del cluster.
+/// 
+/// ## Esempio:
+/// ```java
+/// GestoreServer g = new GestoreServer(8080);
+/// ```
+/// | Porta | Protocollo |
+/// | :--- | :--- |
+/// | 8080 | TCP |
+public class GestoreServer { ... }
+```
+Inoltre, nei bot Java per Discord (libreria **JDA**) o con framework AI (**Spring AI** / **LangChain4j**), i messaggi di risposta vengono costruiti e ricevuti formattando il testo con Markdown.
+
 ---
 
 ## 3️⃣ PARTE 3: L'ARCHITETTO DEL DATO — SCELTA & CONFRONTO CON XML (45 min)
@@ -85,6 +114,18 @@ Tuttavia **XML resta fondamentale** quando servono **attributi sui tag**, *names
 | **Consumo di Rete (Byte)** | **Minimo** (elimina i tag di chiusura; risparmia dal 40% al 50% di banda rispetto a XML). | **Puro Testo** (non adatto per parsing automatico di variabili in memoria). | **Alto** (la ripetizione di `<tag>...</tag>` raddoppia i byte trasmessi). |
 | **Parsing in Java** | Immediato e leggero tramite librerie `Gson` / `Jackson`. | Non supporta la mappatura diretta in variabili e oggetti Java. | Parser **DOM** (albero in RAM) o **SAX** (a eventi) con validazione **XSD**. |
 | **Esempio Reale** | Payload JSON delle API web e salvataggio inventario di gioco. | File `README.md` di un progetto su GitHub o risposte di un'IA. | File `pom.xml` per le dipendenze Maven o layout interfaccia Android. |
+
+### ☕ Uso in Java: Parser DOM, SAX e Binding JAXB
+In Java la gestione di XML avviene tramite il package `javax.xml.parsers`:
+```java
+// 1. Parser DOM (carica tutto l'albero XML nella memoria RAM)
+DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+Document doc = builder.parse(new ByteArrayInputStream(xmlString.getBytes()));
+String temp = doc.getElementsByTagName("temp").item(0).getTextContent();
+
+// 2. Parser SAX (lettura a eventi in streaming, zero spreco di RAM per file enormi)
+// 3. JAXB: Marshalling (Java -> XML) e Unmarshalling (XML -> Java) con @XmlRootElement
+```
 
 ---
 

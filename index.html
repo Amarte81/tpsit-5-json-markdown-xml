@@ -47,7 +47,7 @@
       <div class="progress-track" aria-label="Progresso verifiche interattive">
         <div id="globalProgressBar" class="progress-bar-fill"></div>
       </div>
-      <span id="miniTestsScoreBadge">Mini-Test: 0 / 6 Superati</span>
+      <span id="miniTestsScoreBadge">Mini-Test: 0 / 9 Superati</span>
       <span id="casesScoreBadge" style="color: var(--accent-green);">Casi Reali: 0 / 3</span>
     </div>
   </div>
@@ -304,6 +304,85 @@
           <div id="p1SandboxStatus" class="status-banner status-ok"></div>
           <h5 style="margin-top: 0.8rem; margin-bottom: 0.3rem;">Classe Java generata:</h5>
           <pre id="p1SandboxJavaCode" class="code-box"></pre>
+        </div>
+      </div>
+
+      <!-- SEZIONE INTEGRAZIONE JAVA MODULO 1: SERIALIZZAZIONE E PARSING JSON -->
+      <div class="card" style="border-left: 6px solid var(--accent-blue);">
+        <div class="card-header">
+          <h3 class="card-title">☕ Integrazione Java: Come gestire JSON con Gson e Jackson</h3>
+          <span class="badge-tag">JAVA OOP & SERIALIZZAZIONE</span>
+        </div>
+        <p style="margin-bottom: 0.85rem;">
+          In un'applicazione backend <strong>Java</strong> (es. Spring Boot o server Socket), il codice non manipola stringhe JSON grezze con operazioni di split. Si utilizzano librerie di <strong>Object Mapping</strong> come <strong>Google Gson</strong> o <strong>Jackson</strong> (<code>ObjectMapper</code>).
+        </p>
+        <p style="margin-bottom: 0.85rem;">
+          Queste librerie trasformano automaticamente una classe Java (<strong>POJO</strong>) in stringa JSON tramite <strong>serializzazione</strong> (<code>gson.toJson(oggetto)</code>) e ricostruiscono l'oggetto Java tipizzato partendo da una stringa ricevuta via rete tramite <strong>deserializzazione</strong> (<code>gson.fromJson(json, Classe.class)</code>).
+        </p>
+        
+        <h4 style="color: var(--accent-blue); margin-top: 1rem; margin-bottom: 0.4rem;">💻 Esempio Completo in Java (con libreria Gson / Jackson):</h4>
+        <pre class="code-box">import com.google.gson.Gson;
+
+// 1. Definizione della classe Java POJO (Plain Old Java Object)
+class Sensore {
+    private String id;
+    private double temperatura;
+    private boolean attivo;
+
+    // Costruttore vuoto predefinito (indispensabile per i parser JSON)
+    public Sensore() {}
+
+    public Sensore(String id, double temperatura, boolean attivo) {
+        this.id = id;
+        this.temperatura = temperatura;
+        this.attivo = attivo;
+    }
+
+    public String getId() { return id; }
+    public double getTemperatura() { return temperatura; }
+}
+
+public class MainJsonJava {
+    public static void main(String[] args) {
+        Gson gson = new Gson();
+
+        // SERIALIZZAZIONE: Da istanza Java a stringa JSON di rete
+        Sensore s1 = new Sensore("ESP32_LAB", 24.5, true);
+        String jsonPayload = gson.toJson(s1);
+        System.out.println("JSON generato per l'API:\n" + jsonPayload);
+
+        // DESERIALIZZAZIONE: Da stringa ricevuta a oggetto Java tipizzato
+        String jsonRicevuto = "{\"id\":\"SENS_02\",\"temperatura\":19.8,\"attivo\":false}";
+        Sensore s2 = gson.fromJson(jsonRicevuto, Sensore.class);
+        System.out.println("Oggetto Java ricostruito: ID=" + s2.getId() + " Temp=" + s2.getTemperatura() + "°C");
+    }
+}</pre>
+
+        <!-- MINI-TEST 1.3: USO IN JAVA -->
+        <div class="mini-test-card" id="miniTest1JavaCard">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 1.3 — Deserializzazione JSON in Java</h4>
+            <span class="mini-test-badge">CHECKPOINT JAVA</span>
+          </div>
+          <p>
+            In un'applicazione Java, quale riga di codice permette di convertire la stringa di rete <code>jsonPayload</code> in un'istanza tipizzata della classe <code>Sensore</code> usando la libreria <strong>Gson</strong>?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt1j" value="optA" />
+              <span><strong>A)</strong> <code>Sensore s = gson.fromJson(jsonPayload, Sensore.class);</code></span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt1j" value="optB" />
+              <span><strong>B)</strong> <code>Sensore s = (Sensore) jsonPayload;</code> (tramite casting diretto di tipi).</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt1j" value="optC" />
+              <span><strong>C)</strong> <code>Sensore s = gson.toJson(Sensore.class, jsonPayload);</code></span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest1Java" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest1Java" class="mini-test-feedback"></div>
         </div>
       </div>
 
@@ -576,6 +655,71 @@ System.out.println("Server online!");
         </div>
       </div>
 
+      <!-- SEZIONE INTEGRAZIONE JAVA MODULO 2: MARKDOWN IN JAVADOC E BOT -->
+      <div class="card" style="border-left: 6px solid var(--accent-indigo);">
+        <div class="card-header">
+          <h3 class="card-title">☕ Integrazione Java: Markdown in Javadoc (JEP 467) e Bot Discord</h3>
+          <span class="badge-tag">JAVA 23+ & TESTO TECNICO</span>
+        </div>
+        <p style="margin-bottom: 0.85rem;">
+          Storicamente la documentazione del codice in Java (<strong>Javadoc</strong>) richiedeva tag HTML verbosi e complessi (come <code>&lt;p&gt;</code>, <code>&lt;b&gt;</code>, <code>&lt;pre&gt;&lt;code&gt;</code>). A partire da <strong>Java 23 (JEP 467)</strong>, la documentazione ufficiale si scrive direttamente in <strong>Markdown</strong> anteponendo tre barre (<code>///</code>) a ogni riga!
+        </p>
+        <p style="margin-bottom: 0.85rem;">
+          Inoltre, quando sviluppi un <strong>Bot Discord in Java</strong> (usando la libreria ufficiale <code>JDA - Java Discord API</code>) o integri modelli IA con <strong>Spring AI</strong>, il testo formattato inviato nei canali chat o ricevuto dalle API di OpenAI/Gemini viene elaborato come stringa Markdown.
+        </p>
+
+        <h4 style="color: var(--accent-indigo); margin-top: 1rem; margin-bottom: 0.4rem;">💻 Esempio Completo in Java (Javadoc Moderno con Markdown JEP 467):</h4>
+        <pre class="code-box">/// # GestoreNotifiche
+/// Servizio Java per la distribuzione di allarmi e messaggi tecnici.
+/// 
+/// ## Esempio di utilizzo:
+/// ```java
+/// GestoreNotifiche g = new GestoreNotifiche();
+/// g.inviaAllarme("CPU al 90%", true);
+/// ```
+/// 
+/// ### Parametri supportati:
+/// | Parametro | Tipo | Descrizione |
+/// | :--- | :--- | :--- |
+/// | `messaggio` | `String` | Testo formattato in **Markdown** |
+/// | `critico` | `boolean` | Se `true`, attiva la notifica push |
+/// 
+/// @author Classe 5ª Informatica
+public class GestoreNotifiche {
+    public void inviaAllarme(String messaggio, boolean critico) {
+        // Invio del payload a Discord o client Web
+        System.out.println("Notifica inviata: " + messaggio);
+    }
+}</pre>
+
+        <!-- MINI-TEST 2.3: USO IN JAVA -->
+        <div class="mini-test-card" id="miniTest2JavaCard">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 2.3 — Markdown nel Codice Java Moderno</h4>
+            <span class="mini-test-badge">CHECKPOINT JAVA</span>
+          </div>
+          <p>
+            Quale sintassi è stata standardizzata in Java moderno (JEP 467 a partire da JDK 23) per scrivere commenti Javadoc formattati direttamente in Markdown senza tag HTML?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt2j" value="optA" />
+              <span><strong>A)</strong> Il commento con tripla barra <code>///</code> a inizio riga, che consente di usare titoli <code>#</code>, elenchi <code>-</code> e tabelle Markdown.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt2j" value="optB" />
+              <span><strong>B)</strong> La direttiva speciale <code>#markdown_start</code> e <code>#markdown_end</code>.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt2j" value="optC" />
+              <span><strong>C)</strong> I file sorgente Java devono avere estensione <code>.java.md</code>.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest2Java" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest2Java" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
       <!-- ===================================================================
            🏁 FINE PARTE 2 — RIPASSO DENSO PARTE 2 (OBBLIGATORIO E BEN EVIDENTE)
            =================================================================== -->
@@ -815,6 +959,81 @@ System.out.println("Server online!");
           </div>
           <button id="btnCheckMiniTest6" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
           <div id="feedbackMiniTest6" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- SEZIONE INTEGRAZIONE JAVA MODULO 3: PARSING XML CON DOM E BINDING JAXB -->
+      <div class="card" style="border-left: 6px solid var(--accent-green);">
+        <div class="card-header">
+          <h3 class="card-title">☕ Integrazione Java: Parsing XML con DOM, SAX e JAXB</h3>
+          <span class="badge-tag">JAVA XML PARSING</span>
+        </div>
+        <p style="margin-bottom: 0.85rem;">
+          In Java l'elaborazione di documenti <strong>XML</strong> è parte integrante del package standard <code>javax.xml.parsers</code>. Esistono due approcci di parsing architetturalmente distinti:
+        </p>
+        <ul class="accessible-list" style="margin-bottom: 0.85rem;">
+          <li>
+            <strong>Parser DOM (Document Object Model)</strong>: carica l'intero albero XML nella memoria RAM della JVM (oggetti <code>Document</code>, <code>Element</code>, <code>NodeList</code>). È comodo per navigare e modificare nodi, ma consuma molta memoria RAM se il file supera alcuni megabyte.
+          </li>
+          <li>
+            <strong>Parser SAX (Simple API for XML) o StAX</strong>: analizza il file in <strong>streaming sequenziale a eventi</strong> senza caricare l'albero in memoria. Ideale per flussi di dati enormi.
+          </li>
+          <li>
+            <strong>JAXB (Java Architecture for XML Binding)</strong>: converte automaticamente oggetti Java in XML (<strong>Marshalling</strong>) e viceversa (<strong>Unmarshalling</strong>) tramite annotazioni come <code>@XmlRootElement</code>.
+          </li>
+        </ul>
+
+        <h4 style="color: var(--accent-green); margin-top: 1rem; margin-bottom: 0.4rem;">💻 Esempio Completo in Java (Parsing DOM con DocumentBuilder):</h4>
+        <pre class="code-box">import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
+
+public class EsempioXmlJava {
+    public static void main(String[] args) throws Exception {
+        String xml = "&lt;config&gt;&lt;porta&gt;8080&lt;/porta&gt;&lt;db&gt;tpsit_db&lt;/db&gt;&lt;/config&gt;";
+
+        // 1. Inizializzazione della factory DOM standard di Java
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        // 2. Parsing della stringa XML in un albero DOM navigabile in RAM
+        Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
+        doc.getDocumentElement().normalize();
+
+        // 3. Estrazione dei dati dai tag
+        String porta = doc.getElementsByTagName("porta").item(0).getTextContent();
+        String db = doc.getElementsByTagName("db").item(0).getTextContent();
+
+        System.out.println("Configurazione letta da XML: Porta=" + porta + ", Database=" + db);
+    }
+}</pre>
+
+        <!-- MINI-TEST 3.3: USO IN JAVA -->
+        <div class="mini-test-card" id="miniTest3JavaCard">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 3.3 — Architettura dei Parser XML in Java</h4>
+            <span class="mini-test-badge">CHECKPOINT JAVA</span>
+          </div>
+          <p>
+            In un'applicazione server Java, perché per leggere file XML enormi (centinaia di megabyte) si preferisce un parser <strong>SAX / StAX</strong> rispetto al parser <strong>DOM</strong>?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt3j" value="optA" />
+              <span><strong>A)</strong> Perché il parser DOM carica l'intero albero di nodi nella memoria RAM della JVM rischiando un <code>OutOfMemoryError</code>, mentre SAX/StAX legge i dati in streaming riga per riga a eventi.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt3j" value="optB" />
+              <span><strong>B)</strong> Perché il parser DOM non è in grado di leggere i numeri decimali.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt3j" value="optC" />
+              <span><strong>C)</strong> Perché SAX converte automaticamente il file XML in una tabella Markdown.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest3Java" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest3Java" class="mini-test-feedback"></div>
         </div>
       </div>
 

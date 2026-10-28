@@ -34,7 +34,7 @@ function setupDashboardClasse() {
     'Timestamp',
     'Email Studente (@scuola.edu.it)',
     'Componenti Coppia',
-    'Mini-Test Superati (su 6)',
+    'Mini-Test Superati (su 9)',
     'Caso 1: IoT & Java (JSON)',
     'Caso 2: GitHub & AI (Markdown)',
     'Caso 3: Webhook Ibrido & Scelta XML',
@@ -100,7 +100,7 @@ function doPost(e) {
     const c3Status = payload.case3Passed ? 'OK (Webhook Ibrido + XML)' : 'Non completato';
 
     const casesCount = Number(payload.casesCompletedCount || (payload.case1Passed ? 1 : 0) + (payload.case2Passed ? 1 : 0) + (payload.case3Passed ? 1 : 0));
-    const totalScorePct = Math.round(((mtPassed + casesCount) / 9) * 100);
+    const totalScorePct = Math.round(((mtPassed + casesCount) / 12) * 100);
     const elapsedSec = Number(payload.elapsedSeconds || 0);
     const verdict = casesCount >= 3 ? 'SUPERATO' : 'PARZIALE';
 
@@ -108,7 +108,7 @@ function doPost(e) {
       new Date(),
       email,
       studentNames,
-      mtPassed + ' / 6',
+      mtPassed + ' / 9',
       c1Status,
       c2Status,
       c3Status,
