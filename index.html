@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>TPSIT 5ª — Linguaggi di Interscambio Dati: JSON, Markdown e XML</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =======================================================================
+       STICKY HEADER & PROGRESSO GLOBALE (OTTIMIZZATO PER PC 16:9 E SMARTPHONE 9:16)
+       ======================================================================= -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="brand-wrap">
+          <span class="badge-tag">TPSIT 5ª • 135 MIN</span>
+          <h1>Linguaggi di Interscambio Dati & Markup</h1>
+        </div>
+        <div class="header-controls">
+          <button id="btnToggleLegibility" class="btn btn-secondary" type="button" title="Modalità Alta Leggibilità e contrasto chiaro per PDP/DSA">
+            👁️ Alta Leggibilità (DSA/PDP)
+          </button>
+          <button id="btnPrintWorksheet" class="btn btn-secondary" type="button" title="Stampa o Salva in PDF">
+            🖨️ Stampa Guida
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra di Scorrimento Rapido tra le 3 Parti -->
+      <nav class="sticky-subnav" aria-label="Navigazione tra le tre parti">
+        <a href="#intro-interscambio" class="nav-link-btn">🌐 Perché Servono?</a>
+        <a href="#parte1" class="nav-link-btn">1️⃣ Parte 1: JSON (45m)</a>
+        <a href="#parte2" class="nav-link-btn">2️⃣ Parte 2: Markdown (45m)</a>
+        <a href="#parte3" class="nav-link-btn">3️⃣ Parte 3: Scelta & XML (45m)</a>
+        <a href="#sfida-finale" class="nav-link-btn" style="border-color: var(--accent-amber);">🎯 Sfida 3 Casi</a>
+        <a href="#consegna" class="nav-link-btn" style="border-color: var(--accent-green);">☁️ Consegna</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BARRA DI AVANZAMENTO LIVE (MINI-TEST E SFIDE) -->
+  <div class="global-progress-wrap">
+    <div class="progress-inner">
+      <span id="progressSummaryLabel">Avanzamento Totale: <strong>0%</strong></span>
+      <div class="progress-track" aria-label="Progresso verifiche interattive">
+        <div id="globalProgressBar" class="progress-bar-fill"></div>
+      </div>
+      <span id="miniTestsScoreBadge">Mini-Test: 0 / 6 Superati</span>
+      <span id="casesScoreBadge" style="color: var(--accent-green);">Casi Reali: 0 / 3</span>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- =======================================================================
+         SEZIONE INTRODUTTIVA: A COSA SERVONO I LINGUAGGI DI INTERSCAMBIO DATI
+         ======================================================================= -->
+    <section id="intro-interscambio" class="card" style="margin-top: 1rem; border-color: var(--accent-blue);">
+      <div class="card-header">
+        <h2 class="card-title">🌐 A cosa servono i Linguaggi di Interscambio dei Dati?</h2>
+        <span class="badge-tag">FONDAMENTI DI ARCHITETTURA DI RETE</span>
+      </div>
+
+      <p style="margin-bottom: 0.9rem;">
+        Nelle moderne architetture distribuite, programmi scritti in <strong>linguaggi diversi</strong> e in esecuzione su <strong>sistemi operativi diversi</strong> devono scambiarsi informazioni continuamente. Pensa a una centralina domotica programmata in <strong>C</strong> che invia la temperatura a un server centrale scritto in <strong>Java</strong>, il quale a sua volta risponde a un'applicazione mobile o a un sito web in <strong>JavaScript</strong>.
+      </p>
+
+      <p style="margin-bottom: 0.9rem;">
+        Questi sistemi sono <strong>eterogenei</strong>: una <code>struct</code> in C, un oggetto in memoria RAM della <strong>Java Virtual Machine (JVM)</strong> e un oggetto del browser hanno rappresentazioni binarie incompatibili tra loro. Non è possibile inviare direttamente sulla rete un indirizzo di memoria RAM da un computer a un altro.
+      </p>
+
+      <div class="grid-3" style="margin-top: 1.1rem; margin-bottom: 0.5rem;">
+        <div class="case-study-box" style="margin: 0;">
+          <h3 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.4rem;">1. La Lingua Franca Testuale</h3>
+          <p style="font-size: 0.94rem;">
+            I <strong>linguaggi di interscambio dei dati</strong> (come <strong>JSON</strong> e <strong>XML</strong>) risolvono questo problema fornendo un <strong>formato testuale standardizzato</strong> e neutrale. Qualsiasi linguaggio di programmazione sa leggere e scrivere stringhe di testo codificate in <strong>UTF-8</strong>.
+          </p>
+        </div>
+
+        <div class="case-study-box" style="margin: 0;">
+          <h3 style="font-size: 1.05rem; color: var(--accent-green); margin-bottom: 0.4rem;">2. Serializzazione e Parsing</h3>
+          <p style="font-size: 0.94rem;">
+            Il mittente esegue la <strong>serializzazione</strong>: trasforma il proprio oggetto in memoria in una stringa strutturata da trasmettere in rete. Il destinatario esegue l'operazione inversa, chiamata <strong>deserializzazione</strong> (o <strong>parsing</strong>), ricostruendo i dati nelle proprie variabili.
+          </p>
+        </div>
+
+        <div class="case-study-box" style="margin: 0;">
+          <h3 style="font-size: 1.05rem; color: var(--accent-indigo); margin-bottom: 0.4rem;">3. Dati per Macchine vs Umani</h3>
+          <p style="font-size: 0.94rem;">
+            Mentre <strong>JSON</strong> e <strong>XML</strong> strutturano dati destinati ai programmi, i linguaggi di <strong>markup leggero</strong> come <strong>Markdown</strong> strutturano il testo affinché sia immediatamente leggibile dagli <strong>esseri umani</strong> e facilmente elaborabile dalle <strong>Intelligenze Artificiali</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         PARTE 1: IL LINGUAGGIO DELLE MACCHINE E DELLE API — JSON (45 MINUTI)
+         ======================================================================= -->
+    <section id="parte1" class="lesson-part-section">
+
+      <!-- BANNER INTESTAZIONE PARTE 1 -->
+      <div class="part-header-banner">
+        <div class="part-meta">
+          <span class="badge-tag">MODULO 1 DI 3</span>
+          <span class="badge-tag" style="background: var(--bg-elevated); color: var(--text-main);">DURATA: 45 MINUTI</span>
+          <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">FOCUS: JSON & JAVA</span>
+        </div>
+        <h2 class="part-title">Parte 1: Il Linguaggio delle App e delle API — Padroneggiare JSON</h2>
+        <p class="part-desc">
+          Comprendere la struttura di JSON, il legame diretto con gli oggetti Java e la diagnosi delle anomalie sintattiche nei pacchetti di rete.
+        </p>
+      </div>
+
+      <!-- SPIEGAZIONE DISCORSIVA DEL MODULO 1 (JSON) -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📖 Guida Teorica Modulo 1: Come funziona JSON e perché domina il Web</h3>
+          <span class="badge-tag">TEORIA AD ALTA DENSITÀ</span>
+        </div>
+
+        <p style="margin-bottom: 0.85rem;">
+          <strong>JSON</strong> (acronimo di <em>JavaScript Object Notation</em>) è oggi il formato di interscambio dati più utilizzato al mondo per le <strong>API Web REST</strong>, le applicazioni mobile e i dispositivi IoT. Sebbene il suo nome derivi da JavaScript, JSON è <strong>totalmente indipendente dal linguaggio</strong>: viene generato e letto nativamente in <strong>Java</strong>, <strong>C</strong>, <strong>Python</strong>, <strong>C#</strong> e qualsiasi altro ambiente moderno.
+        </p>
+
+        <p style="margin-bottom: 0.85rem;">
+          Il successo di JSON nasce dalla sua <strong>compattezza</strong> e dalla corrispondenza diretta con le strutture dati che già usi quando programmi in <strong>Java</strong>. Ogni documento JSON si costruisce combinando solamente <strong>due strutture fondamentali</strong>:
+        </p>
+
+        <ul class="accessible-list" style="margin-bottom: 0.85rem;">
+          <li>
+            <strong>L'Oggetto JSON <code>{ ... }</code></strong>: è delimitato da parentesi graffe e contiene una collezione di coppie <code>"chiave": valore</code> separate da virgola. Corrisponde esattamente a un'istanza di una <strong>classe Java</strong> (es. <code>new Studente()</code>), dove ogni <strong>chiave</strong> (sempre racchiusa tra <strong>doppi apici obbligatori</strong>) rappresenta il nome di un attributo e il <strong>valore</strong> ne rappresenta il contenuto.
+          </li>
+          <li>
+            <strong>L'Array JSON <code>[ ... ]</code></strong>: è delimitato da parentesi quadre e contiene una lista ordinata di valori separati da virgola. Corrisponde a un <strong>array</strong> (<code>String[]</code>) o a una collezione (<code>ArrayList&lt;T&gt;</code>) in Java.
+          </li>
+        </ul>
+
+        <p>
+          A differenza del semplice testo libero, JSON è <strong>tipizzato</strong>: distingue in modo netto le <strong>stringhe</strong> (tra doppi apici <code>"testo"</code>), i <strong>numeri interi o decimali</strong> (scritti senza apici e con il punto decimale, es. <code>42</code> o <code>24.5</code>), i <strong>booleani</strong> (scritti rigorosamente in minuscolo <code>true</code> o <code>false</code>) e il valore nullo (<code>null</code>). Basta violare una sola di queste regole sintattiche per impedire al <strong>parser</strong> del destinatario di ricostruire l'oggetto in memoria.
+        </p>
+      </div>
+
+      <!-- CASO STUDIO 1: APP DI MESSAGGISTICA & NOTIFICHE PUSH -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">💬 Caso Studio 1: App di Messaggistica (WhatsApp / Telegram)</h3>
+          <span class="badge-tag">AGGANCI QUOTIDIANI</span>
+        </div>
+
+        <p>
+          Quando ricevi una notifica push sullo smartphone, il sistema operativo non riceve un'immagine né una pagina web. Riceve un <strong>payload JSON</strong> leggero via protocollo HTTPS/WSS. L'applicazione client estrae i dati e popola l'interfaccia grafica.
+        </p>
+
+        <div class="grid-2" style="margin-top: 1.25rem;">
+          <!-- Mockup Smartphone (Ottimizzato 9:16) -->
+          <div class="phone-mockup-frame">
+            <div class="phone-mockup-top">
+              <span>📱 Notifiche Push</span>
+              <span>12:45 • 5G 🔋</span>
+            </div>
+            <div id="hook1VisualBubble" class="msg-bubble">
+              <div style="font-size: 0.8rem; color: var(--accent-blue); font-weight: 800;">Gruppo 5ª INF • Adesso</div>
+              <p style="margin-top: 0.3rem;"><strong>Prof. TPSIT:</strong> Il server REST è attivo sulla porta 8080!</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.8rem;">
+              <button id="btnHook1Normal" class="btn btn-success" type="button" style="font-size: 0.8rem; padding: 0.4rem;">✅ Payload OK</button>
+              <button id="btnHook1Broken" class="btn btn-amber" type="button" style="font-size: 0.8rem; padding: 0.4rem;">⚠️ Simula Errore</button>
+            </div>
+          </div>
+
+          <!-- Analisi Tecnica Approfondita -->
+          <div>
+            <h4 style="color: var(--accent-blue); margin-bottom: 0.5rem;">Analisi Tecnica del Payload di Rete</h4>
+            <p style="font-size: 0.95rem;">
+              Sotto il cofano viaggia una stringa di testo puro. Il parser dell'app (ad es. in Java/Kotlin su Android con <code>Gson</code> o <code>org.json</code>) esegue la <strong>deserializzazione</strong>:
+            </p>
+            <pre id="hook1CodeDisplay" class="code-box" style="margin-top: 0.6rem;">{
+  "chatId": "5A_INF_2026",
+  "mittente": "Prof. TPSIT",
+  "timestamp": 1761642300,
+  "letto": false,
+  "testo": "Il server REST è attivo sulla porta 8080!"
+}</pre>
+            <div id="hook1StatusAlert" class="status-banner status-ok" style="margin-top: 0.6rem;">
+              Il payload rispetta rigorosamente le specifiche RFC 8259: chiavi racchiuse tra doppi apici e booleano "false" minuscolo.
+            </div>
+          </div>
+        </div>
+
+        <!-- MINI-TEST 1.1 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest1Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 1.1 — Ispezione Notifica Push</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            Un'app di messaggistica riceve questo payload grezzo e va in crash:
+            <code>{ mittente: "Marco", "online": TRUE, "msg": "Ci sei?", }</code>.<br>
+            Quale combinazione di anomalie impedisce a <code>JSON.parse()</code> di leggerlo?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt1" value="optA" />
+              <span><strong>A)</strong> Il testo del messaggio "Ci sei?" contiene un punto interrogativo non consentito.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt1" value="optB" />
+              <span><strong>B)</strong> Manca la graffa di apertura e ci sono troppi spazi tra le parole.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt1" value="optC" />
+              <span><strong>C)</strong> Chiave <code>mittente</code> senza doppi apici, valore booleano <code>TRUE</code> maiuscolo, e virgola finale prima di <code>}</code>.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest1" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest1" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- CASO STUDIO 2: GAMING & MODDING (MINECRAFT & DISCORD BOT) -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🎮 Caso Studio 2: Gaming & Modding (Inventario Minecraft & Bot)</h3>
+          <span class="badge-tag">OGGETTI ANNIDATI E ARRAY</span>
+        </div>
+
+        <p>
+          In Minecraft e nei bot Discord, il salvataggio dei giocatori e le configurazioni dei plugin usano file <code>.json</code>. In Java, un inventario è tipicamente un <code>ArrayList&lt;String&gt;</code> all'interno di una classe <code>PlayerState</code>.
+        </p>
+
+        <div class="grid-2" style="margin-top: 1rem;">
+          <div>
+            <h4 style="color: var(--accent-indigo); margin-bottom: 0.4rem;">Classe Java (Memoria RAM)</h4>
+            <pre class="code-box">public class PlayerState {
+    private String username;
+    private int level;
+    private boolean isVip;
+    private List&lt;String&gt; inventory;
+
+    // Costruttore per Jackson/Gson
+    public PlayerState() {}
+}</pre>
+          </div>
+          <div>
+            <h4 style="color: var(--accent-blue); margin-bottom: 0.4rem;">File JSON (Salvataggio su Disco / Rete)</h4>
+            <pre class="code-box">{
+  "username": "Shadow_99",
+  "level": 42,
+  "isVip": true,
+  "inventory": [
+    "Spada_Diamante",
+    "Scudo_Ferro",
+    "Pozione_Guarigione"
+  ]
+}</pre>
+          </div>
+        </div>
+
+        <p style="margin-top: 1rem; font-size: 0.95rem;">
+          <strong>Regola di mapping</strong>: Un oggetto Java $\rightarrow$ <code>{ }</code>; una lista o array Java $\rightarrow$ <code>[ ]</code>. Gli elementi dentro le quadre <strong>devono essere separati da virgole</strong>, ma non deve esserci alcuna virgola dopo l'ultimo elemento prima della parentesi di chiusura <code>]</code>.
+        </p>
+
+        <!-- MINI-TEST 1.2 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest2Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 1.2 — Array e Tipi di Dato Java</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            Il server Java legge il campo <code>"level"</code> come un numero intero (<code>int</code>). Un giocatore manomette il file scrivendo: <code>"level": "42_livello"</code>. Cosa accade al caricamento?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt2" value="optA" />
+              <span><strong>A)</strong> Il server Java lo accetta convertendo automaticamente le lettere in numeri binari.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt2" value="optB" />
+              <span><strong>B)</strong> Si scatena una <code>NumberFormatException</code> o un errore di deserializzazione poiché una Stringa alfanumerica non può essere assegnata a una variabile <code>int</code>.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt2" value="optC" />
+              <span><strong>C)</strong> Il file viene automaticamente trasformato in Markdown.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest2" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest2" class="mini-test-feedback"></div>
+        </div>
+
+        <!-- SANDBOX RAPIDA PARTE 1: TESTA JSON E GENERA CLASSE JAVA -->
+        <div class="case-study-box">
+          <h4 class="case-study-title">🧪 Banco di Prova Live Parte 1: Scrivi JSON e Genera la Classe Java</h4>
+          <p style="font-size: 0.95rem; margin-bottom: 0.6rem;">
+            Modifica il payload qui sotto. Il validatore controlla la sintassi istantaneamente e genera la classe Java corrispondente:
+          </p>
+          <textarea id="p1SandboxJson" class="code-editor" spellcheck="false">{
+  "idPlayer": "Gamer_2026",
+  "punteggio": 1500,
+  "attivo": true,
+  "badge": ["PrimoAccesso", "Esperto_JSON"]
+}</textarea>
+          <div id="p1SandboxStatus" class="status-banner status-ok"></div>
+          <h5 style="margin-top: 0.8rem; margin-bottom: 0.3rem;">Classe Java generata:</h5>
+          <pre id="p1SandboxJavaCode" class="code-box"></pre>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           🏁 FINE PARTE 1 — RIPASSO DENSO PARTE 1 (OBBLIGATORIO E BEN EVIDENTE)
+           =================================================================== -->
+      <div class="end-part-milestone" id="fine-parte-1">
+        <div class="milestone-badge">🏁 FINE PARTE 1 (45 MINUTI) — TRAGUARDO RAGGIUNTO</div>
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-blue);">
+          Riepilogo Competenze Acquisite su JSON & Serializzazione Java
+        </h3>
+        <p style="margin-top: 0.4rem; color: var(--text-muted);">
+          Hai completato la prima lezione: ora sai come le applicazioni scambiano oggetti in rete e come evitare i bug sintattici che bloccano i parser.
+        </p>
+
+        <!-- CARD RIPASSO DENSO PARTE 1 -->
+        <div class="dense-review-box">
+          <h4 class="dense-review-title">📚 RIPASSO DENSO: Tavola di Conversione Rapida Java ↔ JSON</h4>
+          
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Elemento Java / C</th>
+                  <th>Struttura in JSON</th>
+                  <th>Regola Ferrea (Zero Errori)</th>
+                  <th>Cosa EVITARE Assolutamente</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Oggetto</strong> (<code>new Telemetria()</code>)</td>
+                  <td><code>{ "chiave": valore }</code></td>
+                  <td>Graffe bilanciate; chiavi sempre con <strong>doppi apici</strong> <code>" "</code>.</td>
+                  <td>Scrivere <code>{ chiave: "val" }</code> o apici singoli <code>{'chiave'}</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Array / List</strong> (<code>List&lt;String&gt;</code>)</td>
+                  <td><code>["elem1", "elem2"]</code></td>
+                  <td>Parentesi quadre; elementi separati da <strong>virgole</strong>.</td>
+                  <td><strong>Trailing comma</strong>: <code>["a", "b", ]</code> (manda in crash il parser).</td>
+                </tr>
+                <tr>
+                  <td><strong>Numeri</strong> (<code>int</code>, <code>double</code>)</td>
+                  <td><code>100</code> oppure <code>24.5</code></td>
+                  <td>Nessun apice; separatore decimale con il <strong>punto</strong>.</td>
+                  <td>Scrivere <code>"24.5"</code> (stringa) o usare la virgola <code>24,5</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Booleani e Null</strong></td>
+                  <td><code>true</code>, <code>false</code>, <code>null</code></td>
+                  <td>Sempre rigorosamente in <strong>lettere minuscole</strong>.</td>
+                  <td>Scrivere <code>TRUE</code>, <code>False</code> o <code>NULL</code> in maiuscolo.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+            <span>✅ <strong>Checklist Rapida</strong>: Doppi apici su chiavi • Nessuna virgola finale • Tipi coerenti col backend.</span>
+            <a href="#parte2" class="btn btn-primary">Passa alla Parte 2: Markdown ➡️</a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =======================================================================
+         PARTE 2: IL LINGUAGGIO PER UMANI E IA — MARKDOWN (45 MINUTI)
+         ======================================================================= -->
+    <section id="parte2" class="lesson-part-section">
+
+      <!-- BANNER INTESTAZIONE PARTE 2 -->
+      <div class="part-header-banner part-2">
+        <div class="part-meta">
+          <span class="badge-tag" style="background: var(--accent-indigo); color: #fff;">MODULO 2 DI 3</span>
+          <span class="badge-tag" style="background: var(--bg-elevated); color: var(--text-main);">DURATA: 45 MINUTI</span>
+          <span class="badge-tag" style="background: var(--accent-blue); color: #070b14;">FOCUS: MARKDOWN (.md) & IA</span>
+        </div>
+        <h2 class="part-title">Parte 2: Il Linguaggio per Umani, Sviluppatori e IA — Markdown</h2>
+        <p class="part-desc">
+          Padroneggiare il formato di markup leggero adottato da GitHub, Discord e dalle Intelligenze Artificiali per strutturare documentazione tecnica leggibile e versionabile.
+        </p>
+      </div>
+
+      <!-- SPIEGAZIONE DISCORSIVA DEL MODULO 2 (MARKDOWN) -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📖 Guida Teorica Modulo 2: Cos'è Markdown e perché ha sostituito Word nello sviluppo software</h3>
+          <span class="badge-tag">TEORIA AD ALTA DENSITÀ</span>
+        </div>
+
+        <p style="margin-bottom: 0.85rem;">
+          Se <strong>JSON</strong> è perfetto per far comunicare due programmi, diventa invece scomodo quando dobbiamo scrivere una guida tecnica, un manuale di installazione o una risposta articolata da far leggere a una <strong>persona</strong>. D'altra parte, i formati di videoscrittura tradizionali (come i file <code>.docx</code> di Word) sono file binari complessi che non possono essere confrontati riga per riga nei sistemi di controllo versione come <strong>Git</strong> e richiedono programmi pesanti per essere aperti.
+        </p>
+
+        <p style="margin-bottom: 0.85rem;">
+          Per risolvere questo problema è nato <strong>Markdown</strong> (file con estensione <code>.md</code>): un <strong>linguaggio di markup leggero</strong> che utilizza semplici caratteri di punteggiatura della tastiera (come <code>#</code>, <code>*</code>, <code>-</code>, <code>`</code>) per indicare titoli, grassetti, elenchi, tabelle e blocchi di codice sorgente.
+        </p>
+
+        <p>
+          La forza di Markdown risiede in due caratteristiche tecniche decisive:
+          <strong>1) Leggibilità immediata</strong>: un file <code>.md</code> è puro testo (<em>plain text</em>) chiarissimo da leggere anche dentro un semplice terminale o blocco note, ma viene automaticamente trasformato in una pagina <strong>HTML</strong> elegante quando viene visualizzato su <strong>GitHub</strong>, nelle chat di <strong>Discord/WhatsApp</strong> o nelle interfacce web;
+          <strong>2) Standard per l'Intelligenza Artificiale</strong>: tutti i moderni <strong>Large Language Models (LLM)</strong> sono addestrati per ricevere istruzioni (prompt) e restituire codice e spiegazioni strutturate esattamente in <strong>Markdown</strong>, poiché consuma pochissimi token rispetto all'HTML o all'XML.
+        </p>
+      </div>
+
+      <!-- CASO STUDIO 3: PROMPT & OUTPUT INTELLIGENZA ARTIFICIALE -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🤖 Caso Studio 3: Prompt e Output di ChatGPT, Claude e Gemini</h3>
+          <span class="badge-tag">INTERAZIONE UMANO-IA</span>
+        </div>
+
+        <p>
+          Quando chiedi a un modello generativo di spiegarti un algoritmo Java o di progettare una tabella di database, la risposta grezza che il modello produce è puro testo formattato in <strong>Markdown</strong>. L'interfaccia web dell'IA lo converte in HTML in una frazione di secondo.
+        </p>
+
+        <div class="grid-2" style="margin-top: 1rem;">
+          <div>
+            <h4 style="color: var(--accent-blue); margin-bottom: 0.4rem;">Cosa genera il Modello IA (Testo Grezzo .md)</h4>
+            <pre class="code-box">## Guida Rapida Java Socket
+Per collegarti al server usa:
+
+```java
+Socket socket = new Socket("localhost", 8080);
+```
+
+- **Porta**: 8080
+- **Protocollo**: TCP</pre>
+          </div>
+          <div>
+            <h4 style="color: var(--accent-green); margin-bottom: 0.4rem;">Cosa visualizza l'Utente (Rendering HTML)</h4>
+            <div class="md-preview">
+              <h2 style="font-size: 1.15rem; color: var(--accent-blue); margin-bottom: 0.4rem;">Guida Rapida Java Socket</h2>
+              <p style="font-size: 0.95rem;">Per collegarti al server usa:</p>
+              <pre style="background: #070b14; color: #38bdf8; padding: 0.5rem; border-radius: 6px; margin: 0.4rem 0;"><code>Socket socket = new Socket("localhost", 8080);</code></pre>
+              <ul class="accessible-list" style="font-size: 0.95rem;">
+                <li><strong>Porta</strong>: 8080</li>
+                <li><strong>Protocollo</strong>: TCP</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- MINI-TEST 2.1 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest3Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 2.1 — Titoli e Blocchi Codice Markdown</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            Uno studente incolla in una chat tecnica questa riga per creare un titolo: <code>#ProgettoJava</code>. Tuttavia, il testo appare piccolo con il cancelletto, senza trasformarsi in titolo. Perché?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt3" value="optA" />
+              <span><strong>A)</strong> In Markdown è obbligatorio inserire <strong>uno spazio</strong> dopo il cancelletto (<code># ProgettoJava</code>); senza spazio viene interpretato come testo comune o hashtag.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt3" value="optB" />
+              <span><strong>B)</strong> Bisogna obbligatoriamente usare quattro cancelletti per i progetti Java.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt3" value="optC" />
+              <span><strong>C)</strong> Il titolo deve essere racchiuso tra parentesi graffe <code>{ #ProgettoJava }</code>.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest3" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest3" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- CASO STUDIO 4: DOCUMENTAZIONE GITHUB (README.md) & TABELLE -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📦 Caso Studio 4: Documentazione GitHub (`README.md`)</h3>
+          <span class="badge-tag">VERSION CONTROL & TEAM</span>
+        </div>
+
+        <p>
+          Su <strong>GitHub</strong>, ogni repository mostra in prima pagina il file <code>README.md</code>. A differenza dei documenti proprietari, Markdown è un file di testo leggero che viene controllato riga per riga da <strong>Git</strong> (permettendo di vedere esattamente chi ha cambiato quale parola in ogni commit).
+        </p>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Struttura</th>
+                <th>Sintassi Corretta</th>
+                <th>Errore Tipico (Anomalia da Evitare)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Link Cliccabile</strong></td>
+                <td><code>[Scarica Repository](https://github.com)</code></td>
+                <td>Invertire le parentesi: <code>(https://...)[Scarica]</code> ❌</td>
+              </tr>
+              <tr>
+                <td><strong>Tabella Tecnica</strong></td>
+                <td><code>| Parametro | Tipo |</code><br><code>| --- | --- |</code><br><code>| porta | int |</code></td>
+                <td>Dimenticare la riga con i trattini <code>| --- | --- |</code>: senza di essa la tabella collassa in un unico testo illeggibile! ❌</td>
+              </tr>
+              <tr>
+                <td><strong>Blocco Codice Multilinea</strong></td>
+                <td>```` ```java ````<br><code>Server.start();</code><br>```` ``` ````</td>
+                <td>Dimenticare di chiudere i 3 backtick finali ```` ``` ````: l'intero resto del documento diventa un blocco codice grigio! ❌</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- MINI-TEST 2.2 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest4Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 2.2 — Caccia all'Anomalia nel README</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            Osserva questo frammento di documentazione:
+            <code>Scarica da: (https://github.com/classe5/repo)[Link Repository]</code>. Come deve essere corretto?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt4" value="optA" />
+              <span><strong>A)</strong> <code>[Link Repository](https://github.com/classe5/repo)</code> (prima il testo visibile tra parentesi quadre, poi l'URL tra tonde).</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt4" value="optB" />
+              <span><strong>B)</strong> <code>{Link Repository}&lt;https://github.com/classe5/repo&gt;</code>.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt4" value="optC" />
+              <span><strong>C)</strong> Il formato è già perfetto così.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest4" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest4" class="mini-test-feedback"></div>
+        </div>
+
+        <!-- SANDBOX RAPIDA PARTE 2: EDITOR MARKDOWN CON ANTEPRIMA LIVE -->
+        <div class="case-study-box">
+          <h4 class="case-study-title">🧪 Banco di Prova Live Parte 2: Editor Markdown in Tempo Reale</h4>
+          <p style="font-size: 0.95rem; margin-bottom: 0.6rem;">
+            Scrivi a sinistra e guarda l'anteprima renderizzata a destra (come appare su GitHub):
+          </p>
+          <div class="grid-2">
+            <div>
+              <textarea id="p2SandboxMdInput" class="code-editor" spellcheck="false"># Guida Server 5ª INF
+
+Questo server è scritto in **Java 21**.
+
+## Tabella Endpoint API
+| Rotta | Metodo | Scopo |
+| --- | --- | --- |
+| `/api/stato` | GET | Legge telemetria |
+| `/api/aggiorna` | POST | Invia nuovo JSON |
+
+```java
+System.out.println("Server online!");
+```
+
+👉 [Apri Pagina GitHub](https://github.com)</textarea>
+            </div>
+            <div>
+              <div id="p2SandboxMdPreview" class="md-preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           🏁 FINE PARTE 2 — RIPASSO DENSO PARTE 2 (OBBLIGATORIO E BEN EVIDENTE)
+           =================================================================== -->
+      <div class="end-part-milestone part-2-end" id="fine-parte-2">
+        <div class="milestone-badge">🏁 FINE PARTE 2 (45 MINUTI) — TRAGUARDO RAGGIUNTO</div>
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-indigo);">
+          Riepilogo Competenze Acquisite su Markdown per Umani e IA
+        </h3>
+        <p style="margin-top: 0.4rem; color: var(--text-muted);">
+          Hai padroneggiato il linguaggio universale del testo tecnico: sai strutturare guide chiare, comunicare con i modelli linguistici e riconoscere le anomalie di rendering.
+        </p>
+
+        <!-- CARD RIPASSO DENSO PARTE 2 -->
+        <div class="dense-review-box">
+          <h4 class="dense-review-title">📚 RIPASSO DENSO: I 6 Costrutti Fondamentali di Markdown</h4>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Elemento Visivo</th>
+                  <th>Sintassi Corretta</th>
+                  <th>Regola Pratica per Non Sbagliare</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Titoli (H1, H2, H3)</strong></td>
+                  <td><code># H1</code> • <code>## H2</code> • <code>### H3</code></td>
+                  <td>Spazio obbligatorio tra <code>#</code> e la parola.</td>
+                </tr>
+                <tr>
+                  <td><strong>Grassetto & Corsivo</strong></td>
+                  <td><code>**importante**</code> • <code>*nota*</code></td>
+                  <td>Chiudi sempre gli asterischi prima di andare a capo.</td>
+                </tr>
+                <tr>
+                  <td><strong>Codice Inline vs Blocco</strong></td>
+                  <td>`` `variabile` `` vs ```` ```java ... ``` ````</td>
+                  <td>Un backtick per una parola nel testo; tre backtick per blocchi multilinea.</td>
+                </tr>
+                <tr>
+                  <td><strong>Tabelle Tecniche</strong></td>
+                  <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code></td>
+                  <td>La seconda riga <code>| --- | --- |</code> è indispensabile.</td>
+                </tr>
+                <tr>
+                  <td><strong>Link e Pulsanti</strong></td>
+                  <td><code>[Testo Cliccabile](https://...)</code></td>
+                  <td>Prima le <strong>[quadre col testo]</strong>, poi le <strong>(tonde con l'URL)</strong>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Liste Puntate</strong></td>
+                  <td><code>- Primo</code> • <code>- Secondo</code></td>
+                  <td>Trattino seguito da uno spazio.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+            <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
+            <a href="#parte3" class="btn btn-primary" style="background: var(--accent-indigo); color: #fff;">Passa alla Parte 3: Scelta & XML ➡️</a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =======================================================================
+         PARTE 3: L'ARCHITETTO DEL DATO — SCELTA DEL FORMATO & CONFRONTO CON XML
+         ======================================================================= -->
+    <section id="parte3" class="lesson-part-section">
+
+      <!-- BANNER INTESTAZIONE PARTE 3 -->
+      <div class="part-header-banner part-3">
+        <div class="part-meta">
+          <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">MODULO 3 DI 3</span>
+          <span class="badge-tag" style="background: var(--bg-elevated); color: var(--text-main);">DURATA: 45 MINUTI</span>
+          <span class="badge-tag" style="background: var(--accent-amber); color: #070b14;">FOCUS: SCELTA & CONFRONTO XML</span>
+        </div>
+        <h2 class="part-title">Parte 3: L'Architetto del Dato — Confronto con XML e Scelta del Formato Migliore</h2>
+        <p class="part-desc">
+          Analizzare i trade-off ingegneristici tra JSON, Markdown e XML e completare l'ispezione sui 3 Casi Reali Simulati.
+        </p>
+      </div>
+
+      <!-- SPIEGAZIONE DISCORSIVA DEL MODULO 3 (SCELTA ARCHITETTURALE & XML) -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📖 Guida Teorica Modulo 3: Il Confronto con XML e i Criteri di Scelta Ingegneristica</h3>
+          <span class="badge-tag">TEORIA AD ALTA DENSITÀ</span>
+        </div>
+
+        <p style="margin-bottom: 0.85rem;">
+          Prima dell'affermazione di JSON, lo standard universale per lo scambio di dati in rete era l'<strong>XML</strong> (<em>eXtensible Markup Language</em>). A differenza dell'HTML (che usa tag predefiniti come <code>&lt;p&gt;</code> o <code>&lt;h1&gt;</code> per impaginare una pagina web), XML permette al progettista di <strong>inventare i propri tag</strong> (es. <code>&lt;sensore id="1"&gt;&lt;temperatura&gt;24.5&lt;/temperatura&gt;&lt;/sensore&gt;</code>) per organizzare i dati in una rigorosa <strong>struttura ad albero</strong>.
+        </p>
+
+        <p style="margin-bottom: 0.85rem;">
+          Perché allora nelle API moderne e nell'IoT si preferisce quasi sempre <strong>JSON</strong> rispetto a <strong>XML</strong>? Per due ragioni tecniche misurabili:
+          <strong>1) La verbosità (overhead di rete)</strong>: in XML ogni dato deve essere racchiuso tra un tag di apertura e uno di chiusura completo, raddoppiando spesso il numero di byte trasmessi sulla rete;
+          <strong>2) Il costo di parsing</strong>: per leggere un documento XML in Java occorre caricare l'intero albero di nodi in memoria RAM tramite un parser <strong>DOM</strong> (<em>Document Object Model</em>) o scorrere gli eventi con un parser <strong>SAX</strong>, mentre un oggetto JSON viene mappato direttamente negli attributi di una classe Java con un'unica istruzione.
+        </p>
+
+        <p>
+          Tuttavia, <strong>XML non è affatto scomparso</strong>. Un buon informatico sceglie <strong>XML</strong> quando il contesto richiede <strong>validazione formale rigorosa</strong> tramite schemi <strong>XSD</strong> (<em>XML Schema Definition</em>) o <strong>DTD</strong>, supporto per <em>namespace</em> multipli o attributi sui nodi: è il caso del file <code>pom.xml</code> che gestisce le dipendenze dei progetti Java <strong>Maven</strong>, dei file di layout delle app <strong>Android</strong> e dei protocolli istituzionali o bancari ad alta criticità.
+        </p>
+      </div>
+
+      <!-- CASO STUDIO 5: SMART HOME IoT & MISURAZIONE PESO BYTE -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🌡️ Caso Studio 5: Telemetria Smart Home IoT → Backend Java</h3>
+          <span class="badge-tag">CONFRONTO BYTE & BANDA</span>
+        </div>
+
+        <p>
+          Immagina una centralina con microcontrollore C (es. ESP32) installata nella Gaming Room o in una stazione meteo. Deve inviare la telemetria (temperatura, ventole, allarmi) ogni 5 secondi a un server Java. Quale formato fa consumare meno banda e batteria?
+        </p>
+
+        <!-- Calcolatore Peso Byte Dinamico -->
+        <div style="margin: 1.25rem 0;">
+          <label for="p3SelectDataset"><strong>Seleziona il pacchetto dati da confrontare:</strong></label>
+          <select id="p3SelectDataset" class="input-field" style="max-width: 400px;">
+            <option value="iot">Telemetria Smart Home / Gaming Room</option>
+            <option value="player">Stato Giocatore & Inventario Minecraft</option>
+            <option value="alert">Notifica Push / Allarme Server</option>
+          </select>
+        </div>
+
+        <div class="grid-3">
+          <div>
+            <h4 style="color: var(--accent-green);">1. JSON (`.json`)</h4>
+            <p><small>Peso di Rete: <strong id="p3ByteJson" style="color: var(--accent-green); font-size: 1rem;">0 byte</strong></small></p>
+            <pre id="p3CodeJson" class="code-box"></pre>
+          </div>
+          <div>
+            <h4 style="color: var(--accent-blue);">2. Markdown (`.md`)</h4>
+            <p><small>Peso di Rete: <strong id="p3ByteMd" style="color: var(--accent-blue); font-size: 1rem;">0 byte</strong></small></p>
+            <pre id="p3CodeMd" class="code-box"></pre>
+          </div>
+          <div>
+            <h4 style="color: var(--accent-amber);">3. XML (`.xml`)</h4>
+            <p><small>Peso di Rete: <strong id="p3ByteXml" style="color: var(--accent-amber); font-size: 1rem;">0 byte</strong></small></p>
+            <pre id="p3CodeXml" class="code-box"></pre>
+          </div>
+        </div>
+
+        <div id="p3SavingBanner" class="status-banner status-ok" style="margin-top: 1rem;"></div>
+
+        <!-- MINI-TEST 3.1 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest5Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 3.1 — Scelta Ingegneristica del Formato</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            Se hai 500 sensori IoT che trasmettono dati ogni minuto su connessione cellulare 4G a consumo, perché <strong>JSON</strong> è nettamente superiore a <strong>XML</strong>?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt5" value="optA" />
+              <span><strong>A)</strong> Perché elimina la ridondanza dei tag di chiusura (es. <code>&lt;/temperatura&gt;</code>), risparmiando fino al 40-50% di byte e velocizzando il parsing in Java.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt5" value="optB" />
+              <span><strong>B)</strong> Perché XML non può essere inviato via Wi-Fi ma solo su cavo seriale.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt5" value="optC" />
+              <span><strong>C)</strong> Perché JSON usa il grassetto per cifrare i dati.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest5" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest5" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- CASO STUDIO 6: ARCHITETTURA IBRIDA & QUANDO SERVE ANCORA XML -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🌐 Caso Studio 6: Architettura Ibrida Webhook Discord & Ruolo di XML</h3>
+          <span class="badge-tag">INTEGRAZIONE ENTERPRISE</span>
+        </div>
+
+        <p>
+          Nel mondo reale del software, i formati non sono nemici: <strong>collaborano</strong> o vengono scelti per compiti specifici.
+        </p>
+
+        <div class="grid-2" style="margin-top: 1rem;">
+          <div class="case-study-box" style="margin: 0;">
+            <h4 style="color: var(--accent-blue); margin-bottom: 0.4rem;">Architettura Ibrida (JSON + Markdown)</h4>
+            <p style="font-size: 0.95rem;">
+              Quando un bot invia un webhook a Discord, il pacchetto di trasporto è un oggetto <strong>JSON</strong> per l'API HTTP, ma la proprietà <code>"content"</code> racchiude testo in <strong>Markdown</strong>:
+            </p>
+            <pre class="code-box">{
+  "username": "ServerBot",
+  "content": "## Allarme CPU\nCarico a **88%**!"
+}</pre>
+          </div>
+
+          <div class="case-study-box" style="margin: 0;">
+            <h4 style="color: var(--accent-amber); margin-bottom: 0.4rem;">Quando serve ancora XML nel tuo progetto Java?</h4>
+            <p style="font-size: 0.95rem;">
+              <strong>XML</strong> non è obsoleto: è lo standard insostituibile per:
+            </p>
+            <ul class="accessible-list" style="font-size: 0.92rem; margin-top: 0.4rem;">
+              <li>Gestione delle dipendenze di build Maven in Java (<code>pom.xml</code>).</li>
+              <li>Layout grafici delle interfacce Android (<code>activity_main.xml</code>).</li>
+              <li>Contratti formali rigidi che richiedono validazione con <strong>XML Schema (XSD)</strong> o <strong>DTD</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- MINI-TEST 3.2 INTERATTIVO LUNGO LO SCORRIMENTO -->
+        <div class="mini-test-card" id="miniTest6Card">
+          <div class="mini-test-header">
+            <h4 style="color: var(--accent-amber);">⚡ Mini-Test 3.2 — Analisi Architetturale Finale</h4>
+            <span class="mini-test-badge">CHECKPOINT VERIFICA RAPIDA</span>
+          </div>
+          <p>
+            In quale dei seguenti casi d'uso è tecnicamente giustificato e corretto usare <strong>XML</strong> invece di JSON o Markdown?
+          </p>
+          <div class="mini-test-options">
+            <label class="mini-test-option">
+              <input type="radio" name="mt6" value="optA" />
+              <span><strong>A)</strong> Per inviare messaggi istantanei di chat tra smartphone.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt6" value="optB" />
+              <span><strong>B)</strong> Per configurare le librerie del progetto in <code>pom.xml</code> di Maven o scambiare documenti che esigono validazione formale con schema XSD.</span>
+            </label>
+            <label class="mini-test-option">
+              <input type="radio" name="mt6" value="optC" />
+              <span><strong>C)</strong> Per scrivere il manuale leggibile su GitHub.</span>
+            </label>
+          </div>
+          <button id="btnCheckMiniTest6" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
+          <div id="feedbackMiniTest6" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           COMPITO AUTENTICO: SFIDA FINALE DEI 3 CASI REALI SIMULATI
+           =================================================================== -->
+      <div class="card" id="sfida-finale" style="border: 3px solid var(--accent-amber);">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">🎯 Compito Autentico: Checklist di Ispezione sui 3 Casi Reali Simulati</h3>
+            <p style="margin-top: 0.3rem;">
+              <strong>Zero nozioni a memoria!</strong> Applica la riflessività operativa: <strong>1) Sospendi il giudizio</strong>, <strong>2) Seleziona il formato corretto</strong>, <strong>3) Spunta la checklist</strong> e <strong>4) Ripara l'anomalia live nel codice</strong>.
+            </p>
+          </div>
+          <span id="finalCasesStatusBadge" class="badge-tag" style="background: var(--accent-amber); font-size: 0.9rem;">
+            Progresso Casi: 0 / 3 Superati
+          </span>
+        </div>
+
+        <!-- CASO REALE 1 -->
+        <div class="case-study-box" id="boxCase1">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
+            <h4 style="color: var(--accent-blue);">🔴 CASO REALE 1 — Telemetria Smart Home IoT verso Server Java</h4>
+            <span id="badgeC1" class="badge-tag" style="background: var(--bg-card); color: var(--text-muted);">DA COMPLETARE</span>
+          </div>
+          <p style="font-size: 0.95rem; margin-bottom: 0.8rem;">
+            La centralina gaming invia la telemetria a una classe Java con attributi: <code>String stanza</code>, <code>double tempCelsius</code>, <code>int wattPc</code>, <code>boolean ledAttivi</code>. Il pacchetto intercettato manda in crash il server.
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <label for="c1FormatSelect"><strong>Passo 1: Quale formato deve usare la centralina e perché?</strong></label>
+              <select id="c1FormatSelect" class="input-field">
+                <option value="">-- Seleziona --</option>
+                <option value="json">JSON: leggero sulla rete Wi-Fi e deserializzabile direttamente negli attributi dell'oggetto Java</option>
+                <option value="md">Markdown: perché una tabella è più colorata da inviare al socket</option>
+                <option value="xml">XML con DTD: per raddoppiare il peso dei dati</option>
+              </select>
+
+              <div style="margin-top: 0.8rem;">
+                <strong>Passo 2: Griglia di Ispezione</strong>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c1-check" />
+                  <span>Ho racchiuso la chiave <code>stanza</code> tra doppi apici <code>"stanza"</code>.</span>
+                </label>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c1-check" />
+                  <span>Ho convertito <code>"24.5°C"</code> in un double numerico puro (<code>24.5</code>) e il booleano <code>TRUE</code> in minuscolo (<code>true</code>).</span>
+                </label>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c1-check" />
+                  <span>Ho rimosso la virgola finale prima di <code>}</code>.</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <strong>Passo 3: Ripara il Codice nel Validatore Live</strong>
+              <textarea id="c1CodeEditor" class="code-editor" spellcheck="false">{
+  stanza: "GamingRoom_5A",
+  "tempCelsius": "24.5°C",
+  "wattPc": 450,
+  "ledAttivi": TRUE,
+}</textarea>
+              <button id="btnVerifyC1" class="btn btn-primary" type="button" style="margin-top: 0.6rem;">🔍 Verifica Caso Reale 1</button>
+              <div id="c1Feedback" class="status-banner status-warn" style="margin-top: 0.6rem;">
+                Seleziona il formato, spunta la checklist e correggi le 4 anomalie nel JSON.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CASO REALE 2 -->
+        <div class="case-study-box" id="boxCase2" style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
+            <h4 style="color: var(--accent-indigo);">🔴 CASO REALE 2 — Documentazione Tecnica GitHub & Prompt IA</h4>
+            <span id="badgeC2" class="badge-tag" style="background: var(--bg-card); color: var(--text-muted);">DA COMPLETARE</span>
+          </div>
+          <p style="font-size: 0.95rem; margin-bottom: 0.8rem;">
+            Il team deve pubblicare il <code>README.md</code> per il Bot Java della classe. La bozza copiata dalla chat dell'IA ha titoli senza spazio, un blocco codice aperto e un link invertito.
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <label for="c2FormatSelect"><strong>Passo 1: Quale formato è lo standard universale per questo scopo?</strong></label>
+              <select id="c2FormatSelect" class="input-field">
+                <option value="">-- Seleziona --</option>
+                <option value="md">Markdown (.md): progettato per la lettura umana, renderizzato nativamente da GitHub e tracciabile con Git</option>
+                <option value="json">JSON: perché gli umani preferiscono leggere solo parentesi graffe</option>
+                <option value="xml">XML: per avere tag di apertura e chiusura per ogni frase</option>
+              </select>
+
+              <div style="margin-top: 0.8rem;">
+                <strong>Passo 2: Griglia di Ispezione</strong>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c2-check" />
+                  <span>Ho inserito lo spazio dopo <code>#</code> nel titolo principale.</span>
+                </label>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c2-check" />
+                  <span>Ho chiuso il blocco di codice Java con <code>```</code> e aggiunto la riga <code>| --- | --- |</code> nella tabella.</span>
+                </label>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c2-check" />
+                  <span>Ho corretto il link nel formato <code>[Repository Ufficiale](https://github.com/classe5/bot)</code>.</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <strong>Passo 3: Ripara il Documento Markdown</strong>
+              <textarea id="c2CodeEditor" class="code-editor" spellcheck="false">#Guida Bot Discord 5A
+
+Per avviare il bot in **Java esegui questo codice:
+
+```java
+BotServer.connect("token_scuola");
+
+## Tabella Comandi
+| Comando | Descrizione |
+| !ping | Verifica latenza |
+
+Scarica da: (https://github.com/classe5/bot)[Repository Ufficiale]</textarea>
+              <button id="btnVerifyC2" class="btn btn-primary" type="button" style="margin-top: 0.6rem;">🔍 Verifica Caso Reale 2</button>
+              <div id="c2Feedback" class="status-banner status-warn" style="margin-top: 0.6rem;">
+                Seleziona il formato, spunta la checklist e correggi il testo Markdown.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CASO REALE 3 -->
+        <div class="case-study-box" id="boxCase3" style="margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
+            <h4 style="color: var(--accent-green);">🔴 CASO REALE 3 — Notifica Webhook Discord (Ibrido) & Scelta XML</h4>
+            <span id="badgeC3" class="badge-tag" style="background: var(--bg-card); color: var(--text-muted);">DA COMPLETARE</span>
+          </div>
+          <p style="font-size: 0.95rem; margin-bottom: 0.8rem;">
+            Il server Java gestito con Maven invia una notifica al canale Discord della classe quando il torneo Minecraft sta per iniziare. Analizza come collaborano i formati e ripara il payload prima dell'invio.
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <label for="c3XmlSelect"><strong>Passo 1A: In quale file del progetto Java è standard e corretto usare XML?</strong></label>
+              <select id="c3XmlSelect" class="input-field">
+                <option value="">-- Seleziona --</option>
+                <option value="pom">Nel file pom.xml di Maven per gestire dipendenze e contratti validati con schema XSD</option>
+                <option value="chat">Per formattare i messaggi di testo veloci su WhatsApp</option>
+                <option value="readme">Nel file README del repository</option>
+              </select>
+
+              <label for="c3HybridSelect" style="display: block; margin-top: 0.7rem;"><strong>Passo 1B: Come collaborano JSON e Markdown nel webhook?</strong></label>
+              <select id="c3HybridSelect" class="input-field">
+                <option value="">-- Seleziona --</option>
+                <option value="hybrid">L'involucro esterno per la rete è un oggetto JSON, mentre il messaggio dentro "content" usa Markdown per il testo formattato</option>
+                <option value="only_xml">Discord accetta solo file XML</option>
+              </select>
+
+              <div style="margin-top: 0.8rem;">
+                <strong>Passo 2: Griglia di Ispezione</strong>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c3-check" />
+                  <span>Ho inserito la virgola mancante dopo <code>"TorneoBot_5A"</code> e corretto <code>"tts": false</code> in minuscolo.</span>
+                </label>
+                <label class="checklist-step">
+                  <input type="checkbox" class="c3-check" />
+                  <span>Nel testo di <code>"content"</code> ho chiuso il grassetto su <code>**Torneo Minecraft**</code>.</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <strong>Passo 3: Ripara il Payload Ibrido Webhook</strong>
+              <textarea id="c3CodeEditor" class="code-editor" spellcheck="false">{
+  "username": "TorneoBot_5A"
+  "tts": FALSE,
+  "content": "## Avviso Torneo\nIl server **Torneo Minecraft inizia alle `16:00`!"
+}</textarea>
+              <button id="btnVerifyC3" class="btn btn-primary" type="button" style="margin-top: 0.6rem;">🔍 Verifica Caso Reale 3</button>
+              <div id="c3Feedback" class="status-banner status-warn" style="margin-top: 0.6rem;">
+                Rispondi alle domande di scelta, spunta la checklist e ripara il webhook.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================================================================
+           🏁 FINE PARTE 3 — RIPASSO DENSO FINALE (OBBLIGATORIO E BEN EVIDENTE)
+           =================================================================== -->
+      <div class="end-part-milestone part-3-end" id="fine-parte-3">
+        <div class="milestone-badge">🏁 FINE PARTE 3 (135 MINUTI TOTALI) — PERCORSO COMPLETATO!</div>
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-green);">
+          Traguardo Raggiunto: Architettura dei Dati e Competenze Tecniche TPSIT
+        </h3>
+        <p style="margin-top: 0.4rem; color: var(--text-muted);">
+          Hai completato con successo l'intero percorso didattico di 135 minuti sui linguaggi di interscambio e markup.
+        </p>
+
+        <!-- CARD RIPASSO DENSO PARTE 3 -->
+        <div class="dense-review-box">
+          <h4 class="dense-review-title">📚 RIPASSO DENSO FINALE: La Matrice di Scelta Architetturale</h4>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Criterio Ingegneristico</th>
+                  <th>Quando scegliere <strong>JSON</strong></th>
+                  <th>Quando scegliere <strong>Markdown</strong></th>
+                  <th>Quando scegliere <strong>XML</strong></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Destinatario Primario</strong></td>
+                  <td><strong>Macchina ↔ Macchina</strong> (App Mobile, API REST, Server Java, Microcontrollori C).</td>
+                  <td><strong>Umano ↔ Umano / Modelli IA</strong> (Documentazione GitHub, chat, prompt).</td>
+                  <td><strong>Sistemi Enterprise / Config</strong> (Maven <code>pom.xml</code>, layout Android UI, contratti formali).</td>
+                </tr>
+                <tr>
+                  <td><strong>Consumo di Banda (Byte)</strong></td>
+                  <td><strong>Minimo</strong> (fino al 50% più compatto di XML; ideale per IoT e 4G).</td>
+                  <td><strong>Puro Testo</strong> (zero overhead grafico di markup).</td>
+                  <td><strong>Elevato</strong> (tag di chiusura ripetuti; maggiore consumo di rete).</td>
+                </tr>
+                <tr>
+                  <td><strong>Parsing & Integrazione Java</strong></td>
+                  <td>Nativo in JS, rapido in Java (<code>Gson</code>/<code>Jackson</code>) in oggetti tipizzati.</td>
+                  <td>Non pensato per estrarre variabili strutturate in memoria.</td>
+                  <td>Parser pesanti (<strong>DOM</strong> carica l'albero in RAM, <strong>SAX</strong> a eventi); validazione <strong>XSD</strong>.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1.25rem;">
+            <p><strong>Competenze acquisite</strong>: Sei in grado di sospendere il giudizio prima di cliccare o inviare dati, identificare chi comunica con chi, scegliere il formato migliore e riparare le anomalie sintattiche in autonomia.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           CONSEGNA SU GOOGLE WORKSPACE (@SCUOLA.EDU.IT)
+           =================================================================== -->
+      <div class="card" id="consegna" style="border: 2px solid var(--accent-green); margin-top: 2rem;">
+        <div class="card-header">
+          <h3 class="card-title">☁️ Consegna Risultati & Registrazione Criterio di Successo (≥ 90%)</h3>
+        </div>
+        <p style="margin-bottom: 1rem;">
+          Inserisci la tua email istituzionale e i componenti della coppia. Al clic, i tuoi risultati (mini-test superati, casi reali completati, tempo impiegato) verranno inviati direttamente al foglio Google Workspace del docente:
+        </p>
+
+        <div class="grid-3">
+          <div>
+            <label for="finalStudentEmail"><strong>Email Dominio Scuola (@scuola.edu.it)</strong></label>
+            <input id="finalStudentEmail" type="email" class="input-field" placeholder="nome.cognome@scuola.edu.it" />
+          </div>
+          <div>
+            <label for="finalStudentNames"><strong>Nomi Coppia / Studente</strong></label>
+            <input id="finalStudentNames" type="text" class="input-field" placeholder="Es. Rossi Marco - Bianchi Luca (5A INF)" />
+          </div>
+          <div>
+            <label for="finalTeacherWebhookUrl"><strong>URL Web App Apps Script Docente</strong></label>
+            <input id="finalTeacherWebhookUrl" type="url" class="input-field" placeholder="Pre-compilabile via ?webhook=... o incolla qui" />
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.25rem;">
+          <button id="btnSubmitFinalWorkspace" class="btn btn-success" type="button">
+            🚀 Invia Risultati a Google Workspace (@scuola.edu.it)
+          </button>
+          <button id="btnDownloadJsonReport" class="btn btn-primary" type="button">
+            💾 Scarica Report Ispezione (.json)
+          </button>
+        </div>
+
+        <div id="finalSubmitStatusBanner" class="status-banner status-ok" style="display: none; margin-top: 1rem;"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

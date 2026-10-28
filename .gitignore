@@ -1,0 +1,8 @@
+# Escludi tutti i file PDF (es. libro di testo)
+*.pdf
+*.PDF
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini
