@@ -2,6 +2,8 @@
 
 Percorso didattico interattivo di **135 minuti** (3 lezioni da 45 minuti) per le classi quinte degli Istituti Tecnici Industriali (Indirizzo Informatica e Telecomunicazioni - TPSIT).
 
+🚀 **Web App Interattiva Live (GitHub Pages)**: [https://amarte81.github.io/tpsit-5-json-markdown-xml/](https://amarte81.github.io/tpsit-5-json-markdown-xml/)
+
 ## 📦 Contenuto del Repository
 
 * **[`index.html`](./index.html)** — **Web App Interattiva (Single Page)** progettata per PC (16:9) e Smartphone (9:16), con modalità Alta Leggibilità (DSA/PDP), spiegazioni teoriche discorsive, 6 casi studio reali, 6 mini-test interattivi lungo lo scorrimento, sandbox live (JSON $\leftrightarrow$ Classe Java e Markdown Live), 3 sezioni di Ripasso Denso e Sfida Finale sui 3 Casi Reali Simulati.

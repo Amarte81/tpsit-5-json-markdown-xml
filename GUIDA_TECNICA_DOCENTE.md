@@ -36,8 +36,11 @@
 Hai a disposizione **2 modalità** (utilizzabili anche contemporaneamente):
 
 ### Modalità A — Online tramite GitHub Pages (Consigliata per Smartphone BYOD e Lab)
-La Web App è pubblicata su **GitHub Pages**:
-1. Condividi il link pubblico di GitHub Pages su **Google Classroom** (oppure genera un codice QR alla LIM).
+La Web App è pubblicata e attiva su **GitHub Pages**:
+* 🔗 **Link Diretto Web App (GitHub Pages)**: https://amarte81.github.io/tpsit-5-json-markdown-xml/
+* 📦 **Repository Pubblico GitHub**: https://github.com/Amarte81/tpsit-5-json-markdown-xml
+
+1. Condividi il link di GitHub Pages su **Google Classroom** (oppure genera un codice QR alla LIM).
 2. Gli studenti aprono il link dal proprio smartphone o PC: la pagina è completamente autonoma (*client-side*) e non può mai andare in sovraccarico anche se tutti i 24 studenti cliccano contemporaneamente.
 
 ### Modalità B — Offline / Locale (Senza connessione Internet)
@@ -77,7 +80,7 @@ Se desideri che il pulsante **"🚀 Invia Risultati a Google Workspace"** salvi 
 ### Passo 4 — Collega l'URL alla Web App degli Studenti (3 Modi)
 Puoi passare l'URL appena copiato agli studenti in tre modi (dal più comodo al più manuale):
 * **Metodo 1 (Automatico tramite Link su Classroom - Consigliato)**: Aggiungi `?webhook=TUO_URL` alla fine del link di GitHub Pages quando lo pubblichi su Classroom. Esempio:
-  `https://amarte81.github.io/NOME-REPO/?webhook=https://script.google.com/macros/s/AKfycb.../exec`
+  `https://amarte81.github.io/tpsit-5-json-markdown-xml/?webhook=https://script.google.com/macros/s/AKfycb.../exec`
   *Aprendo quel link, gli studenti troveranno il campo URL già pre-compilato!*
 * **Metodo 2 (Fisso nel codice)**: Apri il file `app.js` alla riga 9 e incolla l'URL dentro la costante `const DEFAULT_TEACHER_WEBHOOK_URL = 'https://script.google.com/.../exec';`, poi salva e fai push su GitHub.
 * **Metodo 3 (Manuale)**: Gli studenti incollano l'URL direttamente nella casella *"URL Web App Apps Script Docente"* in fondo alla pagina prima di cliccare su Invia.
