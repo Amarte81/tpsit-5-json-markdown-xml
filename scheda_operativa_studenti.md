@@ -40,7 +40,7 @@ JSON rappresenta qualsiasi struttura dati combinando solo **due elementi**:
 | **Array / Lista** (`String[] items`) | `["spada", "scudo"]` | Tra quadre `[ ]`, separati da virgole. **Nessuna virgola finale** prima di `]`. |
 
 ### I 4 Errori JSON più Frequenti (Caccia all'Anomalia):
-1. **Chiavi senza doppi apici**: `{ utente: "Marco" }` ❌ $\rightarrow$ `{"utente": "Marco"}` ✅.
+1. **Chiavi senza doppi apici**: `{ utente: "Marco" }` ❌ → `{"utente": "Marco"}` ✅.
 2. **Trailing comma (virgola finale)**: `{"a": 1, "b": 2,}` ❌ (la virgola prima di `}` o `]` blocca il parser).
 3. **Tipo incompatibile con Java**: `"temperatura": "24.5°C"` (stringa) quando il server Java attende un `double` numerico (`24.5`).
 4. **Booleano maiuscolo**: `TRUE` o `FALSE` non sono ammessi dallo standard JSON.
@@ -110,7 +110,7 @@ Tuttavia **XML resta fondamentale** quando servono **attributi sui tag**, *names
 
 | Criterio Ingegneristico | Scegli **JSON** (`.json`) | Scegli **Markdown** (`.md`) | Scegli **XML** (`.xml`) |
 | :--- | :--- | :--- | :--- |
-| **Destinatario del File** | **Macchina $\leftrightarrow$ Macchina** (API REST, App Mobile, Server Java, Microcontrollori C). | **Umano $\leftrightarrow$ Umano / Modello IA** (Guide GitHub, chat, prompt). | **Sistemi Enterprise** che richiedono contratti formali e validazione con schema **XSD/DTD**. |
+| **Destinatario del File** | **Macchina ↔ Macchina** (API REST, App Mobile, Server Java, Microcontrollori C). | **Umano ↔ Umano / Modello IA** (Guide GitHub, chat, prompt). | **Sistemi Enterprise** che richiedono contratti formali e validazione con schema **XSD/DTD**. |
 | **Consumo di Rete (Byte)** | **Minimo** (elimina i tag di chiusura; risparmia dal 40% al 50% di banda rispetto a XML). | **Puro Testo** (non adatto per parsing automatico di variabili in memoria). | **Alto** (la ripetizione di `<tag>...</tag>` raddoppia i byte trasmessi). |
 | **Parsing in Java** | Immediato e leggero tramite librerie `Gson` / `Jackson`. | Non supporta la mappatura diretta in variabili e oggetti Java. | Parser **DOM** (albero in RAM) o **SAX** (a eventi) con validazione **XSD**. |
 | **Esempio Reale** | Payload JSON delle API web e salvataggio inventario di gioco. | File `README.md` di un progetto su GitHub o risposte di un'IA. | File `pom.xml` per le dipendenze Maven o layout interfaccia Android. |
@@ -132,6 +132,6 @@ String temp = doc.getElementsByTagName("temp").item(0).getTextContent();
 ## 🎯 CHECKLIST DI ISPEZIONE SUI 3 CASI REALI (SFIDA FINALE)
 
 Usa questa checklist prima di confermare l'invio nella Web App:
-* [ ] **Caso Reale 1 (Smart Home IoT $\rightarrow$ Server Java)**: Ho selezionato **JSON**, messo i doppi apici sulla chiave `"stanza"`, convertito la temperatura in `double` numerico (`24.5`), scritto il booleano `true` in minuscolo e rimosso la virgola finale.
+* [ ] **Caso Reale 1 (Smart Home IoT → Server Java)**: Ho selezionato **JSON**, messo i doppi apici sulla chiave `"stanza"`, convertito la temperatura in `double` numerico (`24.5`), scritto il booleano `true` in minuscolo e rimosso la virgola finale.
 * [ ] **Caso Reale 2 (Guida GitHub & Prompt IA)**: Ho selezionato **Markdown**, inserito lo spazio dopo `#`, chiuso il grassetto `**Java**` e il blocco codice con ```` ``` ````, aggiunto la riga `| --- | --- |` nella tabella e corretto il link in `[Repository Ufficiale](https://github.com/classe5/bot)`.
 * [ ] **Caso Reale 3 (Webhook Discord Ibrido & Scelta XML)**: Ho indicato che **XML** si usa per `pom.xml` di Maven/XSD, che il webhook usa un **involucro JSON con testo Markdown**, e ho riparato la virgola, il booleano `false` e il grassetto `**Torneo Minecraft**`.

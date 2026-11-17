@@ -54,9 +54,9 @@ LEZIONE 3 (45 min) — L'Architetto del Dato: Confronto con XML e Scelta del Lin
 
 #### Blocco 1.2 — Pillola Frontale ad Alta Densità: Da Oggetto Java a JSON (12 minuti | `00:08 - 00:20`)
 * **Regola**: Massimo 12 minuti, zero digressioni storiche, uso diretto della tabella di mapping **Java ↔ JSON** (in linea con il manuale *Camagni-Nikolassy Vol. 3*):
-  * **Oggetto Java (`class Player`)** $\rightarrow$ **Oggetto JSON `{ ... }`**
-  * **Attributo (`private String nick;`)** $\rightarrow$ **Coppia `"chiave": valore`** (NB: le chiavi in JSON hanno **sempre** i doppi apici `" "`!).
-  * **Array/ArrayList (`String[] items`)** $\rightarrow$ **Array JSON `[ ... ]`**
+  * **Oggetto Java (`class Player`)** → **Oggetto JSON `{ ... }`**
+  * **Attributo (`private String nick;`)** → **Coppia `"chiave": valore`** (NB: le chiavi in JSON hanno **sempre** i doppi apici `" "`!).
+  * **Array/ArrayList (`String[] items`)** → **Array JSON `[ ... ]`**
   * **I 5 errori classici da ispezionare prima di "cliccare/eseguire"**:
     1. Chiavi senza doppi apici o con apici singoli `'chiave'`.
     2. **Trailing comma** (virgola finale dopo l'ultimo elemento prima di `}` o `]`).
@@ -101,8 +101,8 @@ LEZIONE 3 (45 min) — L'Architetto del Dato: Confronto con XML e Scelta del Lin
   * **Link e Immagini**: `[Testo visibile](https://url...)` vs `![Alt immagine](url)`.
   * **Tabelle tecniche**: pipe `|` e riga separatrice `| :--- | :--- |`.
 * **Regola d'oro architetturale**:
-  * **JSON** = *Macchina $\leftrightarrow$ Macchina* (dati strutturati chiave-valore per il codice).
-  * **Markdown** = *Umano/IA $\leftrightarrow$ Umano* (testo formattato, leggero, versionabile su Git).
+  * **JSON** = *Macchina ↔ Macchina* (dati strutturati chiave-valore per il codice).
+  * **Markdown** = *Umano/IA ↔ Umano* (testo formattato, leggero, versionabile su Git).
 
 #### Blocco 2.3 — Attività Interattiva a Coppie: "Ripara il README e il Webhook Discord" (18 minuti | `00:20 - 00:38`)
 * **Modalità**: Sulla Web App interattiva (Live Editor Markdown con anteprima in tempo reale).
@@ -130,7 +130,7 @@ LEZIONE 3 (45 min) — L'Architetto del Dato: Confronto con XML e Scelta del Lin
 
 | Criterio Tecnico | **JSON** (`.json`) | **Markdown** (`.md`) | **XML** (`.xml`) |
 | :--- | :--- | :--- | :--- |
-| **Scopo Primario** | Scambio dati **App $\leftrightarrow$ Server** (API REST, config leggere, stato). | **Documentazione umana**, README, chat, prompt/output IA. | Documenti complessi, **validazione rigorosa (XSD)**, config enterprise (`pom.xml`, Android UI). |
+| **Scopo Primario** | Scambio dati **App ↔ Server** (API REST, config leggere, stato). | **Documentazione umana**, README, chat, prompt/output IA. | Documenti complessi, **validazione rigorosa (XSD)**, config enterprise (`pom.xml`, Android UI). |
 | **Verbosity (Peso Byte)** | **Basso** (leggero e veloce da parsare). | **Minimo** (puro testo con simboli leggeri). | **Alto** (tag di apertura e chiusura ripetuti `<tag>...</tag>`). |
 | **Parsing in Java / JS** | Nativi in JS (`JSON.parse`); rapidi in Java (`Gson`/`Jackson`). | Non pensato per estrarre campi dati in variabili Java. | Parser **DOM** (albero in RAM) o **SAX** (a eventi), validazione **DTD/XSD**. |
 | **Quando sceglierlo** | **90% delle Web API moderne**, mobile, IoT, giochi, microservizi. | Qualsiasi testo che debba essere **letto da persone** o generato da LLM. | Quando servono **attributi sui tag**, namespace multipli o contratti formali rigidi. |
@@ -138,7 +138,7 @@ LEZIONE 3 (45 min) — L'Architetto del Dato: Confronto con XML e Scelta del Lin
 #### Blocco 3.3 — Compito Autentico Finale: "La Checklist dei 3 Casi Reali Simulati" (18 minuti | `00:20 - 00:38`)
 * **Nessun quiz a crocette mnemonico!** Gli studenti lavorano sulla sezione **"Sfida Finale: I 3 Casi Reali"** della Web App.
 * Per ciascuno dei **3 Casi Reali Simulati**, ogni studente/coppia deve completare i **4 step della Checklist di Ispezione**:
-  1. **CASO REALE 1 (Smart Home / IoT $\rightarrow$ Server Java)**:
+  1. **CASO REALE 1 (Smart Home / IoT → Server Java)**:
      * *Anomalia da decodificare*: Un collega ha configurato il microcontrollore C/ESP32 per inviare la telemetria al backend Java usando una tabella Markdown invece di un oggetto JSON, e nel tentativo di convertirlo in JSON ha introdotto 3 errori sintattici (chiave senza virgolette, valore booleano `TRUE` maiuscolo, virgola finale).
      * *Azione richiesta*: Selezionare il linguaggio corretto (**JSON**), motivare il perché tecnico (parsing automatico in oggetto Java + basso consumo di banda), individuare e correggere l'anomalia nell'editor.
   2. **CASO REALE 2 (Documentazione API GitHub & Output IA per il Team)**:

@@ -10,7 +10,7 @@
 | `index.html`, `styles.css`, `app.js` | **Web App Interattiva (Single Page)** per gli studenti e per la proiezione su LIM. Funziona su PC (16:9) e Smartphone (9:16) senza installazioni. |
 | `scheda_operativa_studenti.md` | **Scheda Operativa Studenti** ad alta densità informativa e conforme PDP/DSA (stampabile o distribuibile su Classroom). |
 | `piano_lezioni_docente.md` | **Piano Didattico delle 3 Lezioni da 45 minuti** (135 min totali), descrittori ministeriali TPSIT V anno, DigComp 2.2 e griglia di valutazione. |
-| `google_workspace_script.gs` | **Script Google Apps Script** per raccogliere automaticamente le consegne su Google Sheets d'istituto e calcolare in tempo reale il KPI $\ge 90\%$. |
+| `google_workspace_script.gs` | **Script Google Apps Script** per raccogliere automaticamente le consegne su Google Sheets d'istituto e calcolare in tempo reale il KPI >= 90%. |
 | `GUIDA_TECNICA_DOCENTE.md` | Questo manuale tecnico di istruzioni, requisiti, setup e **soluzioni complete** degli esercizi. |
 
 ---
@@ -57,11 +57,11 @@ Se desideri che il pulsante **"🚀 Invia Risultati a Google Workspace"** salvi 
 
 ### Passo 1 — Crea il Foglio Google e Incolla lo Script
 1. Accedi a [Google Sheets](https://sheets.google.com) con il tuo account docente `@scuola.edu.it` e crea un **Foglio di lavoro vuoto** (chiamalo ad es. `TPSIT 5A - Risultati JSON e MD`).
-2. Dal menu in alto, clicca su **Estensioni** $\rightarrow$ **Apps Script**.
+2. Dal menu in alto, clicca su **Estensioni** → **Apps Script**.
 3. Cancella il codice predefinito `function myFunction() {}` e incolla l'intero contenuto del file `google_workspace_script.gs`.
 4. Clicca sull'icona del dischetto **Salva progetto** (in alto).
 
-### Passo 2 — Inizializza la Tabella e il Cruscotto KPI ($\ge 90\%$)
+### Passo 2 — Inizializza la Tabella e il Cruscotto KPI (>= 90%)
 1. Nella barra degli strumenti di Apps Script, assicurati che nel menu a tendina delle funzioni sia selezionata **`setupDashboardClasse`** e clicca su **Esegui**.
 2. Alla prima esecuzione, Google chiederà di **Autorizzare gli accessi** per il tuo foglio: clicca su *Rivedi autorizzazioni*, seleziona il tuo account e conferma.
 3. Torna sul tuo Foglio Google: vedrai che lo script ha creato automaticamente due schede formattate:
@@ -69,7 +69,7 @@ Se desideri che il pulsante **"🚀 Invia Risultati a Google Workspace"** salvi 
    * **`KPI_Didattico_90`**: il cruscotto che calcola automaticamente la percentuale della classe che ha completato i 3 casi su 3 e mostra la scritta **"🎯 OBIETTIVO RAGGIUNTO (>= 90%)"**.
 
 ### Passo 3 — Pubblica come Applicazione Web e Ottieni l'URL
-1. In Apps Script, clicca sul pulsante blu in alto a destra **Implementa** $\rightarrow$ **Nuova implementazione**.
+1. In Apps Script, clicca sul pulsante blu in alto a destra **Implementa** → **Nuova implementazione**.
 2. Clicca sull'icona dell'ingranaggio accanto a *Seleziona tipo* e scegli **Applicazione web**.
 3. Imposta i parametri:
    * **Descrizione**: `Raccolta Risultati TPSIT 5A`
