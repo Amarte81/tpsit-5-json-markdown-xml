@@ -490,6 +490,150 @@ public class MainJsonJava {
         </p>
       </div>
 
+      <!-- REGOLE FONDAMENTALI PER I FILE MARKDOWN (.md) -->
+      <div class="card" style="border-left: 6px solid var(--accent-indigo);">
+        <div class="card-header">
+          <h3 class="card-title">📐 Regole Fondamentali per Scrivere File Markdown (<code>.md</code>)</h3>
+          <span class="badge-tag">REGOLE E SINTASSI .MD</span>
+        </div>
+
+        <p style="margin-bottom: 0.9rem;">
+          Prima di analizzare i casi reali, ecco le <strong>regole sintattiche essenziali</strong> di un file <code>.md</code>. Un documento Markdown è un file di <strong>testo puro (UTF-8)</strong>: rispettare spazi, simboli e righe vuote garantisce che ogni parser (<strong>GitHub</strong>, <strong>Discord</strong>, IDE e <strong>Intelligenze Artificiali</strong>) lo traduca in HTML senza errori di impaginazione.
+        </p>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Sintassi Corretta</th>
+                <th>Regola Obbligatoria</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Titoli (H1–H6)</strong></td>
+                <td><code># Titolo H1</code><br><code>## Titolo H2</code><br><code>### Titolo H3</code></td>
+                <td>Usa da 1 a 6 simboli <code>#</code> a inizio riga seguiti <strong>obbligatoriamente da uno spazio</strong> (senza spazio, <code>#Titolo</code> resta testo normale).</td>
+              </tr>
+              <tr>
+                <td><strong>Paragrafi e A Capo</strong></td>
+                <td>Lascia <strong>una riga vuota</strong> tra due paragrafi</td>
+                <td>Un solo Invio può essere unito sulla stessa riga dal parser; separa sempre paragrafi, titoli, liste e blocchi con una <strong>riga completamente vuota</strong>.</td>
+              </tr>
+              <tr>
+                <td><strong>Enfasi nel Testo</strong></td>
+                <td><code>**grassetto**</code> • <code>*corsivo*</code> • <code>~~barrato~~</code></td>
+                <td>Nessuno spazio tra i delimitatori e la parola; <strong>chiudi sempre</strong> gli asterischi prima di andare a capo.</td>
+              </tr>
+              <tr>
+                <td><strong>Codice Inline</strong></td>
+                <td><code>`int porta = 8080;`</code></td>
+                <td>Racchiudi comandi, variabili o nomi file tra <strong>singoli backtick</strong> (accento grave).</td>
+              </tr>
+              <tr>
+                <td><strong>Blocco Codice Multilinea</strong></td>
+                <td><code>```java</code><br><code>System.out.println("OK");</code><br><code>```</code></td>
+                <td>Apri con <strong>tre backtick</strong> (più il nome del linguaggio per l'evidenziazione) e <strong>chiudi sempre</strong> con tre backtick su una riga dedicata.</td>
+              </tr>
+              <tr>
+                <td><strong>Liste Puntate e Numerate</strong></td>
+                <td><code>- Primo punto</code><br><code>1. Passo uno</code></td>
+                <td>Inserisci <strong>uno spazio</strong> dopo <code>-</code> (o <code>*</code>) e dopo <code>1.</code>. Per creare una <strong>sottolista</strong>, indenta la riga con 2 o 4 spazi.</td>
+              </tr>
+              <tr>
+                <td><strong>Link e Immagini</strong></td>
+                <td><code>[Testo](https://...)</code><br><code>![Alt](immagine.png)</code></td>
+                <td>Scrivi prima le <strong>quadre <code>[ ]</code></strong> col testo visibile, poi le <strong>tonde <code>( )</code></strong> con l'URL senza spazi in mezzo. Per le immagini anteponi <code>!</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Tabelle Tecniche</strong></td>
+                <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code><br><code>| val1 | val2 |</code></td>
+                <td>Separa le celle con il pipe <code>|</code>. La <strong>seconda riga con i trattini</strong> (<code>| --- | --- |</code>) è obbligatoria per attivare la tabella (<code>:---</code>, <code>:---:</code>, <code>---:</code> per l'allineamento).</td>
+              </tr>
+              <tr>
+                <td><strong>Citazioni e Divisori</strong></td>
+                <td><code>&gt; Nota tecnica</code><br><code>---</code></td>
+                <td>Il simbolo <code>&gt;</code> seguito da spazio crea un blocco citazione; tre trattini <code>---</code> su una riga isolata disegnano una linea orizzontale.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="case-study-box" style="margin-top: 1rem; margin-bottom: 0;">
+          <h4 class="case-study-title" style="color: var(--accent-indigo);">✅ 4 Regole d'Oro per File <code>.md</code> Senza Errori</h4>
+          <ul class="accessible-list" style="font-size: 0.95rem;">
+            <li><strong>Estensione e naming</strong>: salva sempre con estensione <code>.md</code> in codifica <strong>UTF-8</strong>, evitando spazi nei nomi dei file (es. <code>README.md</code>, <code>guida_api.md</code>).</li>
+            <li><strong>Spazio dopo i prefissi</strong>: titoli (<code># </code>), liste (<code>- </code>, <code>1. </code>) e citazioni (<code>&gt; </code>) richiedono sempre uno spazio dopo il simbolo.</li>
+            <li><strong>Delimitatori sempre bilanciati</strong>: ogni <code>**</code>, <code>`</code> o <code>```</code> aperto va sempre richiuso, altrimenti la formattazione corrompe il resto della pagina.</li>
+            <li><strong>Caratteri speciali (Escape)</strong>: se devi mostrare un simbolo Markdown letterale (come <code>*</code> o <code>#</code>) senza attivare la formattazione, anteponi una barra inversa <code>\</code> (es. <code>\*testo\*</code>).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIEPILOGO MARKDOWN PER UMANI E IA (SPOSTATO PRIMA DEL CASO STUDIO 3) -->
+      <div class="card" style="border: 2px solid var(--accent-indigo);">
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-indigo);">
+          Riepilogo Markdown per Umani e IA
+        </h3>
+        <p style="margin-top: 0.4rem; color: var(--text-muted);">
+          Il linguaggio universale del testo tecnico: strutturare guide chiare, comunicare con i modelli linguistici e riconoscere le anomalie di rendering.
+        </p>
+
+        <!-- CARD RIPASSO DENSO PARTE 2 -->
+        <div class="dense-review-box">
+          <h4 class="dense-review-title">📚 RIPASSO DENSO: I 6 Costrutti Fondamentali di Markdown</h4>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Elemento Visivo</th>
+                  <th>Sintassi Corretta</th>
+                  <th>Regola Pratica per Non Sbagliare</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Titoli (H1, H2, H3)</strong></td>
+                  <td><code># H1</code> • <code>## H2</code> • <code>### H3</code></td>
+                  <td>Spazio obbligatorio tra <code>#</code> e la parola.</td>
+                </tr>
+                <tr>
+                  <td><strong>Grassetto & Corsivo</strong></td>
+                  <td><code>**importante**</code> • <code>*nota*</code></td>
+                  <td>Chiudi sempre gli asterischi prima di andare a capo.</td>
+                </tr>
+                <tr>
+                  <td><strong>Codice Inline vs Blocco</strong></td>
+                  <td>`` `variabile` `` vs ```` ```java ... ``` ````</td>
+                  <td>Un backtick per una parola nel testo; tre backtick per blocchi multilinea.</td>
+                </tr>
+                <tr>
+                  <td><strong>Tabelle Tecniche</strong></td>
+                  <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code></td>
+                  <td>La seconda riga <code>| --- | --- |</code> è indispensabile.</td>
+                </tr>
+                <tr>
+                  <td><strong>Link e Pulsanti</strong></td>
+                  <td><code>[Testo Cliccabile](https://...)</code></td>
+                  <td>Prima le <strong>[quadre col testo]</strong>, poi le <strong>(tonde con l'URL)</strong>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Liste Puntate</strong></td>
+                  <td><code>- Primo</code> • <code>- Secondo</code></td>
+                  <td>Trattino seguito da uno spazio.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
+          </div>
+        </div>
+      </div>
+
       <!-- CASO STUDIO 3: PROMPT & OUTPUT INTELLIGENZA ARTIFICIALE -->
       <div class="card">
         <div class="card-header">
@@ -721,69 +865,13 @@ public class GestoreNotifiche {
       </div>
 
       <!-- ===================================================================
-           🏁 FINE PARTE 2 — RIPASSO DENSO PARTE 2 (OBBLIGATORIO E BEN EVIDENTE)
+           🏁 FINE PARTE 2 — TRAGUARDO RAGGIUNTO
            =================================================================== -->
       <div class="end-part-milestone part-2-end" id="fine-parte-2">
         <div class="milestone-badge">🏁 FINE PARTE 2 (45 MINUTI) — TRAGUARDO RAGGIUNTO</div>
-        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-indigo);">
-          Riepilogo Competenze Acquisite su Markdown per Umani e IA
-        </h3>
-        <p style="margin-top: 0.4rem; color: var(--text-muted);">
-          Hai padroneggiato il linguaggio universale del testo tecnico: sai strutturare guide chiare, comunicare con i modelli linguistici e riconoscere le anomalie di rendering.
-        </p>
-
-        <!-- CARD RIPASSO DENSO PARTE 2 -->
-        <div class="dense-review-box">
-          <h4 class="dense-review-title">📚 RIPASSO DENSO: I 6 Costrutti Fondamentali di Markdown</h4>
-
-          <div class="table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Elemento Visivo</th>
-                  <th>Sintassi Corretta</th>
-                  <th>Regola Pratica per Non Sbagliare</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Titoli (H1, H2, H3)</strong></td>
-                  <td><code># H1</code> • <code>## H2</code> • <code>### H3</code></td>
-                  <td>Spazio obbligatorio tra <code>#</code> e la parola.</td>
-                </tr>
-                <tr>
-                  <td><strong>Grassetto & Corsivo</strong></td>
-                  <td><code>**importante**</code> • <code>*nota*</code></td>
-                  <td>Chiudi sempre gli asterischi prima di andare a capo.</td>
-                </tr>
-                <tr>
-                  <td><strong>Codice Inline vs Blocco</strong></td>
-                  <td>`` `variabile` `` vs ```` ```java ... ``` ````</td>
-                  <td>Un backtick per una parola nel testo; tre backtick per blocchi multilinea.</td>
-                </tr>
-                <tr>
-                  <td><strong>Tabelle Tecniche</strong></td>
-                  <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code></td>
-                  <td>La seconda riga <code>| --- | --- |</code> è indispensabile.</td>
-                </tr>
-                <tr>
-                  <td><strong>Link e Pulsanti</strong></td>
-                  <td><code>[Testo Cliccabile](https://...)</code></td>
-                  <td>Prima le <strong>[quadre col testo]</strong>, poi le <strong>(tonde con l'URL)</strong>.</td>
-                </tr>
-                <tr>
-                  <td><strong>Liste Puntate</strong></td>
-                  <td><code>- Primo</code> • <code>- Secondo</code></td>
-                  <td>Trattino seguito da uno spazio.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
-            <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
-            <a href="#parte3" class="btn btn-primary" style="background: var(--accent-indigo); color: #fff;">Passa alla Parte 3: Scelta & XML ➡️</a>
-          </div>
+        <div style="margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+          <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
+          <a href="#parte3" class="btn btn-primary" style="background: var(--accent-indigo); color: #fff;">Passa alla Parte 3: Scelta & XML ➡️</a>
         </div>
       </div>
 
