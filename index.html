@@ -120,26 +120,64 @@
           <span class="badge-tag">TEORIA AD ALTA DENSITÀ</span>
         </div>
 
-        <p style="margin-bottom: 0.85rem;">
-          <strong>JSON</strong> (acronimo di <em>JavaScript Object Notation</em>) è oggi il formato di interscambio dati più utilizzato al mondo per le <strong>API Web REST</strong>, le applicazioni mobile e i dispositivi IoT. Sebbene il suo nome derivi da JavaScript, JSON è <strong>totalmente indipendente dal linguaggio</strong>: viene generato e letto nativamente in <strong>Java</strong>, <strong>C</strong>, <strong>Python</strong>, <strong>C#</strong> e qualsiasi altro ambiente moderno.
+        <!-- Due colonne: Panoramica & Tipizzazione -->
+        <div class="grid-2" style="margin-bottom: 1.25rem;">
+          <div class="case-study-box" style="margin: 0;">
+            <h4 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.55rem;">🌐 Cos'è JSON e perché domina il Web</h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.65rem;">
+              <strong>JSON</strong> (<em>JavaScript Object Notation</em>) è lo standard più usato al mondo per le <strong>API Web REST</strong>, le app mobile e i dispositivi IoT.
+            </p>
+            <p style="font-size: 0.95rem;">
+              Nonostante il nome, è <strong>totalmente indipendente dal linguaggio</strong>: viene letto e generato nativamente in <strong>Java</strong>, <strong>C</strong>, <strong>Python</strong>, <strong>C#</strong> e JavaScript, mappandosi direttamente sulle strutture dati già usate in programmazione.
+            </p>
+          </div>
+
+          <div class="case-study-box" style="margin: 0;">
+            <h4 style="font-size: 1.05rem; color: var(--accent-amber); margin-bottom: 0.55rem;">🎯 Tipizzazione e Rigore del Parser</h4>
+            <p style="font-size: 0.95rem; margin-bottom: 0.55rem;">
+              A differenza del testo libero, JSON è <strong>tipizzato</strong> e distingue in modo netto:
+            </p>
+            <ul class="accessible-list" style="font-size: 0.93rem; margin-bottom: 0.55rem;">
+              <li><strong>Stringhe</strong>: sempre tra doppi apici (<code>"testo"</code>).</li>
+              <li><strong>Numeri</strong>: senza apici e con punto decimale (<code>42</code>, <code>24.5</code>).</li>
+              <li><strong>Booleani e Null</strong>: rigorosamente minuscoli (<code>true</code>, <code>false</code>, <code>null</code>).</li>
+            </ul>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              ⚠️ Basta violare una sola regola sintattica per impedire al <strong>parser</strong> di ricostruire l'oggetto in memoria.
+            </p>
+          </div>
+        </div>
+
+        <!-- Due punti evidenziati: le 2 strutture fondamentali -->
+        <p style="font-weight: 700; margin-bottom: 0.75rem; font-size: 1rem;">
+          Ogni documento JSON si costruisce combinando solamente <strong style="color: var(--accent-blue);">due strutture fondamentali</strong>:
         </p>
 
-        <p style="margin-bottom: 0.85rem;">
-          Il successo di JSON nasce dalla sua <strong>compattezza</strong> e dalla corrispondenza diretta con le strutture dati che già usi quando programmi in <strong>Java</strong>. Ogni documento JSON si costruisce combinando solamente <strong>due strutture fondamentali</strong>:
-        </p>
+        <div class="grid-2">
+          <div class="case-study-box" style="margin: 0; border-left: 5px solid var(--accent-blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+              <h4 style="font-size: 1.08rem; color: var(--accent-blue); margin: 0;">1. L'Oggetto JSON <code>{ ... }</code></h4>
+              <span class="badge-tag" style="background: var(--accent-blue); color: #070b14;">CLASSE JAVA</span>
+            </div>
+            <ul class="accessible-list" style="font-size: 0.94rem;">
+              <li>Delimitato da <strong>parentesi graffe</strong>, raccoglie coppie <code>"chiave": valore</code> separate da virgola.</li>
+              <li>Corrisponde a un'istanza di una <strong>classe Java</strong> (es. <code>new Studente()</code>).</li>
+              <li>Ogni <strong>chiave</strong> (nome attributo) va racchiusa tra <strong>doppi apici obbligatori</strong>.</li>
+            </ul>
+          </div>
 
-        <ul class="accessible-list" style="margin-bottom: 0.85rem;">
-          <li>
-            <strong>L'Oggetto JSON <code>{ ... }</code></strong>: è delimitato da parentesi graffe e contiene una collezione di coppie <code>"chiave": valore</code> separate da virgola. Corrisponde esattamente a un'istanza di una <strong>classe Java</strong> (es. <code>new Studente()</code>), dove ogni <strong>chiave</strong> (sempre racchiusa tra <strong>doppi apici obbligatori</strong>) rappresenta il nome di un attributo e il <strong>valore</strong> ne rappresenta il contenuto.
-          </li>
-          <li>
-            <strong>L'Array JSON <code>[ ... ]</code></strong>: è delimitato da parentesi quadre e contiene una lista ordinata di valori separati da virgola. Corrisponde a un <strong>array</strong> (<code>String[]</code>) o a una collezione (<code>ArrayList&lt;T&gt;</code>) in Java.
-          </li>
-        </ul>
-
-        <p>
-          A differenza del semplice testo libero, JSON è <strong>tipizzato</strong>: distingue in modo netto le <strong>stringhe</strong> (tra doppi apici <code>"testo"</code>), i <strong>numeri interi o decimali</strong> (scritti senza apici e con il punto decimale, es. <code>42</code> o <code>24.5</code>), i <strong>booleani</strong> (scritti rigorosamente in minuscolo <code>true</code> o <code>false</code>) e il valore nullo (<code>null</code>). Basta violare una sola di queste regole sintattiche per impedire al <strong>parser</strong> del destinatario di ricostruire l'oggetto in memoria.
-        </p>
+          <div class="case-study-box" style="margin: 0; border-left: 5px solid var(--accent-green);">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+              <h4 style="font-size: 1.08rem; color: var(--accent-green); margin: 0;">2. L'Array JSON <code>[ ... ]</code></h4>
+              <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">ARRAY / LIST</span>
+            </div>
+            <ul class="accessible-list" style="font-size: 0.94rem;">
+              <li>Delimitato da <strong>parentesi quadre</strong>, contiene una lista ordinata di valori separati da virgola.</li>
+              <li>Corrisponde a un <strong>array</strong> (<code>String[]</code>) o a una collezione (<code>ArrayList&lt;T&gt;</code>) in Java.</li>
+              <li>Può contenere valori semplici, altri array oppure interi oggetti JSON annidati.</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <!-- CASO STUDIO 1: APP DI MESSAGGISTICA & NOTIFICHE PUSH -->
