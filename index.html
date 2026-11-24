@@ -475,19 +475,36 @@ public class MainJsonJava {
           <span class="badge-tag">TEORIA AD ALTA DENSITÀ</span>
         </div>
 
-        <p style="margin-bottom: 0.85rem;">
-          Se <strong>JSON</strong> è perfetto per far comunicare due programmi, diventa invece scomodo quando dobbiamo scrivere una guida tecnica, un manuale di installazione o una risposta articolata da far leggere a una <strong>persona</strong>. D'altra parte, i formati di videoscrittura tradizionali (come i file <code>.docx</code> di Word) sono file binari complessi che non possono essere confrontati riga per riga nei sistemi di controllo versione come <strong>Git</strong> e richiedono programmi pesanti per essere aperti.
-        </p>
+        <div class="grid-2" style="margin-top: 0.4rem;">
+          <!-- COLONNA 1: DAL PROBLEMA ALLA SOLUZIONE -->
+          <div class="case-study-box" style="margin: 0;">
+            <h4 class="case-study-title" style="color: var(--accent-blue);">🔄 Perché da Word (<code>.docx</code>) a Markdown (<code>.md</code>)</h4>
+            <ul class="accessible-list" style="font-size: 0.96rem; line-height: 1.6;">
+              <li><strong>JSON non basta per gli umani:</strong> perfetto per far comunicare due programmi, ma scomodo per scrivere guide tecniche, manuali di installazione o risposte articolate.</li>
+              <li><strong>Il limite di Word (<code>.docx</code>):</strong> i file binari complessi richiedono programmi pesanti e <strong>non possono essere confrontati riga per riga</strong> nei sistemi di controllo versione come <strong>Git</strong>.</li>
+              <li><strong>La soluzione Markdown (<code>.md</code>):</strong> un <strong>linguaggio di markup leggero</strong> che usa semplici caratteri da tastiera (<code>#</code>, <code>*</code>, <code>-</code>, <code>`</code>) per titoli, grassetti, elenchi, tabelle e blocchi di codice.</li>
+            </ul>
+          </div>
 
-        <p style="margin-bottom: 0.85rem;">
-          Per risolvere questo problema è nato <strong>Markdown</strong> (file con estensione <code>.md</code>): un <strong>linguaggio di markup leggero</strong> che utilizza semplici caratteri di punteggiatura della tastiera (come <code>#</code>, <code>*</code>, <code>-</code>, <code>`</code>) per indicare titoli, grassetti, elenchi, tabelle e blocchi di codice sorgente.
-        </p>
+          <!-- COLONNA 2: I DUE PUNTI DI FORZA DECISIVI -->
+          <div class="case-study-box" style="margin: 0; border-color: var(--accent-indigo);">
+            <h4 class="case-study-title" style="color: var(--accent-indigo);">⚡ I 2 Punti di Forza Decisivi di Markdown</h4>
 
-        <p>
-          La forza di Markdown risiede in due caratteristiche tecniche decisive:
-          <strong>1) Leggibilità immediata</strong>: un file <code>.md</code> è puro testo (<em>plain text</em>) chiarissimo da leggere anche dentro un semplice terminale o blocco note, ma viene automaticamente trasformato in una pagina <strong>HTML</strong> elegante quando viene visualizzato su <strong>GitHub</strong>, nelle chat di <strong>Discord/WhatsApp</strong> o nelle interfacce web;
-          <strong>2) Standard per l'Intelligenza Artificiale</strong>: tutti i moderni <strong>Large Language Models (LLM)</strong> sono addestrati per ricevere istruzioni (prompt) e restituire codice e spiegazioni strutturate esattamente in <strong>Markdown</strong>, poiché consuma pochissimi token rispetto all'HTML o all'XML.
-        </p>
+            <div style="background: rgba(99, 102, 241, 0.1); border-left: 4px solid var(--accent-indigo); padding: 0.75rem 0.9rem; border-radius: 8px; margin-bottom: 0.85rem;">
+              <strong style="color: var(--accent-indigo); display: block; margin-bottom: 0.25rem;">1) Leggibilità immediata</strong>
+              <p style="font-size: 0.94rem; margin: 0; line-height: 1.55;">
+                Un file <code>.md</code> è puro testo (<em>plain text</em>) chiarissimo anche in un terminale o blocco note, ma viene automaticamente trasformato in una pagina <strong>HTML</strong> elegante su <strong>GitHub</strong>, nelle chat di <strong>Discord/WhatsApp</strong> e nelle interfacce web.
+              </p>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent-green); padding: 0.75rem 0.9rem; border-radius: 8px;">
+              <strong style="color: var(--accent-green); display: block; margin-bottom: 0.25rem;">2) Standard per l'Intelligenza Artificiale</strong>
+              <p style="font-size: 0.94rem; margin: 0; line-height: 1.55;">
+                Tutti i moderni <strong>Large Language Models (LLM)</strong> sono addestrati per ricevere istruzioni (prompt) e restituire codice e spiegazioni strutturate esattamente in <strong>Markdown</strong>, consumando pochissimi token rispetto a HTML o XML.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- REGOLE FONDAMENTALI PER I FILE MARKDOWN (.md) -->
