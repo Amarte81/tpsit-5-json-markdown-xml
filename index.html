@@ -571,69 +571,6 @@ public class MainJsonJava {
         </div>
       </div>
 
-      <!-- RIEPILOGO MARKDOWN PER UMANI E IA (SPOSTATO PRIMA DEL CASO STUDIO 3) -->
-      <div class="card" style="border: 2px solid var(--accent-indigo);">
-        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-indigo);">
-          Riepilogo Markdown per Umani e IA
-        </h3>
-        <p style="margin-top: 0.4rem; color: var(--text-muted);">
-          Il linguaggio universale del testo tecnico: strutturare guide chiare, comunicare con i modelli linguistici e riconoscere le anomalie di rendering.
-        </p>
-
-        <!-- CARD RIPASSO DENSO PARTE 2 -->
-        <div class="dense-review-box">
-          <h4 class="dense-review-title">📚 RIPASSO DENSO: I 6 Costrutti Fondamentali di Markdown</h4>
-
-          <div class="table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Elemento Visivo</th>
-                  <th>Sintassi Corretta</th>
-                  <th>Regola Pratica per Non Sbagliare</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Titoli (H1, H2, H3)</strong></td>
-                  <td><code># H1</code> • <code>## H2</code> • <code>### H3</code></td>
-                  <td>Spazio obbligatorio tra <code>#</code> e la parola.</td>
-                </tr>
-                <tr>
-                  <td><strong>Grassetto & Corsivo</strong></td>
-                  <td><code>**importante**</code> • <code>*nota*</code></td>
-                  <td>Chiudi sempre gli asterischi prima di andare a capo.</td>
-                </tr>
-                <tr>
-                  <td><strong>Codice Inline vs Blocco</strong></td>
-                  <td>`` `variabile` `` vs ```` ```java ... ``` ````</td>
-                  <td>Un backtick per una parola nel testo; tre backtick per blocchi multilinea.</td>
-                </tr>
-                <tr>
-                  <td><strong>Tabelle Tecniche</strong></td>
-                  <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code></td>
-                  <td>La seconda riga <code>| --- | --- |</code> è indispensabile.</td>
-                </tr>
-                <tr>
-                  <td><strong>Link e Pulsanti</strong></td>
-                  <td><code>[Testo Cliccabile](https://...)</code></td>
-                  <td>Prima le <strong>[quadre col testo]</strong>, poi le <strong>(tonde con l'URL)</strong>.</td>
-                </tr>
-                <tr>
-                  <td><strong>Liste Puntate</strong></td>
-                  <td><code>- Primo</code> • <code>- Secondo</code></td>
-                  <td>Trattino seguito da uno spazio.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="margin-top: 1rem;">
-            <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
-          </div>
-        </div>
-      </div>
-
       <!-- CASO STUDIO 3: PROMPT & OUTPUT INTELLIGENZA ARTIFICIALE -->
       <div class="card">
         <div class="card-header">
@@ -861,6 +798,69 @@ public class GestoreNotifiche {
           </div>
           <button id="btnCheckMiniTest2Java" class="btn btn-amber" type="button" style="margin-top: 0.8rem;">Verifica Risposta</button>
           <div id="feedbackMiniTest2Java" class="mini-test-feedback"></div>
+        </div>
+      </div>
+
+      <!-- RIEPILOGO MARKDOWN PER UMANI E IA -->
+      <div class="card" style="border: 2px solid var(--accent-indigo);">
+        <h3 style="font-size: 1.45rem; font-weight: 900; color: var(--accent-indigo);">
+          Riepilogo Markdown per Umani e IA
+        </h3>
+        <p style="margin-top: 0.4rem; color: var(--text-muted);">
+          Il linguaggio universale del testo tecnico: strutturare guide chiare, comunicare con i modelli linguistici e riconoscere le anomalie di rendering.
+        </p>
+
+        <!-- CARD RIPASSO DENSO PARTE 2 -->
+        <div class="dense-review-box">
+          <h4 class="dense-review-title">📚 RIPASSO DENSO: I 6 Costrutti Fondamentali di Markdown</h4>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Elemento Visivo</th>
+                  <th>Sintassi Corretta</th>
+                  <th>Regola Pratica per Non Sbagliare</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Titoli (H1, H2, H3)</strong></td>
+                  <td><code># H1</code> • <code>## H2</code> • <code>### H3</code></td>
+                  <td>Spazio obbligatorio tra <code>#</code> e la parola.</td>
+                </tr>
+                <tr>
+                  <td><strong>Grassetto & Corsivo</strong></td>
+                  <td><code>**importante**</code> • <code>*nota*</code></td>
+                  <td>Chiudi sempre gli asterischi prima di andare a capo.</td>
+                </tr>
+                <tr>
+                  <td><strong>Codice Inline vs Blocco</strong></td>
+                  <td>`` `variabile` `` vs ```` ```java ... ``` ````</td>
+                  <td>Un backtick per una parola nel testo; tre backtick per blocchi multilinea.</td>
+                </tr>
+                <tr>
+                  <td><strong>Tabelle Tecniche</strong></td>
+                  <td><code>| Col1 | Col2 |</code><br><code>| --- | --- |</code></td>
+                  <td>La seconda riga <code>| --- | --- |</code> è indispensabile.</td>
+                </tr>
+                <tr>
+                  <td><strong>Link e Pulsanti</strong></td>
+                  <td><code>[Testo Cliccabile](https://...)</code></td>
+                  <td>Prima le <strong>[quadre col testo]</strong>, poi le <strong>(tonde con l'URL)</strong>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Liste Puntate</strong></td>
+                  <td><code>- Primo</code> • <code>- Secondo</code></td>
+                  <td>Trattino seguito da uno spazio.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <span>💡 <strong>Regola d'oro</strong>: <em>JSON</em> = Dati per programmi • <em>Markdown</em> = Testo per persone e IA.</span>
+          </div>
         </div>
       </div>
 
