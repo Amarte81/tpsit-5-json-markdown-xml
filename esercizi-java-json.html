@@ -281,42 +281,104 @@
         <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/tree/main/esercizi-java-json" target="_blank" rel="noopener">📂 Apri cartella su GitHub</a>
       </div>
 
-      <div class="grid-2" style="margin-top: 1rem;">
-        <div class="table-scroll">
-          <h3 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.4rem;">🗺️ Mappa Tipi JSON ↔ Java</h3>
-          <table class="data-table">
-            <thead>
-              <tr><th>JSON</th><th>Esempio</th><th>Java</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Stringa</td><td><code>"Netflix"</code></td><td><code>String</code></td></tr>
-              <tr><td>Intero / Decimale</td><td><code>5</code> / <code>8.5</code></td><td><code>int</code>, <code>long</code> / <code>double</code></td></tr>
-              <tr><td>Booleano</td><td><code>true</code> / <code>false</code></td><td><code>boolean</code></td></tr>
-              <tr><td>Nullo</td><td><code>null</code></td><td><code>null</code> (solo oggetti)</td></tr>
-              <tr><td>Oggetto</td><td><code>{"stagione":4,"episodio":6}</code></td><td>Classe (POJO), <code>Map</code> o <code>JsonObject</code></td></tr>
-              <tr><td>Array</td><td><code>["Horror","Sci-Fi"]</code></td><td><code>List&lt;...&gt;</code> o <code>JsonArray</code></td></tr>
-              <tr><td>Valore fisso</td><td><code>"IN_CORSO"</code></td><td><code>enum</code></td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="table-scroll" style="margin-top: 1rem;">
+        <h3 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.4rem;">🗺️ Mappa Tipi JSON ↔ Java</h3>
+        <table class="data-table">
+          <thead>
+            <tr><th>JSON</th><th>Esempio</th><th>Java</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stringa</td><td><code>"Netflix"</code></td><td><code>String</code></td></tr>
+            <tr><td>Intero / Decimale</td><td><code>5</code> / <code>8.5</code></td><td><code>int</code>, <code>long</code> / <code>double</code></td></tr>
+            <tr><td>Booleano</td><td><code>true</code> / <code>false</code></td><td><code>boolean</code></td></tr>
+            <tr><td>Nullo</td><td><code>null</code></td><td><code>null</code> (solo tipi oggetto: <code>String</code>, classi, liste)</td></tr>
+            <tr><td>Oggetto</td><td><code>{"stagione":4,"episodio":6}</code></td><td>Classe (POJO), <code>Map&lt;String, ...&gt;</code> oppure <code>JsonObject</code></td></tr>
+            <tr><td>Array</td><td><code>["Horror","Sci-Fi"]</code></td><td><code>List&lt;...&gt;</code> (o array) oppure <code>JsonArray</code></td></tr>
+            <tr><td>Valore fisso</td><td><code>"IN_CORSO"</code></td><td><code>enum</code></td></tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div class="table-scroll">
-          <h3 style="font-size: 1.05rem; color: var(--accent-indigo); margin-bottom: 0.4rem;">🧰 Classi e Costrutti Gson del Percorso</h3>
-          <table class="data-table">
-            <thead>
-              <tr><th>Costrutto Gson</th><th>A cosa serve</th><th>Es.</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><code>Gson</code></td><td><code>toJson()</code> e <code>fromJson()</code></td><td>00, 01</td></tr>
-              <tr><td><code>GsonBuilder</code></td><td><code>setPrettyPrinting()</code>, <code>serializeNulls()</code>, <code>disableHtmlEscaping()</code></td><td>00–03</td></tr>
-              <tr><td><code>@SerializedName</code></td><td>Collega chiave JSON diversa dal nome Java</td><td>02</td></tr>
-              <tr><td><code>transient</code></td><td>Esclude un campo dal JSON</td><td>02</td></tr>
-              <tr><td><code>Reader</code> / <code>Writer</code></td><td>Lettura e scrittura diretta su file</td><td>02, 03</td></tr>
-              <tr><td><code>TypeToken&lt;...&gt;</code></td><td>Deserializza <code>List&lt;X&gt;</code> e <code>Map&lt;K,V&gt;</code></td><td>02, 03</td></tr>
-              <tr><td><code>JsonParser</code>, <code>JsonObject</code>, <code>JsonArray</code></td><td>Tree model: leggere/costruire JSON senza classi</td><td>02, 03</td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="table-scroll" style="margin-top: 1.35rem;">
+        <h3 style="font-size: 1.05rem; color: var(--accent-indigo); margin-bottom: 0.4rem;">🧰 Classi e Costrutti Gson del Percorso</h3>
+        <table class="data-table">
+          <thead>
+            <tr><th style="min-width: 180px;">Costrutto Gson</th><th>A cosa serve (spiegazione e uso pratico)</th><th style="width: 72px;">Es.</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Gson</code></td>
+              <td>
+                È il <strong>motore principale</strong> (il "traduttore" bidirezionale Java ↔ JSON, thread-safe e riutilizzabile).<br />
+                • <code>gson.toJson(obj)</code>: <strong>serializza</strong> un oggetto Java in una stringa JSON compatta (pronta per rete o file).<br />
+                • <code>gson.fromJson(json, Classe.class)</code>: <strong>deserializza</strong> una stringa JSON ricostruendo un'istanza tipizzata di <code>Classe</code>, abbinando chiavi e campi per nome.
+              </td>
+              <td>00, 01</td>
+            </tr>
+            <tr>
+              <td><code>GsonBuilder</code></td>
+              <td>
+                <strong>Fabbrica configurabile</strong> (pattern Builder: <code>new GsonBuilder()...create()</code>) per personalizzare il comportamento di <code>Gson</code>:<br />
+                • <code>setPrettyPrinting()</code>: aggiunge a capo e indentazione a 2 spazi (JSON leggibile per umani e file di configurazione).<br />
+                • <code>serializeNulls()</code>: forza la scrittura esplicita dei campi <code>null</code> (di default Gson li omette).<br />
+                • <code>disableHtmlEscaping()</code>: evita che caratteri come <code>'</code>, <code>&lt;</code>, <code>&gt;</code> diventino codici Unicode tipo <code>\u0027</code>.
+              </td>
+              <td>00–03</td>
+            </tr>
+            <tr>
+              <td><code>JsonSyntaxException</code><br /><code>JsonParseException</code></td>
+              <td>
+                <strong>Eccezioni di parsing</strong> lanciate quando il testo in ingresso non è JSON valido (es. manca una parentesi <code>}</code> o una virgola) oppure contiene un tipo incompatibile con il campo Java (es. testo al posto di un <code>int</code>).<br />
+                <em>Nota:</em> per i campi <code>double</code> Gson 2.11 può lanciare direttamente <code>NumberFormatException</code>, quindi conviene catturare entrambe nel <code>catch</code>.
+              </td>
+              <td>01–03</td>
+            </tr>
+            <tr>
+              <td><code>@SerializedName("...")</code></td>
+              <td>
+                <strong>Annotazione sul campo Java</strong> che collega una chiave JSON con un nome diverso da quello della variabile Java. Indispensabile quando le API esterne usano <code>snake_case</code> (es. <code>"ultimo_episodio"</code>) mentre in Java si usa <code>camelCase</code> (<code>ultimoEpisodio</code>).
+              </td>
+              <td>02</td>
+            </tr>
+            <tr>
+              <td><code>transient</code></td>
+              <td>
+                <strong>Modificatore Java</strong> che dice a Gson di <strong>ignorare completamente</strong> un campo sia in serializzazione sia in deserializzazione. Utile per flag interni, cache temporanee o dati sensibili (es. password) che non devono mai finire su file o in rete.
+              </td>
+              <td>02</td>
+            </tr>
+            <tr>
+              <td><code>fromJson(Reader, ...)</code><br /><code>toJson(obj, Writer)</code></td>
+              <td>
+                <strong>Lettura e scrittura diretta su file</strong> (o stream) senza dover prima caricare tutto in una gigantesca <code>String</code>. Usati con <code>Files.newBufferedReader/Writer</code> in <strong>UTF-8</strong> dentro un <em>try-with-resources</em> per chiudere automaticamente il file.
+              </td>
+              <td>02, 03</td>
+            </tr>
+            <tr>
+              <td><code>TypeToken&lt;...&gt;</code></td>
+              <td>
+                Risolve il limite della <em>type erasure</em> di Java quando il JSON è un <strong>array radice <code>[ ... ]</code></strong> o una <strong>mappa</strong>. Passare <code>List.class</code> non basta (Gson crea mappe generiche); con <code>new TypeToken&lt;List&lt;SerieTv&gt;&gt;(){}.getType()</code> Gson conosce il tipo esatto degli elementi e costruisce direttamente <code>List&lt;SerieTv&gt;</code> o <code>Map&lt;String, Double&gt;</code>.
+              </td>
+              <td>02, 03</td>
+            </tr>
+            <tr>
+              <td><code>JsonParser</code><br /><code>JsonObject</code>, <code>JsonArray</code><br /><code>JsonElement</code></td>
+              <td>
+                <strong>Modello ad albero (Tree Model)</strong>: permette di leggere, navigare e costruire JSON <strong>senza creare classi POJO</strong>.<br />
+                • <code>JsonParser.parseString(s).getAsJsonObject()</code> trasforma la stringa in un albero interrogabile con <code>has("chiave")</code> e <code>get("chiave").getAsString()</code>.<br />
+                • Indispensabile per API esterne enormi (estrai solo 2-3 campi) e per <strong>protocolli su socket</strong> (leggi prima <code>"tipo"</code> e poi smisti il messaggio nella classe giusta).
+              </td>
+              <td>02, 03</td>
+            </tr>
+            <tr>
+              <td><code>gson.toJsonTree(obj)</code></td>
+              <td>
+                <strong>Ponte tra POJO e Tree Model</strong>: converte un normale oggetto Java in un <code>JsonElement</code>/<code>JsonObject</code> modificabile in memoria, così puoi aggiungere o rimuovere proprietà al volo (es. un metadato extra) prima di spedirlo o salvarlo.
+              </td>
+              <td>02</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 

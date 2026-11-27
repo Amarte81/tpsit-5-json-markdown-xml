@@ -60,17 +60,17 @@ java -cp ../lib/gson-2.11.0.jar NomeFile.java
 
 ## 🧰 Le classi Gson usate nel percorso
 
-| Classe / costrutto | A cosa serve | Esercizio |
+| Classe / costrutto | A cosa serve (spiegazione e uso pratico) | Esercizio |
 |:--|:--|:-:|
-| `Gson` | Il "traduttore": `toJson(oggetto)` e `fromJson(testo, Classe.class)` | 00, 01 |
-| `GsonBuilder` | Configura un Gson: `setPrettyPrinting()`, `serializeNulls()`, `disableHtmlEscaping()` | 00, 01, 02, 03 |
-| `JsonSyntaxException` | Errore: JSON malformato o con tipi sbagliati | 01, 02 |
-| `fromJson(Reader…)` / `toJson(obj, Writer)` | Leggere e scrivere file JSON | 02 |
-| `@SerializedName("chiave_json")` | Chiave JSON diversa dal nome del campo Java | 02 |
-| `transient` | Campo che **non** deve finire nel JSON | 02 |
-| `TypeToken<List<X>>` | Leggere liste e mappe (tipi generici) | 02, 03 |
-| `JsonParser`, `JsonObject`, `JsonArray`, `JsonElement` | Leggere/costruire JSON **senza** classi (tree model) | 02, 03 |
-| `toJsonTree(obj)` | Da POJO ad albero modificabile | 02 |
+| `Gson` | Motore principale Java ↔ JSON (thread-safe e riutilizzabile): `toJson(obj)` serializza un oggetto in stringa JSON compatta; `fromJson(json, Classe.class)` deserializza la stringa in un'istanza tipizzata abbinando chiavi e campi per nome. | 00, 01 |
+| `GsonBuilder` | Fabbrica configurabile (`new GsonBuilder()...create()`): `setPrettyPrinting()` indenta il JSON per gli umani; `serializeNulls()` scrive esplicitamente anche i campi `null`; `disableHtmlEscaping()` evita codici Unicode come `\u0027` per gli apostrofi. | 00–03 |
+| `JsonSyntaxException` / `JsonParseException` | Eccezioni lanciate se il JSON è sintatticamente rotto (es. parentesi mancante) o ha tipi incompatibili (es. testo al posto di un `int`). Per i `double` Gson può lanciare `NumberFormatException`: meglio catturarle entrambe. | 01–03 |
+| `@SerializedName("chiave_json")` | Annotazione su un campo Java per mappare una chiave JSON con nome diverso (es. `"ultimo_episodio"` in `snake_case` → `ultimoEpisodio` in `camelCase`). | 02 |
+| `transient` | Modificatore Java che esclude del tutto un campo dalla serializzazione e deserializzazione (ideale per flag interni, cache o dati sensibili). | 02 |
+| `fromJson(Reader…)` / `toJson(obj, Writer)` | Lettura e scrittura diretta su file/stream con `Files.newBufferedReader/Writer` in UTF-8 (dentro *try-with-resources*) senza caricare tutto in una `String`. | 02, 03 |
+| `TypeToken<List<X>>` | Supera la *type erasure* dei generics per deserializzare array JSON radice `[ ... ]` in `List<X>` o oggetti in `Map<String, V>` (altrimenti `List.class` produrrebbe mappe generiche `LinkedTreeMap`). | 02, 03 |
+| `JsonParser`, `JsonObject`, `JsonArray`, `JsonElement` | **Tree model**: legge, naviga (`has()`, `get()`) e costruisce JSON **senza creare classi POJO**. Utile per API esterne enormi e per protocolli su socket (leggere prima `"tipo"` e poi smistare). | 02, 03 |
+| `toJsonTree(obj)` | Ponte POJO → Tree model: trasforma un oggetto Java in un `JsonObject` modificabile in RAM per aggiungere o rimuovere proprietà al volo prima di inviarlo/salvarlo. | 02 |
 
 ---
 
