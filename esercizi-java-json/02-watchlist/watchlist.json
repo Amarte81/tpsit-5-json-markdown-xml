@@ -1,0 +1,45 @@
+{
+  "proprietario": "Giulia",
+  "aggiornata_il": "2026-11-20",
+  "serie": [
+    {
+      "titolo": "Stranger Things",
+      "piattaforma": "Netflix",
+      "stagioni": 5,
+      "voto": 9.0,
+      "stato": "COMPLETATA",
+      "generi": ["Fantascienza", "Horror", "Avventura"],
+      "ultimo_episodio": { "stagione": 5, "episodio": 8 },
+      "note": "Il finale mi ha distrutta"
+    },
+    {
+      "titolo": "Mare Fuori",
+      "piattaforma": "RaiPlay",
+      "stagioni": 5,
+      "voto": 8.5,
+      "stato": "IN_CORSO",
+      "generi": ["Drammatico", "Crime"],
+      "ultimo_episodio": { "stagione": 4, "episodio": 6 },
+      "note": null
+    },
+    {
+      "titolo": "Mercoledi",
+      "piattaforma": "Netflix",
+      "stagioni": 2,
+      "voto": 8.0,
+      "stato": "IN_CORSO",
+      "generi": ["Commedia", "Mistero", "Fantasy"],
+      "ultimo_episodio": { "stagione": 2, "episodio": 3 }
+    },
+    {
+      "titolo": "Arcane",
+      "piattaforma": "Netflix",
+      "stagioni": 2,
+      "voto": 9.5,
+      "stato": "DA_VEDERE",
+      "generi": ["Animazione", "Azione", "Fantasy"],
+      "ultimo_episodio": null,
+      "note": "Consigliata da Luca (gioca a LoL)"
+    }
+  ]
+}

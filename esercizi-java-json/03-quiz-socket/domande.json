@@ -1,0 +1,58 @@
+[
+  {
+    "categoria": "Musica",
+    "testo": "Chi ha vinto il Festival di Sanremo 2024?",
+    "opzioni": ["Geolier", "Annalisa", "Angelina Mango", "Mahmood"],
+    "corretta": 2,
+    "spiegazione": "Angelina Mango con \"La noia\"."
+  },
+  {
+    "categoria": "Informatica",
+    "testo": "Cosa significa l'acronimo JSON?",
+    "opzioni": ["Java Standard Object Notation", "JavaScript Object Notation", "Just Simple Object Network", "JavaScript Online Node"],
+    "corretta": 1,
+    "spiegazione": "JavaScript Object Notation: nato in JS, oggi usato da tutti i linguaggi."
+  },
+  {
+    "categoria": "Videogiochi",
+    "testo": "Quale studio ha creato Minecraft?",
+    "opzioni": ["Epic Games", "Riot Games", "Mojang", "Ubisoft"],
+    "corretta": 2,
+    "spiegazione": "Mojang Studios, poi acquisita da Microsoft nel 2014."
+  },
+  {
+    "categoria": "Sport",
+    "testo": "In quale stadio l'Italia ha vinto la finale di Euro 2020?",
+    "opzioni": ["San Siro", "Wembley", "Camp Nou", "Olimpico"],
+    "corretta": 1,
+    "spiegazione": "A Wembley (Londra), l'11 luglio 2021, ai rigori contro l'Inghilterra."
+  },
+  {
+    "categoria": "Social",
+    "testo": "Quale azienda possiede TikTok?",
+    "opzioni": ["Meta", "Tencent", "Alphabet", "ByteDance"],
+    "corretta": 3,
+    "spiegazione": "ByteDance, azienda cinese con sede a Pechino."
+  },
+  {
+    "categoria": "Reti",
+    "testo": "Qual e' la porta standard del protocollo HTTPS?",
+    "opzioni": ["80", "21", "443", "8080"],
+    "corretta": 2,
+    "spiegazione": "443 per HTTPS; 80 e' la porta di HTTP in chiaro."
+  },
+  {
+    "categoria": "Anime",
+    "testo": "Come si chiama il protagonista di One Piece?",
+    "opzioni": ["Naruto Uzumaki", "Monkey D. Luffy", "Son Goku", "Roronoa Zoro"],
+    "corretta": 1,
+    "spiegazione": "Monkey D. Luffy, capitano della ciurma di Cappello di Paglia."
+  },
+  {
+    "categoria": "Maturita'",
+    "testo": "Chi canta \"Notte prima degli esami\"?",
+    "opzioni": ["Vasco Rossi", "Antonello Venditti", "Max Pezzali", "Cesare Cremonini"],
+    "corretta": 1,
+    "spiegazione": "Antonello Venditti, 1984: l'inno di ogni maturando."
+  }
+]

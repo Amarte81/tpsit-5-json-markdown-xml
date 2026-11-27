@@ -6,3 +6,7 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# File generati dagli esercizi Java
+watchlist_aggiornata.json
+*.class
