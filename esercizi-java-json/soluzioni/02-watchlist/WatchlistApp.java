@@ -226,7 +226,7 @@ public class WatchlistApp {
             return GSON.fromJson(reader, Watchlist.class);   // fromJson accetta anche un Reader
         } catch (IOException e) {
             System.out.println("  [errore I/O] file non leggibile: " + e.getMessage());
-        } catch (JsonSyntaxException e) {
+        } catch (JsonSyntaxException | NumberFormatException e) {
             System.out.println("  [errore JSON] contenuto non valido: " + e.getMessage());
         }
         return null;

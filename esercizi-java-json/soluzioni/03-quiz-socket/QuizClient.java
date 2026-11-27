@@ -125,51 +125,51 @@ public class QuizClient {
         if (MOSTRA_JSON) System.out.println("   [-> " + json + "]");
         out.println(json);
     }
-}
-
-// ============================================================================
-//  Classi dei messaggi LATO CLIENT.
-//  Non sono le stesse classi del server (sono due programmi diversi!):
-//  cio' che conta e' che i NOMI DEI CAMPI coincidano con le chiavi JSON.
-//  Il "contratto" tra client e server e' il formato JSON, non il codice Java.
-// ============================================================================
-class MsgDomanda {
-    int numero;
-    int totale;
-    String categoria;
-    String testo;
-    List<String> opzioni;
-    int tempoSecondi;
-}
-
-class MsgRisposta {
-    final String tipo = "RISPOSTA";
-    int numero;
-    int scelta;
-
-    MsgRisposta(int numero, int scelta) {
-        this.numero = numero;
-        this.scelta = scelta;
+    // ========================================================================
+    //  Classi dei messaggi LATO CLIENT (static annidate per evitare conflitti
+    //  con QuizServer se aperte insieme in un IDE).
+    //  Non sono le stesse classi del server (sono due programmi diversi!):
+    //  cio' che conta e' che i NOMI DEI CAMPI coincidano con le chiavi JSON.
+    //  Il "contratto" tra client e server e' il formato JSON, non il codice Java.
+    // ========================================================================
+    static class MsgDomanda {
+        int numero;
+        int totale;
+        String categoria;
+        String testo;
+        List<String> opzioni;
+        int tempoSecondi;
     }
-}
 
-class MsgEsito {
-    int numero;
-    boolean corretta;
-    boolean inTempo;
-    int rispostaGiusta;
-    int punti;
-    int punteggioTotale;
-    long tempoMs;
-    String spiegazione;
-}
+    static class MsgRisposta {
+        final String tipo = "RISPOSTA";
+        int numero;
+        int scelta;
 
-class VoceClassifica {
-    String nickname;
-    int punti;
-}
+        MsgRisposta(int numero, int scelta) {
+            this.numero = numero;
+            this.scelta = scelta;
+        }
+    }
 
-class MsgFine {
-    int punteggioTotale;
-    List<VoceClassifica> classifica;
+    static class MsgEsito {
+        int numero;
+        boolean corretta;
+        boolean inTempo;
+        int rispostaGiusta;
+        int punti;
+        int punteggioTotale;
+        long tempoMs;
+        String spiegazione;
+    }
+
+    static class VoceClassifica {
+        String nickname;
+        int punti;
+    }
+
+    static class MsgFine {
+        int punteggioTotale;
+        List<VoceClassifica> classifica;
+    }
 }

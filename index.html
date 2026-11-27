@@ -32,6 +32,7 @@
       <nav class="sticky-subnav" aria-label="Navigazione tra le tre parti">
         <a href="#intro-interscambio" class="nav-link-btn">🌐 Perché Servono?</a>
         <a href="#parte1" class="nav-link-btn">1️⃣ Parte 1: JSON (45m)</a>
+        <a href="esercizi-java-json.html" class="nav-link-btn" style="border-color: var(--accent-blue); background: rgba(56, 189, 248, 0.16);">☕ Esercizi Java &amp; JSON ↗</a>
         <a href="#parte2" class="nav-link-btn">2️⃣ Parte 2: Markdown (45m)</a>
         <a href="#parte3" class="nav-link-btn">3️⃣ Parte 3: Scelta & XML (45m)</a>
         <a href="#sfida-finale" class="nav-link-btn" style="border-color: var(--accent-amber);">🎯 Sfida 3 Casi</a>
@@ -346,7 +347,7 @@
       </div>
 
       <!-- SEZIONE INTEGRAZIONE JAVA MODULO 1: SERIALIZZAZIONE E PARSING JSON -->
-      <div class="card" style="border-left: 6px solid var(--accent-blue);">
+      <div id="integrazione-java-json" class="card" style="border-left: 6px solid var(--accent-blue);">
         <div class="card-header">
           <h3 class="card-title">☕ Integrazione Java: Come gestire JSON con Gson e Jackson</h3>
           <span class="badge-tag">JAVA OOP & SERIALIZZAZIONE</span>
@@ -395,6 +396,29 @@ public class MainJsonJava {
         System.out.println("Oggetto Java ricostruito: ID=" + s2.getId() + " Temp=" + s2.getTemperatura() + "°C");
     }
 }</pre>
+
+        <!-- COLLEGAMENTO BEN VISIBILE AL LABORATORIO ESERCIZI JAVA + GSON + SOCKET -->
+        <div class="case-study-box" style="margin: 1.4rem 0; border: 2px solid var(--accent-blue); border-left: 8px solid var(--accent-green); background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(34, 197, 94, 0.10));">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div style="flex: 1; min-width: 260px;">
+              <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.45rem;">
+                <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">LABORATORIO PRATICO JAVA + GSON</span>
+                <span class="badge-tag">4 STEP GUIDATI • SOCKET INCLUSO</span>
+              </div>
+              <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.35rem;">
+                🚀 Metti subito in pratica: Esempio Commentato + 3 Esercizi Guidati in Java
+              </h4>
+              <p style="font-size: 0.94rem; color: var(--text-muted); margin-bottom: 0;">
+                Passa dalla teoria al codice con temi reali: <strong>00) Brano Spotify</strong> (esempio commentato) → <strong>01) Serie TV</strong> (costrutti base) → <strong>02) Watchlist su file</strong> (liste, Map, <code>TypeToken</code>, tree model) → <strong>03) QuizBattle stile Kahoot</strong> su <strong>Socket TCP</strong>.
+              </p>
+            </div>
+            <div>
+              <a href="esercizi-java-json.html" class="btn btn-primary" style="font-size: 0.98rem; padding: 0.75rem 1.3rem; box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);">
+                ☕ Apri il Laboratorio Esercizi Java →
+              </a>
+            </div>
+          </div>
+        </div>
 
         <!-- MINI-TEST 1.3: USO IN JAVA -->
         <div class="mini-test-card" id="miniTest1JavaCard">

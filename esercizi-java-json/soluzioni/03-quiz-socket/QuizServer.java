@@ -77,7 +77,7 @@ public class QuizServer {
             // 1) Il primo messaggio deve essere LOGIN
             JsonObject login = leggiMessaggio(in, out);
             if (login == null) return;
-            if (!"LOGIN".equals(tipoDi(login)) || !login.has("nickname")) {
+            if (!"LOGIN".equals(tipoDi(login)) || !login.has("nickname") || !login.get("nickname").isJsonPrimitive()) {
                 invia(out, new MsgErrore("Il primo messaggio deve essere {\"tipo\":\"LOGIN\",\"nickname\":\"...\"}"));
                 return;
             }
@@ -100,7 +100,11 @@ public class QuizServer {
                         invia(out, new MsgErrore("Attendevo un messaggio RISPOSTA"));
                         continue;
                     }
-                    r = GSON.fromJson(msg, MsgRisposta.class);     // JsonObject -> POJO
+                    try {
+                        r = GSON.fromJson(msg, MsgRisposta.class); // JsonObject -> POJO
+                    } catch (JsonParseException | NumberFormatException e) {
+                        invia(out, new MsgErrore("RISPOSTA non valida: " + e.getMessage()));
+                    }
                 }
                 // Il tempo lo misura il SERVER: il client potrebbe barare!
                 long tempoMs = System.currentTimeMillis() - inizio;
@@ -134,8 +138,8 @@ public class QuizServer {
             System.out.println("  <- " + riga);
             try {
                 JsonObject obj = JsonParser.parseString(riga).getAsJsonObject();
-                if (!obj.has("tipo")) {
-                    invia(out, new MsgErrore("Manca il campo \"tipo\""));
+                if (!obj.has("tipo") || !obj.get("tipo").isJsonPrimitive()) {
+                    invia(out, new MsgErrore("Manca il campo \"tipo\" (stringa)"));
                     continue;
                 }
                 return obj;
@@ -181,115 +185,117 @@ public class QuizServer {
         lista.sort((a, b) -> Integer.compare(b.punti, a.punti));
         return lista;
     }
-}
 
-// ============================================================================
-//  Modello interno (letto da domande.json): contiene la risposta giusta,
-//  quindi NON deve mai essere inviato cosi' com'e' al client.
-// ============================================================================
-class Domanda {
-    String categoria;
-    String testo;
-    List<String> opzioni;
-    int corretta;          // indice 0-based in opzioni
-    String spiegazione;
-}
-
-// ============================================================================
-//  Messaggi del protocollo. Il campo "tipo" e' final con valore fisso:
-//  Gson lo serializza normalmente e il client lo usa per capire il messaggio.
-// ============================================================================
-class MsgBenvenuto {
-    final String tipo = "BENVENUTO";
-    String nickname;
-    int numeroDomande;
-    int tempoSecondi;
-    String messaggio;
-
-    MsgBenvenuto(String nickname, int numeroDomande, int tempoSecondi) {
-        this.nickname = nickname;
-        this.numeroDomande = numeroDomande;
-        this.tempoSecondi = tempoSecondi;
-        this.messaggio = "Ciao " + nickname + "! Rispondi in fretta: piu' sei veloce, piu' punti fai.";
+    // ========================================================================
+    //  Modello interno (letto da domande.json): contiene la risposta giusta,
+    //  quindi NON deve mai essere inviato cosi' com'e' al client.
+    //  Le classi sono static annidate cosi' QuizServer e QuizClient possono
+    //  stare nella stessa cartella/progetto IDE senza conflitti di nomi.
+    // ========================================================================
+    static class Domanda {
+        String categoria;
+        String testo;
+        List<String> opzioni;
+        int corretta;          // indice 0-based in opzioni
+        String spiegazione;
     }
-}
 
-class MsgDomanda {
-    final String tipo = "DOMANDA";
-    int numero;
-    int totale;
-    String categoria;
-    String testo;
-    List<String> opzioni;
-    int tempoSecondi;
+    // ========================================================================
+    //  Messaggi del protocollo. Il campo "tipo" e' final con valore fisso:
+    //  Gson lo serializza normalmente e il client lo usa per capire il messaggio.
+    // ========================================================================
+    static class MsgBenvenuto {
+        final String tipo = "BENVENUTO";
+        String nickname;
+        int numeroDomande;
+        int tempoSecondi;
+        String messaggio;
 
-    MsgDomanda(int numero, int totale, String categoria, String testo, List<String> opzioni, int tempoSecondi) {
-        this.numero = numero;
-        this.totale = totale;
-        this.categoria = categoria;
-        this.testo = testo;
-        this.opzioni = opzioni;
-        this.tempoSecondi = tempoSecondi;
+        MsgBenvenuto(String nickname, int numeroDomande, int tempoSecondi) {
+            this.nickname = nickname;
+            this.numeroDomande = numeroDomande;
+            this.tempoSecondi = tempoSecondi;
+            this.messaggio = "Ciao " + nickname + "! Rispondi in fretta: piu' sei veloce, piu' punti fai.";
+        }
     }
-}
 
-/** Arriva dal client: {"tipo":"RISPOSTA","numero":1,"scelta":2} */
-class MsgRisposta {
-    String tipo;
-    int numero;
-    int scelta;            // indice 0-based
-}
+    static class MsgDomanda {
+        final String tipo = "DOMANDA";
+        int numero;
+        int totale;
+        String categoria;
+        String testo;
+        List<String> opzioni;
+        int tempoSecondi;
 
-class MsgEsito {
-    final String tipo = "ESITO";
-    int numero;
-    boolean corretta;
-    boolean inTempo;
-    int rispostaGiusta;
-    int punti;
-    int punteggioTotale;
-    long tempoMs;
-    String spiegazione;
-
-    MsgEsito(int numero, boolean corretta, boolean inTempo, int rispostaGiusta,
-             int punti, int punteggioTotale, long tempoMs, String spiegazione) {
-        this.numero = numero;
-        this.corretta = corretta;
-        this.inTempo = inTempo;
-        this.rispostaGiusta = rispostaGiusta;
-        this.punti = punti;
-        this.punteggioTotale = punteggioTotale;
-        this.tempoMs = tempoMs;
-        this.spiegazione = spiegazione;
+        MsgDomanda(int numero, int totale, String categoria, String testo, List<String> opzioni, int tempoSecondi) {
+            this.numero = numero;
+            this.totale = totale;
+            this.categoria = categoria;
+            this.testo = testo;
+            this.opzioni = opzioni;
+            this.tempoSecondi = tempoSecondi;
+        }
     }
-}
 
-class VoceClassifica {
-    String nickname;
-    int punti;
-
-    VoceClassifica(String nickname, int punti) {
-        this.nickname = nickname;
-        this.punti = punti;
+    /** Arriva dal client: {"tipo":"RISPOSTA","numero":1,"scelta":2} */
+    static class MsgRisposta {
+        String tipo;
+        int numero;
+        int scelta;            // indice 0-based
     }
-}
 
-class MsgFine {
-    final String tipo = "FINE";
-    int punteggioTotale;
-    List<VoceClassifica> classifica;
+    static class MsgEsito {
+        final String tipo = "ESITO";
+        int numero;
+        boolean corretta;
+        boolean inTempo;
+        int rispostaGiusta;
+        int punti;
+        int punteggioTotale;
+        long tempoMs;
+        String spiegazione;
 
-    MsgFine(int punteggioTotale, List<VoceClassifica> classifica) {
-        this.punteggioTotale = punteggioTotale;
-        this.classifica = classifica;
+        MsgEsito(int numero, boolean corretta, boolean inTempo, int rispostaGiusta,
+                 int punti, int punteggioTotale, long tempoMs, String spiegazione) {
+            this.numero = numero;
+            this.corretta = corretta;
+            this.inTempo = inTempo;
+            this.rispostaGiusta = rispostaGiusta;
+            this.punti = punti;
+            this.punteggioTotale = punteggioTotale;
+            this.tempoMs = tempoMs;
+            this.spiegazione = spiegazione;
+        }
     }
-}
 
-class MsgErrore {
-    final String tipo = "ERRORE";
-    String messaggio;
+    static class VoceClassifica {
+        String nickname;
+        int punti;
 
-    MsgErrore(String messaggio) {
-        this.messaggio = messaggio;
+        VoceClassifica(String nickname, int punti) {
+            this.nickname = nickname;
+            this.punti = punti;
+        }
+    }
+
+    static class MsgFine {
+        final String tipo = "FINE";
+        int punteggioTotale;
+        List<VoceClassifica> classifica;
+
+        MsgFine(int punteggioTotale, List<VoceClassifica> classifica) {
+            this.punteggioTotale = punteggioTotale;
+            this.classifica = classifica;
+        }
+    }
+
+    static class MsgErrore {
+        final String tipo = "ERRORE";
+        String messaggio;
+
+        MsgErrore(String messaggio) {
+            this.messaggio = messaggio;
+        }
     }
 }

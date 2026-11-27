@@ -210,7 +210,7 @@ public class WatchlistApp {
         //     return GSON.fromJson(___, ___.class);
         // } catch (IOException e) {
         //     System.out.println("  [errore I/O] file non leggibile: " + e.getMessage());
-        // } catch (JsonSyntaxException e) {
+        // } catch (JsonSyntaxException | NumberFormatException e) {
         //     System.out.println("  [errore JSON] contenuto non valido: " + e.getMessage());
         // }
         return null;

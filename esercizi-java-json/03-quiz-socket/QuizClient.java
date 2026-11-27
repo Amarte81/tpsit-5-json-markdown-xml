@@ -143,44 +143,44 @@ public class QuizClient {
         if (MOSTRA_JSON) System.out.println("   [-> " + json + "]");
         out.println(json);
     }
-}
+    // ========================================================================
+    //  Classi dei messaggi LATO CLIENT (static annidate per evitare conflitti
+    //  con QuizServer se aperte insieme in un IDE).
+    //  I nomi dei campi devono coincidere ESATTAMENTE con le chiavi JSON
+    //  della tabella del protocollo nel README.
+    // ========================================================================
 
-// ============================================================================
-//  Classi dei messaggi LATO CLIENT
-//  I nomi dei campi devono coincidere ESATTAMENTE con le chiavi JSON
-//  della tabella del protocollo nel README.
-// ============================================================================
-
-/** Gia' pronta: esempio di classe-messaggio ricevuta */
-class MsgDomanda {
-    int numero;
-    int totale;
-    String categoria;
-    String testo;
-    List<String> opzioni;
-    int tempoSecondi;
-}
-
-/** Gia' pronta: esempio di classe-messaggio inviata ("tipo" con valore fisso) */
-class MsgRisposta {
-    final String tipo = "RISPOSTA";
-    int numero;
-    int scelta;
-
-    MsgRisposta(int numero, int scelta) {
-        this.numero = numero;
-        this.scelta = scelta;
+    /** Gia' pronta: esempio di classe-messaggio ricevuta */
+    static class MsgDomanda {
+        int numero;
+        int totale;
+        String categoria;
+        String testo;
+        List<String> opzioni;
+        int tempoSecondi;
     }
-}
 
-// TODO A6 - Completa i campi guardando il messaggio ESITO nel README
-class MsgEsito {
-}
+    /** Gia' pronta: esempio di classe-messaggio inviata ("tipo" con valore fisso) */
+    static class MsgRisposta {
+        final String tipo = "RISPOSTA";
+        int numero;
+        int scelta;
 
-// TODO A6 - Una voce della classifica: {"nickname":"Sara","punti":6994}
-class VoceClassifica {
-}
+        MsgRisposta(int numero, int scelta) {
+            this.numero = numero;
+            this.scelta = scelta;
+        }
+    }
 
-// TODO A6 - Messaggio FINE: contiene punteggioTotale e una LISTA di VoceClassifica
-class MsgFine {
+    // TODO A6 - Completa i campi guardando il messaggio ESITO nel README
+    static class MsgEsito {
+    }
+
+    // TODO A6 - Una voce della classifica: {"nickname":"Sara","punti":6994}
+    static class VoceClassifica {
+    }
+
+    // TODO A6 - Messaggio FINE: contiene punteggioTotale e una LISTA di VoceClassifica
+    static class MsgFine {
+    }
 }

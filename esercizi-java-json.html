@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>TPSIT 5ª — Laboratorio Esercizi JSON in Java (Gson & Socket)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Stili dedicati alla pagina del laboratorio Java + Gson (compatibili con high-legibility) */
+    .lab-hero {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(129, 140, 248, 0.12));
+      border: 2px solid var(--accent-blue);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      margin: 1.1rem 0 1.8rem;
+    }
+    .lab-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+      margin-top: 1.1rem;
+    }
+    .lab-step-pill {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .lab-step-pill:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+    .lab-step-num {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      letter-spacing: 0.05em;
+    }
+    .lab-step-title {
+      font-size: 1.02rem;
+      font-weight: 800;
+    }
+    .lab-step-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .cmd-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: var(--bg-code);
+      color: #38bdf8;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 0.6rem 0;
+    }
+    .cmd-bar code {
+      white-space: pre;
+      background: transparent;
+      color: #38bdf8;
+    }
+    .copy-btn {
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+    .file-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 0.9rem 0 1rem;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.92rem;
+    }
+    .data-table th, .data-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .data-table th {
+      background: var(--bg-elevated);
+      color: var(--accent-blue);
+      font-weight: 800;
+    }
+    .table-scroll {
+      overflow-x: auto;
+    }
+    .callout {
+      border-left: 5px solid var(--accent-amber);
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 0.94rem;
+    }
+    .callout.info { border-left-color: var(--accent-blue); }
+    .callout.success { border-left-color: var(--accent-green); }
+    .callout.danger { border-left-color: var(--accent-red); }
+    details.code-disclosure {
+      margin: 0.9rem 0;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      padding: 0.75rem 1rem;
+    }
+    details.code-disclosure summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--accent-blue);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    details.code-disclosure summary::-webkit-details-marker { display: none; }
+    .code-scroll {
+      max-height: 460px;
+      overflow: auto;
+      margin-top: 0.75rem;
+    }
+    .proto-dir {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 5px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .proto-cs { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
+    .proto-sc { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+    .questions-list {
+      padding-left: 1.3rem;
+      margin-top: 0.5rem;
+    }
+    .questions-list li {
+      margin-bottom: 0.4rem;
+    }
+    @media (max-width: 960px) {
+      .lab-flow { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .lab-flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =======================================================================
+       STICKY HEADER & NAVIGAZIONE RAPIDA
+       ======================================================================= -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="brand-wrap">
+          <span class="badge-tag">LABORATORIO JAVA • GSON</span>
+          <h1>Esercizi Introduttivi JSON in Java</h1>
+        </div>
+        <div class="header-controls">
+          <a href="index.html#integrazione-java-json" class="btn btn-primary" title="Torna alla sezione Integrazione Java della lezione">
+            ⬅️ Torna alla Lezione
+          </a>
+          <button id="btnToggleLegibility" class="btn btn-secondary" type="button" title="Modalità Alta Leggibilità per PDP/DSA">
+            👁️ Alta Leggibilità (DSA/PDP)
+          </button>
+          <button id="btnPrintWorksheet" class="btn btn-secondary" type="button" title="Stampa o Salva in PDF">
+            🖨️ Stampa Scheda
+          </button>
+        </div>
+      </div>
+
+      <nav class="sticky-subnav" aria-label="Navigazione tra gli esercizi">
+        <a href="#setup-mappa" class="nav-link-btn">⚙️ Setup &amp; Mappa</a>
+        <a href="#esempio-00" class="nav-link-btn">📖 00: Esempio Spotify</a>
+        <a href="#esercizio-01" class="nav-link-btn">✏️ 01: Serie TV</a>
+        <a href="#esercizio-02" class="nav-link-btn">✏️ 02: Watchlist Completa</a>
+        <a href="#esercizio-03" class="nav-link-btn" style="border-color: var(--accent-green);">🌐 03: QuizBattle Socket</a>
+        <a href="#docente" class="nav-link-btn" style="border-color: var(--accent-amber);">🔑 Soluzioni Docente</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BARRA AVANZAMENTO CHECKLIST ESERCIZI -->
+  <div class="global-progress-wrap">
+    <div class="progress-inner">
+      <span id="labProgressLabel">Progresso Laboratorio: <strong>0%</strong></span>
+      <div class="progress-track" aria-label="Progresso passi completati">
+        <div id="labProgressBar" class="progress-bar-fill"></div>
+      </div>
+      <span id="labStepsBadge">Passi completati: 0 / 28</span>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- HERO INTRODUTTIVO -->
+    <section class="lab-hero">
+      <div class="part-meta">
+        <span class="badge-tag">PERCORSO PROGRESSIVO</span>
+        <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">JAVA 17+ • ZERO MAVEN</span>
+        <span class="badge-tag" style="background: var(--accent-indigo); color: #ffffff;">COLLEGATO A: INTEGRAZIONE JAVA</span>
+      </div>
+      <h2 class="part-title">☕ Dal primo oggetto JSON a un quiz multigiocatore su Socket TCP</h2>
+      <p class="part-desc">
+        Questa pagina accompagna la sezione <strong>"Integrazione Java: Come gestire JSON con Gson e Jackson"</strong> della lezione principale.
+        Partiamo da un esempio completo e commentato su <strong>Spotify</strong>, passiamo a due esercizi guidati sulle <strong>serie TV</strong> (prima base, poi tutte le funzioni essenziali di Gson) e arriviamo a un <strong>quiz stile Kahoot</strong> su socket TCP.
+      </p>
+
+      <div class="lab-flow">
+        <a href="#esempio-00" class="lab-step-pill">
+          <span class="lab-step-num">00 • Esempio (20m)</span>
+          <span class="lab-step-title">🎵 Brano Spotify</span>
+          <span class="lab-step-sub">toJson, fromJson, POJO, GsonBuilder</span>
+        </a>
+        <a href="#esercizio-01" class="lab-step-pill">
+          <span class="lab-step-num">01 • Guidato (45m)</span>
+          <span class="lab-step-title">🎬 Serie TV</span>
+          <span class="lab-step-sub">Variante guidata: classi base ed errori</span>
+        </a>
+        <a href="#esercizio-02" class="lab-step-pill">
+          <span class="lab-step-num">02 • Guidato (90m)</span>
+          <span class="lab-step-title">📺 Watchlist su File</span>
+          <span class="lab-step-sub">File, liste, Map, TypeToken, tree model</span>
+        </a>
+        <a href="#esercizio-03" class="lab-step-pill" style="border-color: var(--accent-green);">
+          <span class="lab-step-num" style="color: var(--accent-green);">03 • Socket (90m)</span>
+          <span class="lab-step-title">🕹️ QuizBattle TCP</span>
+          <span class="lab-step-sub">Protocollo JSON client/server multi-thread</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         SETUP E MAPPA DI RIFERIMENTO
+         ======================================================================= -->
+    <section id="setup-mappa" class="card">
+      <div class="card-header">
+        <h2 class="card-title">⚙️ Requisiti, Avvio Rapido e Mappa JSON ↔ Java</h2>
+        <span class="badge-tag">SCHEDA DI RIFERIMENTO</span>
+      </div>
+
+      <p style="margin-bottom: 0.75rem;">
+        La libreria <strong>Gson 2.11.0</strong> è già inclusa nel repository in <code>esercizi-java-json/lib/gson-2.11.0.jar</code>: non serve connessione a Internet né Maven.
+        Ogni esercizio è un <strong>singolo file <code>.java</code></strong> eseguibile direttamente (Java 17+).
+      </p>
+
+      <div class="cmd-bar">
+        <code id="cmdBase">java -cp ../lib/gson-2.11.0.jar NomeFile.java</code>
+        <button class="copy-btn" type="button" data-copy="cmdBase">📋 Copia</button>
+      </div>
+
+      <div class="file-actions">
+        <a class="btn btn-primary" href="esercizi-java-json/lib/gson-2.11.0.jar" download>⬇️ Scarica gson-2.11.0.jar</a>
+        <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/tree/main/esercizi-java-json" target="_blank" rel="noopener">📂 Apri cartella su GitHub</a>
+      </div>
+
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div class="table-scroll">
+          <h3 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.4rem;">🗺️ Mappa Tipi JSON ↔ Java</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>JSON</th><th>Esempio</th><th>Java</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Stringa</td><td><code>"Netflix"</code></td><td><code>String</code></td></tr>
+              <tr><td>Intero / Decimale</td><td><code>5</code> / <code>8.5</code></td><td><code>int</code>, <code>long</code> / <code>double</code></td></tr>
+              <tr><td>Booleano</td><td><code>true</code> / <code>false</code></td><td><code>boolean</code></td></tr>
+              <tr><td>Nullo</td><td><code>null</code></td><td><code>null</code> (solo oggetti)</td></tr>
+              <tr><td>Oggetto</td><td><code>{"stagione":4,"episodio":6}</code></td><td>Classe (POJO), <code>Map</code> o <code>JsonObject</code></td></tr>
+              <tr><td>Array</td><td><code>["Horror","Sci-Fi"]</code></td><td><code>List&lt;...&gt;</code> o <code>JsonArray</code></td></tr>
+              <tr><td>Valore fisso</td><td><code>"IN_CORSO"</code></td><td><code>enum</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-scroll">
+          <h3 style="font-size: 1.05rem; color: var(--accent-indigo); margin-bottom: 0.4rem;">🧰 Classi e Costrutti Gson del Percorso</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Costrutto Gson</th><th>A cosa serve</th><th>Es.</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Gson</code></td><td><code>toJson()</code> e <code>fromJson()</code></td><td>00, 01</td></tr>
+              <tr><td><code>GsonBuilder</code></td><td><code>setPrettyPrinting()</code>, <code>serializeNulls()</code>, <code>disableHtmlEscaping()</code></td><td>00–03</td></tr>
+              <tr><td><code>@SerializedName</code></td><td>Collega chiave JSON diversa dal nome Java</td><td>02</td></tr>
+              <tr><td><code>transient</code></td><td>Esclude un campo dal JSON</td><td>02</td></tr>
+              <tr><td><code>Reader</code> / <code>Writer</code></td><td>Lettura e scrittura diretta su file</td><td>02, 03</td></tr>
+              <tr><td><code>TypeToken&lt;...&gt;</code></td><td>Deserializza <code>List&lt;X&gt;</code> e <code>Map&lt;K,V&gt;</code></td><td>02, 03</td></tr>
+              <tr><td><code>JsonParser</code>, <code>JsonObject</code>, <code>JsonArray</code></td><td>Tree model: leggere/costruire JSON senza classi</td><td>02, 03</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         00 — ESEMPIO COMMENTATO COMPLETO (SPOTIFY)
+         ======================================================================= -->
+    <section id="esempio-00" class="card" style="border-left: 6px solid var(--accent-blue);">
+      <div class="card-header">
+        <h2 class="card-title">📖 00 — Esempio Commentato: "Il brano del momento" (Spotify)</h2>
+        <span class="badge-tag">ESEMPIO GUIDA • 20 MIN</span>
+      </div>
+
+      <p style="margin-bottom: 0.8rem;">
+        Quando apri un brano su <strong>Spotify</strong>, l'app riceve dal server una stringa di testo JSON e la trasforma in un oggetto per mostrarti titolo, artista e durata.
+        Questo esempio mostra l'intero ciclo: <strong>oggetto Java → JSON compatto → JSON indentato → deserializzazione → uso dei dati → gestione di chiavi mancanti o extra</strong>.
+      </p>
+
+      <div class="cmd-bar">
+        <code id="cmd00">cd 00-esempio-spotify &amp;&amp; java -cp ../lib/gson-2.11.0.jar EsempioBrano.java</code>
+        <button class="copy-btn" type="button" data-copy="cmd00">📋 Copia</button>
+      </div>
+
+      <div class="file-actions">
+        <a class="btn btn-primary" href="esercizi-java-json/00-esempio-spotify/EsempioBrano.java" download>⬇️ Scarica EsempioBrano.java</a>
+        <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/blob/main/esercizi-java-json/00-esempio-spotify/EsempioBrano.java" target="_blank" rel="noopener">👁️ Apri su GitHub</a>
+      </div>
+
+      <div class="callout info">
+        <strong>📏 Le 4 regole d'oro della classe modello (POJO):</strong><br />
+        1) Il <strong>nome del campo Java</strong> diventa la <strong>chiave JSON</strong> (maiuscole/minuscole contano!).<br />
+        2) I campi possono essere <code>private</code>: Gson accede comunque via reflection.<br />
+        3) Inserisci sempre un <strong>costruttore vuoto</strong> per <code>fromJson</code>.<br />
+        4) I <strong>metodi</strong> (es. <code>getDurataFormattata()</code>) servono a te, <strong>non</strong> finiscono nel JSON.
+      </div>
+
+      <details class="code-disclosure" open>
+        <summary>
+          <span>💻 Codice completo e commentato: <code>EsempioBrano.java</code></span>
+          <button class="copy-btn" type="button" data-copy="codeEx00" onclick="event.stopPropagation()">📋 Copia Codice</button>
+        </summary>
+        <div class="code-scroll">
+          <pre id="codeEx00" class="code-box">import com.google.gson.Gson;          // il "traduttore" Java &lt;-&gt; JSON
+import com.google.gson.GsonBuilder;   // la "fabbrica" per creare un Gson configurato
+
+public class EsempioBrano {
+    public static void main(String[] args) {
+        // PASSO 1 - Creo un normale oggetto Java
+        Brano brano = new Brano("Tuta gold", "Mahmood", 188, 2024, false, 91.5);
+        System.out.println("1) Oggetto Java: " + brano);
+
+        // PASSO 2 &amp; 3 - SERIALIZZAZIONE: oggetto Java -&gt; stringa JSON compatta
+        Gson gson = new Gson();
+        String json = gson.toJson(brano);
+        System.out.println("\n2) JSON compatto (viaggia in rete):\n   " + json);
+
+        // PASSO 4 - Pretty printing con GsonBuilder (leggibile per gli umani)
+        Gson gsonLeggibile = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println("\n3) JSON indentato:\n" + gsonLeggibile.toJson(brano));
+
+        // PASSO 5 - DESERIALIZZAZIONE: stringa JSON -&gt; oggetto Java
+        String jsonRicevuto = """
+                {
+                  "titolo": "30\u00b0C",
+                  "artista": "ANNA",
+                  "durataSecondi": 147,
+                  "annoUscita": 2024,
+                  "esplicito": true,
+                  "popolarita": 89.0
+                }
+                """;
+        Brano ricevuto = gson.fromJson(jsonRicevuto, Brano.class);
+        System.out.println("\n4) Oggetto ricostruito: " + ricevuto);
+
+        // PASSO 6 - Ora e' un normale oggetto Java: uso getter, metodi, if...
+        System.out.println("   Durata: " + ricevuto.getDurataFormattata()
+                + " | Esplicito? " + (ricevuto.isEsplicito() ? "si' [E]" : "no"));
+
+        // PASSO 7 - Chiavi extra ignorate ("genere"), chiavi mancanti -&gt; default (0/false/null)
+        String jsonIncompleto = "{\"titolo\":\"Espresso\",\"artista\":\"Sabrina Carpenter\",\"genere\":\"pop\"}";
+        Brano parziale = gson.fromJson(jsonIncompleto, Brano.class);
+        System.out.println("\n6) JSON incompleto: " + parziale);
+    }
+}
+
+class Brano {
+    private String titolo;
+    private String artista;
+    private int durataSecondi;
+    private int annoUscita;
+    private boolean esplicito;
+    private double popolarita;
+
+    public Brano() {} // Costruttore vuoto usato da Gson
+
+    public Brano(String titolo, String artista, int durataSecondi,
+                 int annoUscita, boolean esplicito, double popolarita) {
+        this.titolo = titolo; this.artista = artista;
+        this.durataSecondi = durataSecondi; this.annoUscita = annoUscita;
+        this.esplicito = esplicito; this.popolarita = popolarita;
+    }
+
+    public String getDurataFormattata() {
+        return String.format("%d:%02d", durataSecondi / 60, durataSecondi % 60);
+    }
+    public String getTitolo() { return titolo; }
+    public boolean isEsplicito() { return esplicito; }
+    public double getPopolarita() { return popolarita; }
+
+    @Override
+    public String toString() {
+        return "Brano[" + titolo + " - " + artista + ", " + getDurataFormattata() + "]";
+    }
+}</pre>
+        </div>
+      </details>
+
+      <details class="code-disclosure">
+        <summary>🖥️ Output atteso in console (clicca per aprire)</summary>
+        <pre class="code-box" style="margin-top: 0.7rem;">1) Oggetto Java (stampato con toString):
+   Brano[Tuta gold - Mahmood, 3:08, 2024, esplicito=false, popolarita=91.5]
+
+2) JSON compatto (e' quello che viaggia in rete):
+   {"titolo":"Tuta gold","artista":"Mahmood","durataSecondi":188,"annoUscita":2024,"esplicito":false,"popolarita":91.5}
+
+4) Oggetto ricostruito dal JSON ricevuto:
+   Brano[30°C - ANNA, 2:27, 2024, esplicito=true, popolarita=89.0]
+
+6) JSON incompleto / con campi extra:
+   Brano[Espresso - Sabrina Carpenter, 0:00, 0, esplicito=false, popolarita=0.0]</pre>
+      </details>
+    </section>
+
+    <!-- =======================================================================
+         01 — ESERCIZIO GUIDATO 1: LA MIA SERIE TV PREFERITA
+         ======================================================================= -->
+    <section id="esercizio-01" class="card" style="border-left: 6px solid var(--accent-indigo);">
+      <div class="card-header">
+        <h2 class="card-title">✏️ 01 — Esercizio Guidato: "La mia serie TV preferita"</h2>
+        <span class="badge-tag" style="background: var(--accent-indigo); color: #ffffff;">VARIANTE BASE • 45 MIN</span>
+      </div>
+
+      <p style="margin-bottom: 0.8rem;">
+        Variante guidata dell'esempio Spotify: vuoi scambiare con un amico i dati della tua serie TV preferita in JSON.
+        Il file <code>SerieTvApp.java</code> <strong>compila già</strong>: togli i commenti un passo alla volta, completa gli spazi <code>___</code> ed esegui.
+      </p>
+
+      <div class="cmd-bar">
+        <code id="cmd01">cd 01-serie-tv &amp;&amp; java -cp ../lib/gson-2.11.0.jar SerieTvApp.java</code>
+        <button class="copy-btn" type="button" data-copy="cmd01">📋 Copia</button>
+      </div>
+
+      <div class="file-actions">
+        <a class="btn btn-primary" href="esercizi-java-json/01-serie-tv/SerieTvApp.java" download>⬇️ Scarica SerieTvApp.java</a>
+        <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/blob/main/esercizi-java-json/01-serie-tv/README.md" target="_blank" rel="noopener">📄 Traccia completa (README)</a>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-blue); margin-bottom: 0.4rem;">JSON di riferimento</h3>
+          <pre class="code-box">{
+  "titolo": "Stranger Things",
+  "piattaforma": "Netflix",
+  "stagioni": 5,
+  "annoUscita": 2016,
+  "voto": 9.0,
+  "completata": true
+}</pre>
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-indigo); margin-bottom: 0.4rem;">✅ Checklist Passi (1 → 8)</h3>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-1" /><span><strong>Passo 1:</strong> Completa la classe <code>SerieTv</code> (6 campi, costruttore vuoto + completo, getter, 2 setter, <code>oreStimate()</code>, <code>toString()</code>).</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-2" /><span><strong>Passo 2:</strong> Istanzia la tua serie TV preferita e stampala.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-3" /><span><strong>Passo 3:</strong> Serializza in JSON compatto con <code>new Gson().toJson(...)</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-4" /><span><strong>Passo 4:</strong> Serializza indentato con <code>GsonBuilder().setPrettyPrinting()</code> e confronta le lunghezze.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-5" /><span><strong>Passo 5:</strong> Deserializza <code>consiglioAmico</code> con <code>fromJson(..., SerieTv.class)</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-6" /><span><strong>Passo 6:</strong> Confronta i voti con <code>if</code> e stampa <code>oreStimate()</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-7" /><span><strong>Passo 7:</strong> Modifica voto e stato con i setter e ri-serializza.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e1-8" /><span><strong>Passo 8:</strong> Esperimenti sugli errori: maiuscola sbagliata (<code>null</code>), tipo sbagliato e parentesi mancante (<code>JsonSyntaxException</code>).</span></label>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>❓ Domande di verifica:</strong>
+        <ol class="questions-list">
+          <li>Il metodo <code>oreStimate()</code> compare nel JSON? Perché?</li>
+          <li>Perché <code>{"Titolo":"One Piece"}</code> non genera errore ma lascia <code>titolo = null</code>?</li>
+          <li>Che differenza c'è tra un errore di tipo (<code>"stagioni":"due"</code>) e un JSON sintatticamente rotto (manca <code>}</code>)?</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         02 — ESERCIZIO GUIDATO 2: LA MIA WATCHLIST (FUNZIONI COMPLETE)
+         ======================================================================= -->
+    <section id="esercizio-02" class="card" style="border-left: 6px solid var(--accent-amber);">
+      <div class="card-header">
+        <h2 class="card-title">✏️ 02 — Esercizio Guidato: "La mia Watchlist" (Gson Completo)</h2>
+        <span class="badge-tag" style="background: var(--accent-amber); color: #070b14;">TUTTE LE FUNZIONI • 90 MIN</span>
+      </div>
+
+      <p style="margin-bottom: 0.8rem;">
+        Evoluzione dell'esercizio 01: non una sola serie ma l'intera watchlist di Giulia salvata in <code>watchlist.json</code>.
+        Introduce tutte le funzionalità essenziali per lavorare con JSON reali: <strong>file I/O, oggetti annidati, liste, enum, <code>@SerializedName</code>, <code>transient</code>, <code>serializeNulls()</code>, <code>TypeToken</code>, <code>Map</code>, tree model ed errori</strong>.
+      </p>
+
+      <div class="cmd-bar">
+        <code id="cmd02">cd 02-watchlist &amp;&amp; java -cp ../lib/gson-2.11.0.jar WatchlistApp.java</code>
+        <button class="copy-btn" type="button" data-copy="cmd02">📋 Copia</button>
+      </div>
+
+      <div class="file-actions">
+        <a class="btn btn-primary" href="esercizi-java-json/02-watchlist/WatchlistApp.java" download>⬇️ Scarica WatchlistApp.java</a>
+        <a class="btn btn-secondary" href="esercizi-java-json/02-watchlist/watchlist.json" download>⬇️ Scarica watchlist.json</a>
+        <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/blob/main/esercizi-java-json/02-watchlist/README.md" target="_blank" rel="noopener">📄 Traccia completa (README)</a>
+      </div>
+
+      <div class="callout info">
+        <strong>💡 Bug voluto nel modello di partenza!</strong>
+        Esegui il programma subito dopo aver completato il Passo 2 (prima di aggiungere i <code>@SerializedName</code> del Passo 1):
+        vedrai <code>aggiornata il null</code> e nessun episodio. È il tipico bug di chi integra API reali in <code>snake_case</code>!
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-amber); margin-bottom: 0.4rem;">✅ Checklist Passi (0 → 9)</h3>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-0" /><span><strong>Passo 0:</strong> Configura <code>GSON_BELLO</code> con <code>setPrettyPrinting()</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-1" /><span><strong>Passo 1:</strong> Completa il modello: <code>Episodio</code>, <code>@SerializedName("ultimo_episodio")</code>, <code>@SerializedName("aggiornata_il")</code>, <code>transient</code> su <code>modificata</code>, <code>cerca()</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-2" /><span><strong>Passo 2:</strong> Lettura da file con <code>Files.newBufferedReader</code> (UTF-8) e <code>fromJson(reader, Watchlist.class)</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-3" /><span><strong>Passo 3:</strong> Stampa serie, generi, note (gestendo i <code>null</code>), voto medio e conteggio <code>IN_CORSO</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-4" /><span><strong>Passo 4:</strong> Aggiungi <em>One Piece</em>, avanza <em>Mare Fuori</em>, aggiorna la data e salva in <code>watchlist_aggiornata.json</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-5" /><span><strong>Passo 5:</strong> Confronta default vs <code>GsonBuilder().serializeNulls()</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-6" /><span><strong>Passo 6:</strong> Array come radice <code>[ ... ]</code>: scopri <code>LinkedTreeMap</code> con <code>List.class</code> e risolvi con <code>TypeToken&lt;List&lt;SerieTv&gt;&gt;</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-7" /><span><strong>Passo 7:</strong> <code>Map&lt;String,Integer&gt;</code> per piattaforme e <code>Map&lt;String,Double&gt;</code> per spesa mensile.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-8" /><span><strong>Passo 8:</strong> Tree model senza classi: <code>JsonParser</code>, <code>JsonObject</code>, <code>JsonArray</code>, <code>has()</code> e <code>toJsonTree()</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e2-9" /><span><strong>Passo 9:</strong> Gestione errori: <code>JsonSyntaxException | NumberFormatException</code> ed enum sconosciuto (<code>null</code> silenzioso).</span></label>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-blue); margin-bottom: 0.4rem;">Estratto di <code>watchlist.json</code></h3>
+          <pre class="code-box">{
+  "proprietario": "Giulia",
+  "aggiornata_il": "2026-11-20",
+  "serie": [
+    {
+      "titolo": "Mare Fuori",
+      "piattaforma": "RaiPlay",
+      "stagioni": 5,
+      "voto": 8.5,
+      "stato": "IN_CORSO",
+      "generi": ["Drammatico", "Crime"],
+      "ultimo_episodio": { "stagione": 4, "episodio": 6 },
+      "note": null
+    }
+  ]
+}</pre>
+
+          <h3 style="font-size: 1rem; color: var(--accent-green); margin: 1rem 0 0.4rem;">🤔 Quando usare cosa?</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Situazione</th><th>Strumento Gson</th></tr></thead>
+              <tbody>
+                <tr><td>Struttura nota e usata tutta</td><td><strong>POJO</strong> + <code>fromJson/toJson</code></td></tr>
+                <tr><td>API enorme, ti servono 2-3 campi</td><td><strong>Tree model</strong> (<code>JsonParser</code>)</td></tr>
+                <tr><td>Chiavi dinamiche (piattaforme, utenti)</td><td><strong><code>Map&lt;String, X&gt;</code></strong></td></tr>
+                <tr><td>Radice array o tipi generici</td><td><strong><code>TypeToken</code></strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         03 — ESERCIZIO GUIDATO 3: QUIZBATTLE SU SOCKET TCP
+         ======================================================================= -->
+    <section id="esercizio-03" class="card" style="border-left: 6px solid var(--accent-green);">
+      <div class="card-header">
+        <h2 class="card-title">🌐 03 — Esercizio Guidato: "QuizBattle" (stile Kahoot) su Socket TCP</h2>
+        <span class="badge-tag" style="background: var(--accent-green); color: #070b14;">JSON + SOCKET TCP • 90-135 MIN</span>
+      </div>
+
+      <p style="margin-bottom: 0.8rem;">
+        Ora il JSON <strong>viaggia in rete</strong>: client e server comunicano su <strong>socket TCP</strong> (porta <code>5050</code>, UTF-8) scambiandosi <strong>un messaggio JSON compatto per riga</strong> (delimitato da <code>\n</code>).
+        Più rispondi in fretta alle 8 domande (Sanremo, Minecraft, Euro 2020, TikTok, One Piece, HTTPS…), più punti fai (da 500 a 1000). Alla fine arriva la <strong>classifica live</strong> di tutta la classe!
+      </p>
+
+      <div class="cmd-bar">
+        <code id="cmd03s"># Terminale 1 (Server):   cd 03-quiz-socket &amp;&amp; java -cp ../lib/gson-2.11.0.jar QuizServer.java</code>
+        <button class="copy-btn" type="button" data-copy="cmd03s">📋 Copia</button>
+      </div>
+      <div class="cmd-bar">
+        <code id="cmd03c"># Terminale 2 (Client):   cd 03-quiz-socket &amp;&amp; java -cp ../lib/gson-2.11.0.jar QuizClient.java localhost 5050</code>
+        <button class="copy-btn" type="button" data-copy="cmd03c">📋 Copia</button>
+      </div>
+
+      <div class="file-actions">
+        <a class="btn btn-primary" href="esercizi-java-json/03-quiz-socket/QuizClient.java" download>⬇️ Scarica QuizClient.java</a>
+        <a class="btn btn-primary" href="esercizi-java-json/03-quiz-socket/QuizServer.java" download>⬇️ Scarica QuizServer.java</a>
+        <a class="btn btn-secondary" href="esercizi-java-json/03-quiz-socket/domande.json" download>⬇️ Scarica domande.json</a>
+        <a class="btn btn-secondary" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/blob/main/esercizi-java-json/03-quiz-socket/README.md" target="_blank" rel="noopener">📄 Traccia completa (README)</a>
+      </div>
+
+      <h3 style="font-size: 1.05rem; color: var(--accent-green); margin: 1rem 0 0.4rem;">📡 Tabella del Protocollo Applicativo (campo <code>"tipo"</code>)</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Direzione</th><th><code>tipo</code></th><th>Esempio JSON su una riga</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="proto-dir proto-cs">Client → Server</span></td><td><code>LOGIN</code></td><td><code>{"tipo":"LOGIN","nickname":"Sara"}</code></td></tr>
+            <tr><td><span class="proto-dir proto-sc">Server → Client</span></td><td><code>BENVENUTO</code></td><td><code>{"tipo":"BENVENUTO","nickname":"Sara","numeroDomande":8,"tempoSecondi":20,"messaggio":"..."}</code></td></tr>
+            <tr><td><span class="proto-dir proto-sc">Server → Client</span></td><td><code>DOMANDA</code></td><td><code>{"tipo":"DOMANDA","numero":1,"totale":8,"categoria":"Musica","testo":"...","opzioni":[...],"tempoSecondi":20}</code></td></tr>
+            <tr><td><span class="proto-dir proto-cs">Client → Server</span></td><td><code>RISPOSTA</code></td><td><code>{"tipo":"RISPOSTA","numero":1,"scelta":2}</code></td></tr>
+            <tr><td><span class="proto-dir proto-sc">Server → Client</span></td><td><code>ESITO</code></td><td><code>{"tipo":"ESITO","numero":1,"corretta":true,"inTempo":true,"rispostaGiusta":2,"punti":940,"punteggioTotale":940,"tempoMs":2400,"spiegazione":"..."}</code></td></tr>
+            <tr><td><span class="proto-dir proto-sc">Server → Client</span></td><td><code>FINE</code></td><td><code>{"tipo":"FINE","punteggioTotale":6994,"classifica":[{"nickname":"Sara","punti":6994}]}</code></td></tr>
+            <tr><td><span class="proto-dir proto-sc">Server → Client</span></td><td><code>ERRORE</code></td><td><code>{"tipo":"ERRORE","messaggio":"JSON non valido: ciao"}</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout danger">
+        <strong>🔐 Sicurezza nel protocollo:</strong> Il server legge <code>domande.json</code> nella classe <code>Domanda</code> (che contiene <code>corretta</code>), ma invia al client <code>MsgDomanda</code> <strong>senza</strong> la risposta giusta. Inoltre il <strong>tempo di risposta lo misura il server</strong>: mai fidarsi dei calcoli fatti dal client!
+      </div>
+
+      <div class="grid-2" style="margin-top: 1rem;">
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-blue); margin-bottom: 0.4rem;">🪜 Parte A — Client (<code>QuizClient.java</code>)</h3>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a1" /><span><strong>TODO A1:</strong> Costruisci e invia <code>LOGIN</code> con <code>JsonObject</code> (senza classe).</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a2" /><span><strong>TODO A2:</strong> Parsa ogni riga con <code>JsonParser.parseString(riga).getAsJsonObject()</code> e leggi <code>"tipo"</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a3" /><span><strong>TODO A3:</strong> Gestisci <code>DOMANDA</code> → <code>MsgDomanda</code> → invia <code>MsgRisposta</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a4" /><span><strong>TODO A4:</strong> Gestisci <code>ESITO</code> → stampa giusta / sbagliata / tempo scaduto e spiegazione.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a5" /><span><strong>TODO A5:</strong> Gestisci <code>FINE</code> → stampa la classifica numerata e termina.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-a6" /><span><strong>TODO A6:</strong> Completa i campi delle classi <code>MsgEsito</code>, <code>VoceClassifica</code>, <code>MsgFine</code>.</span></label>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1rem; color: var(--accent-green); margin-bottom: 0.4rem;">🪜 Parte B — Server (<code>QuizServer.java</code>)</h3>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-b1" /><span><strong>TODO B1:</strong> Carica l'array <code>domande.json</code> con <code>TypeToken&lt;List&lt;Domanda&gt;&gt;</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-b2" /><span><strong>TODO B2:</strong> Converti <code>RISPOSTA</code> in <code>MsgRisposta</code> (con <code>try/catch</code>), calcola esito e punti, invia <code>MsgEsito</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-b3" /><span><strong>TODO B3:</strong> Completa <code>invia()</code>: serializza in JSON compatto (1 riga!) e scrivi su <code>PrintWriter</code>.</span></label>
+          <label class="checklist-step"><input type="checkbox" class="lab-check" data-id="e3-b4" /><span><strong>TODO B4:</strong> Ordina <code>classifica</code> in una <code>List&lt;VoceClassifica&gt;</code> decrescente.</span></label>
+
+          <div class="callout success" style="margin-top: 0.75rem;">
+            <strong>🎉 Sfida in classe:</strong> Il docente avvia il server di soluzione sul proprio PC e proietta i JSON alla LIM. Gli studenti si collegano col proprio client:
+            <br /><code>java -cp ../lib/gson-2.11.0.jar QuizClient.java &lt;IP_DOCENTE&gt;</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         AREA DOCENTE & RITORNO ALLA LEZIONE
+         ======================================================================= -->
+    <section id="docente" class="card">
+      <div class="card-header">
+        <h2 class="card-title">🔑 Soluzioni &amp; Risorse per il Docente</h2>
+        <span class="badge-tag" style="background: var(--accent-amber); color: #070b14;">SOLUZIONI TESTATE</span>
+      </div>
+      <p style="margin-bottom: 0.9rem;">
+        Tutte le soluzioni compilano e funzionano con Java 17+ e Gson 2.11.0, incluse le risposte sintetiche alle domande di verifica.
+      </p>
+      <div class="file-actions">
+        <a class="btn btn-amber" href="https://github.com/Amarte81/tpsit-5-json-markdown-xml/tree/main/esercizi-java-json/soluzioni" target="_blank" rel="noopener">🔑 Apri Soluzioni su GitHub</a>
+        <a class="btn btn-primary" href="index.html#integrazione-java-json">⬅️ Torna a "Integrazione Java" nella Lezione</a>
+        <a class="btn btn-secondary" href="index.html#fine-parte-1">🏁 Vai al Ripasso Parte 1</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    (function () {
+      // 1. Accessibilità DSA/PDP + Stampa
+      const btnLeg = document.getElementById('btnToggleLegibility');
+      const applyLeg = (high) => {
+        document.body.classList.toggle('high-legibility', high);
+        if (btnLeg) {
+          btnLeg.textContent = high ? '🌙 Modalità Scura Standard' : '👁️ Alta Leggibilità (DSA/PDP)';
+        }
+      };
+      try {
+        if (localStorage.getItem('tpsit_high_legibility') === '1') applyLeg(true);
+      } catch (e) {}
+      if (btnLeg) {
+        btnLeg.addEventListener('click', () => {
+          const next = !document.body.classList.contains('high-legibility');
+          applyLeg(next);
+          try { localStorage.setItem('tpsit_high_legibility', next ? '1' : '0'); } catch (e) {}
+        });
+      }
+      const btnPrint = document.getElementById('btnPrintWorksheet');
+      if (btnPrint) btnPrint.addEventListener('click', () => window.print());
+
+      // 2. Pulsanti Copia negli appunti
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.getAttribute('data-copy'));
+          if (!target) return;
+          const text = target.textContent;
+          const done = () => {
+            const old = btn.textContent;
+            btn.textContent = '✅ Copiato!';
+            setTimeout(() => { btn.textContent = old; }, 1600);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(() => {});
+          }
+        });
+      });
+
+      // 3. Checklist interattiva con salvataggio locale
+      const checks = Array.from(document.querySelectorAll('.lab-check'));
+      const bar = document.getElementById('labProgressBar');
+      const lbl = document.getElementById('labProgressLabel');
+      const badge = document.getElementById('labStepsBadge');
+      const storageKey = 'tpsit_java_json_lab_checks';
+
+      const loadState = () => {
+        try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (e) { return {}; }
+      };
+      const saveState = (state) => {
+        try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch (e) {}
+      };
+      const updateProgress = () => {
+        const done = checks.filter((c) => c.checked).length;
+        const pct = checks.length ? Math.round((done / checks.length) * 100) : 0;
+        if (bar) bar.style.width = pct + '%';
+        if (lbl) lbl.innerHTML = 'Progresso Laboratorio: <strong>' + pct + '%</strong>';
+        if (badge) badge.textContent = 'Passi completati: ' + done + ' / ' + checks.length;
+      };
+
+      const state = loadState();
+      checks.forEach((c) => {
+        const id = c.getAttribute('data-id');
+        if (state[id]) c.checked = true;
+        c.addEventListener('change', () => {
+          state[id] = c.checked;
+          saveState(state);
+          updateProgress();
+        });
+      });
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>
