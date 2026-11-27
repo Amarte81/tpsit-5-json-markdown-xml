@@ -20,21 +20,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Scanner;
 
 public class QuizClient {
 
     /** true = stampa anche il JSON grezzo che viaggia sul socket (utile per capire!) */
     static final boolean MOSTRA_JSON = true;
     static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();  // apostrofi leggibili nel JSON (vedi README)
-    static final Scanner tastiera = new Scanner(System.in);
+    static final BufferedReader tastiera = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String host = (args.length > 0) ? args[0] : "localhost";
         int porta = (args.length > 1) ? Integer.parseInt(args[1]) : 5050;
 
         System.out.print("Il tuo nickname: ");
-        String nickname = tastiera.nextLine();
+        String nickname = tastiera.readLine();
+        if (nickname == null) return;
 
         try (Socket socket = new Socket(host, porta);
              BufferedReader in = new BufferedReader(
@@ -65,8 +65,10 @@ public class QuizClient {
                     case "DOMANDA" -> {
                         MsgDomanda d = GSON.fromJson(msg, MsgDomanda.class);
                         int scelta = mostraDomandaEChiedi(d);
-                        MsgRisposta r = new MsgRisposta(d.numero, scelta);
-                        invia(out, r);
+                        if (scelta >= 0) {
+                            MsgRisposta r = new MsgRisposta(d.numero, scelta);
+                            invia(out, r);
+                        }
                     }
                     case "ESITO" -> {
                         MsgEsito e = GSON.fromJson(msg, MsgEsito.class);
@@ -101,21 +103,33 @@ public class QuizClient {
         }
     }
 
-    /** Mostra la domanda e restituisce la scelta come indice 0-based. */
-    static int mostraDomandaEChiedi(MsgDomanda d) {
-        System.out.println("\n--- Domanda " + d.numero + "/" + d.totale + " [" + d.categoria + "] ---");
+    /**
+     * Mostra la domanda e restituisce la scelta come indice 0-based,
+     * oppure -1 se scade il tempo (in quel caso si attende direttamente ESITO dal server).
+     */
+    static int mostraDomandaEChiedi(MsgDomanda d) throws IOException {
+        System.out.println("\n--- Domanda " + d.numero + "/" + d.totale + " [" + d.categoria + "] (" + d.tempoSecondi + " s) ---");
         System.out.println(d.testo);
         for (int i = 0; i < d.opzioni.size(); i++) {
             System.out.println("  " + (i + 1) + ") " + d.opzioni.get(i));
         }
+        long scadenza = System.currentTimeMillis() + d.tempoSecondi * 1000L;
+        System.out.print("La tua risposta (1-" + d.opzioni.size() + "): ");
         while (true) {
-            System.out.print("La tua risposta (1-" + d.opzioni.size() + "): ");
-            String input = tastiera.nextLine().trim();
+            while (!tastiera.ready()) {
+                if (System.currentTimeMillis() >= scadenza) {
+                    System.out.println("\nTempo scaduto! Attendo l'esito dal server...");
+                    return -1;
+                }
+                try { Thread.sleep(100); } catch (InterruptedException ignored) { }
+            }
+            String input = tastiera.readLine();
+            if (input == null) return -1;
             try {
-                int n = Integer.parseInt(input);
+                int n = Integer.parseInt(input.trim());
                 if (n >= 1 && n <= d.opzioni.size()) return n - 1;   // l'utente conta da 1, il protocollo da 0
             } catch (NumberFormatException ignored) { }
-            System.out.println("Scelta non valida.");
+            System.out.print("Scelta non valida. Riprova (1-" + d.opzioni.size() + "): ");
         }
     }
 

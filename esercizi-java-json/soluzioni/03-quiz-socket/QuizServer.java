@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ public class QuizServer {
 
     static final int PORTA_DEFAULT = 5050;
     static final int TEMPO_SECONDI = 20;      // tempo per rispondere a ogni domanda
+    static final int TIMEOUT_LOGIN_MS = 30_000; // timeout massimo per il messaggio LOGIN
     static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();  // apostrofi leggibili nel JSON (vedi README)
 
     static List<Domanda> domande;
@@ -74,8 +76,15 @@ public class QuizServer {
              PrintWriter out = new PrintWriter(
                      new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)) {
 
-            // 1) Il primo messaggio deve essere LOGIN
-            JsonObject login = leggiMessaggio(in, out);
+            // 1) Il primo messaggio deve essere LOGIN (con timeout per evitare thread bloccati)
+            socket.setSoTimeout(TIMEOUT_LOGIN_MS);
+            JsonObject login;
+            try {
+                login = leggiMessaggio(in, out);
+            } catch (SocketTimeoutException e) {
+                invia(out, new MsgErrore("Timeout login: nessun LOGIN ricevuto entro " + (TIMEOUT_LOGIN_MS / 1000) + " s"));
+                return;
+            }
             if (login == null) return;
             if (!"LOGIN".equals(tipoDi(login)) || !login.has("nickname") || !login.get("nickname").isJsonPrimitive()) {
                 invia(out, new MsgErrore("Il primo messaggio deve essere {\"tipo\":\"LOGIN\",\"nickname\":\"...\"}"));
@@ -84,37 +93,57 @@ public class QuizServer {
             nickname = registraNickname(login.get("nickname").getAsString());
             invia(out, new MsgBenvenuto(nickname, domande.size(), TEMPO_SECONDI));
 
-            // 2) Ciclo delle domande
+            // 2) Ciclo delle domande (con TIMER ATTIVO lato server tramite setSoTimeout)
             int totale = 0;
             for (int i = 0; i < domande.size(); i++) {
+                int numDomanda = i + 1;
                 Domanda d = domande.get(i);
                 // ATTENZIONE: al client si invia MsgDomanda, che NON contiene la risposta giusta!
-                invia(out, new MsgDomanda(i + 1, domande.size(), d.categoria, d.testo, d.opzioni, TEMPO_SECONDI));
+                invia(out, new MsgDomanda(numDomanda, domande.size(), d.categoria, d.testo, d.opzioni, TEMPO_SECONDI));
                 long inizio = System.currentTimeMillis();
+                long scadenza = inizio + TEMPO_SECONDI * 1000L;
 
                 MsgRisposta r = null;
+                boolean scaduto = false;
                 while (r == null) {
-                    JsonObject msg = leggiMessaggio(in, out);
-                    if (msg == null) return;                       // client disconnesso
+                    int rimanenti = (int) (scadenza - System.currentTimeMillis());
+                    if (rimanenti <= 0) {
+                        scaduto = true;
+                        break;
+                    }
+                    socket.setSoTimeout(rimanenti);                 // interrompe readLine() allo scadere!
+                    JsonObject msg;
+                    try {
+                        msg = leggiMessaggio(in, out);
+                    } catch (SocketTimeoutException e) {
+                        scaduto = true;
+                        break;
+                    }
+                    if (msg == null) return;                        // client disconnesso
                     if (!"RISPOSTA".equals(tipoDi(msg))) {
                         invia(out, new MsgErrore("Attendevo un messaggio RISPOSTA"));
                         continue;
                     }
                     try {
-                        r = GSON.fromJson(msg, MsgRisposta.class); // JsonObject -> POJO
+                        MsgRisposta candidata = GSON.fromJson(msg, MsgRisposta.class); // JsonObject -> POJO
+                        if (candidata.numero != numDomanda) {
+                            invia(out, new MsgErrore("Risposta ignorata: attendevo la domanda " + numDomanda));
+                            continue;
+                        }
+                        r = candidata;
                     } catch (JsonParseException | NumberFormatException e) {
                         invia(out, new MsgErrore("RISPOSTA non valida: " + e.getMessage()));
                     }
                 }
                 // Il tempo lo misura il SERVER: il client potrebbe barare!
-                long tempoMs = System.currentTimeMillis() - inizio;
-                boolean inTempo = tempoMs <= TEMPO_SECONDI * 1000L;
-                boolean giusta = inTempo && r.scelta == d.corretta;
+                long tempoMs = scaduto ? TEMPO_SECONDI * 1000L : (System.currentTimeMillis() - inizio);
+                boolean inTempo = !scaduto && tempoMs <= TEMPO_SECONDI * 1000L;
+                boolean giusta = inTempo && r != null && r.scelta == d.corretta;
                 int punti = giusta ? calcolaPunti(tempoMs) : 0;
                 totale += punti;
                 classifica.put(nickname, totale);
 
-                invia(out, new MsgEsito(i + 1, giusta, inTempo, d.corretta, punti, totale, tempoMs, d.spiegazione));
+                invia(out, new MsgEsito(numDomanda, giusta, inTempo, d.corretta, punti, totale, tempoMs, d.spiegazione));
             }
 
             // 3) Fine partita con classifica
