@@ -56,11 +56,7 @@ java -cp "../lib/*" MarkChatServer.java
 java -cp "../lib/*" MarkChatClient.java localhost 5055
 ```
 
-Per sviluppare il client senza aver ancora finito il server, avvia il server di soluzione:
-
-```bash
-java -cp "../lib/*" ../soluzioni/03-chat-markdown-socket/MarkChatServer.java
-```
+Per sviluppare il client senza aver ancora finito il server, puoi collegarti al **server avviato dal docente** in laboratorio oppure avviare il tuo `MarkChatServer.java` in un altro terminale.
 
 ### Comandi nel client
 * Scrivi un qualsiasi messaggio in **Markdown** e premi Invio (es. `**Ciao** *ragazzi*, provate \`java -version\`!`).

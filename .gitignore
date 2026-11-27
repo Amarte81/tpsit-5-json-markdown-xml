@@ -18,5 +18,6 @@ chat_esportata.md
 chat_esportata.html
 *.class
 
-# Soluzioni riservate al docente (solo su Google Drive)
+# Soluzioni riservate al docente (solo su Google Drive con permessi ristretti)
 esercizi-java-json/soluzioni/
+esercizi-java-markdown/soluzioni/

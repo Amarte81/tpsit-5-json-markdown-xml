@@ -10,8 +10,8 @@
  *      java -cp "../lib/*" MarkChatClient.java [host] [porta]
  *      (default: localhost 5055)
  *
- *  Per provarlo subito prima di scrivere il server, avvia in un altro terminale:
- *      java -cp "../lib/*" ../soluzioni/03-chat-markdown-socket/MarkChatServer.java
+ *  Per provarlo subito prima di scrivere il server, collegati al server
+ *  avviato dal docente (o al tuo MarkChatServer in un altro terminale).
  * ============================================================================
  */
 

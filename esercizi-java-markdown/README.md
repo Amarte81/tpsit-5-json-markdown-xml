@@ -9,7 +9,7 @@ Gli argomenti degli esercizi (Discord, patch notes, schede di videogiochi, torne
 | 01 | [`01-scheda-gioco`](./01-scheda-gioco/) | ✏️ Esercizio guidato | La scheda del mio videogioco preferito | Variante dell'esempio: classi e costrutti essenziali di CommonMark in Java | 45 min |
 | 02 | [`02-diario-torneo`](./02-diario-torneo/) | ✏️ Esercizio guidato | Portale del Torneo Esports di Classe | **Tutte le funzioni essenziali**: file `.md`, estensioni GFM (tabelle, barrato, checklist), YAML front matter, TOC automatico, `AttributeProvider`, costruzione AST → `MarkdownRenderer`, sicurezza | 90 min |
 | 03 | [`03-chat-markdown-socket`](./03-chat-markdown-socket/) | ✏️ Esercizio guidato + chat in classe | MarkChat (stile Discord) | Markdown su **socket TCP**, client/server multi-thread, sanitizzazione XSS lato server, anteprima HTML live e `/export` | 90-135 min |
-| — | [`soluzioni`](./soluzioni/) | 🔑 Per il docente | — | Soluzioni complete e testate | — |
+| — | *Google Drive (riservato docente)* | 🔑 Per il docente | — | Soluzioni complete e testate (accesso ristretto) | — |
 
 ```mermaid
 flowchart LR
@@ -103,7 +103,7 @@ java -cp "../lib/*" NomeFile.java
 
 ## 👩‍🏫 Note per il docente
 
-* Le **soluzioni** sono in [`soluzioni/`](./soluzioni/): ogni file indica in testa il comando esatto per eseguirlo.
+* Le **soluzioni** non sono pubblicate su GitHub: sono conservate esclusivamente su **Google Drive** nella cartella riservata al docente con permessi ristretti.
 * I file di partenza degli esercizi **compilano ed eseguono già** così come sono: lo studente vede subito un output e completa i `TODO` passo dopo passo.
 * Negli esercizi 00, 01, 02 e 03 viene sempre richiamato il tema della **sicurezza (XSS e URL `javascript:`)**, fondamentale in TPSIT quando si renderizza Markdown proveniente da utenti esterni.
-* Nell'esercizio 03 potete avviare la soluzione del **server sul PC docente**, aprire `chat_log.html` sul browser alla LIM e far collegare tutta la classe con il proprio `MarkChatClient`: i messaggi Markdown compaiono formattati in diretta!
+* Nell'esercizio 03 potete avviare la soluzione del **server sul PC docente** (scaricandola da Google Drive), aprire `chat_log.html` sul browser alla LIM e far collegare tutta la classe con il proprio `MarkChatClient`: i messaggi Markdown compaiono formattati in diretta!
