@@ -9,7 +9,7 @@ Gli argomenti degli esercizi (Spotify, serie TV, quiz su musica, calcio, videogi
 | 01 | [`01-serie-tv`](./01-serie-tv/) | ✏️ Esercizio guidato | La mia serie TV preferita | Variante dell'esempio: classi e costrutti essenziali | 45 min |
 | 02 | [`02-watchlist`](./02-watchlist/) | ✏️ Esercizio guidato | La mia Watchlist | **Tutte le funzioni essenziali**: file, annidamento, liste, enum, `null`, `@SerializedName`, `transient`, `TypeToken`, `Map`, tree model, errori | 90 min |
 | 03 | [`03-quiz-socket`](./03-quiz-socket/) | ✏️ Esercizio guidato + gioco in classe | QuizBattle (stile Kahoot) | JSON come **protocollo applicativo** su socket TCP, client/server multi-thread | 90-135 min |
-| — | [`soluzioni`](./soluzioni/) | 🔑 Per il docente | — | Soluzioni complete e testate | — |
+| — | Google Drive (accesso riservato) | 🔒 Per il docente | — | Soluzioni complete e risposte di verifica | — |
 
 ```mermaid
 flowchart LR
@@ -76,7 +76,7 @@ java -cp ../lib/gson-2.11.0.jar NomeFile.java
 
 ## 👩‍🏫 Note per il docente
 
-* Le **soluzioni** sono in [`soluzioni/`](./soluzioni/): ogni file indica in testa il comando esatto per eseguirlo.
+* Le **soluzioni** sono conservate esclusivamente nella cartella **Google Drive con permessi ristretti al docente** (non nel repository pubblico GitHub).
 * I file di partenza degli esercizi **compilano ed eseguono già** così come sono: lo studente vede subito un output e completa i `TODO` passo dopo passo.
 * Nell'esercizio 02 il modello dati contiene **"bug" voluti** (annotazioni mancanti): lo studente scopre da solo perché alcuni campi risultano `null`.
 * Nell'esercizio 03 potete avviare la soluzione del **server sul PC docente** e far giocare tutta la classe con i propri client: è il momento più coinvolgente del percorso.

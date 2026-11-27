@@ -5,9 +5,8 @@
  *  Leggi prima il README.md: contiene la TABELLA DEI MESSAGGI del protocollo.
  *
  *  Per provare il client ti serve un server acceso:
- *   - quello del prof (chiedi l'indirizzo IP), oppure
- *   - la soluzione in locale:
- *       java -cp ../lib/gson-2.11.0.jar ../soluzioni/03-quiz-socket/QuizServer.java
+ *   - quello avviato dal prof in laboratorio (chiedi l'indirizzo IP), oppure
+ *   - il tuo QuizServer dopo aver completato la Parte B.
  *
  *  ESECUZIONE (dalla cartella 03-quiz-socket):
  *      java -cp ../lib/gson-2.11.0.jar QuizClient.java [host] [porta]

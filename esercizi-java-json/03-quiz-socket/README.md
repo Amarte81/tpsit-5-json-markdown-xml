@@ -63,11 +63,7 @@ java -cp ../lib/gson-2.11.0.jar QuizServer.java
 java -cp ../lib/gson-2.11.0.jar QuizClient.java localhost 5050
 ```
 
-Per sviluppare il client senza aver ancora finito il server, usa il server di soluzione:
-
-```bash
-java -cp ../lib/gson-2.11.0.jar ../soluzioni/03-quiz-socket/QuizServer.java
-```
+Per provare il client prima di aver completato il server, collegati al **server avviato dal docente** sul suo PC in laboratorio (indicando il suo indirizzo IP al posto di `localhost`).
 
 ## 🪜 Parte A — Il client ([`QuizClient.java`](./QuizClient.java))
 
